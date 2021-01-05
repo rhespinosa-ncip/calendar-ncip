@@ -13,7 +13,15 @@ const loginSubmit = data => {
         data: data
     }).done(result => {
         if(result.message == 'success'){
-
+            toastr.success('Login success', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }else if(result.message == 'no-credential'){
+            toastr.error('No credential found', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
         }
     })
 }
