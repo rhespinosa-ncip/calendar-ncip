@@ -1,0 +1,94 @@
+.error-input {
+    border: solid 0.08rem red;
+}
+
+.span-error {
+    font-size: 12px;
+}
+
+.fa-exclamation-circle,
+.span-error {
+    color: red !important;
+}
+
+.ncip-blinking {
+    animation: blinker 1s linear;
+}
+
+.table {
+    width: 100% !important;
+}
+
+
+.swal2-image {
+    width: 135px !important;
+    display: flex;
+}
+
+.loadingText {
+    font-family: 'Quicksand', sans-serif !important;
+    font-size: 20px !important;
+    color: beige;
+}
+
+.swal2-container {
+    z-index: 100000 !important;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+code {
+    color: #000000 !important;
+}
+
+.field-icon {
+    float: right;
+    margin-right: 9px;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+}
+
+.breadcrumb {
+    margin-bottom: 0 !important;
+    background-color: #ffffff !important;
+}
+
+@page { size: auto; margin: 0mm; }
+
+@media print{
+    body * {
+        visibility:hidden;
+    }
+
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+}
+
+.content-wrapper{
+    margin-top: 65px !important;
+}
+
+.redClass{
+    background-color: #de8a8a;
+}
+.chart {
+    width: 100%;
+    min-height: 450px;
+}
+
+.cursorPoint{
+    cursor: pointer;
+}
