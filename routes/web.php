@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::fallback(function () {
+    return redirect('/');
+});
 
 Route::group(['prefix' => ''], function () {
     Route::get('', [PageController::class, 'index']);
@@ -23,5 +30,45 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'meeting'], function () {
+        Route::group(['prefix' => 'add'], function () {
+            Route::get('', [MeetingController::class, 'addMeetingForm']);
+            Route::post('submit', [MeetingController::class, 'addMeetingSubmit']);
+        });
 
+        Route::get('show', [MeetingController::class, 'showMeeting']);
+    });
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('', [UserController::class , 'index']);
+        Route::post('list', [UserController::class , 'indexList']);
+
+        Route::group(['prefix' => 'add'], function () {
+            Route::get('', [UserController::class , 'addUserForm']);
+            Route::post('submit', [UserController::class, 'addUserSubmit']);
+        });
+
+        Route::group(['prefix' => 'update'], function () {
+            Route::get('', [UserController::class , 'updateUserForm']);
+        });
+    });
+
+    Route::group(['prefix' => 'department'], function () {
+        Route::get('', [DepartmentController::class , 'index']);
+        Route::post('list', [DepartmentController::class , 'indexList']);
+
+        Route::group(['prefix' => 'add'], function () {
+            Route::get('', [DepartmentController::class , 'addDepartmentForm']);
+            Route::post('submit', [DepartmentController::class, 'addDepartmentSubmit']);
+        });
+        
+        Route::group(['prefix' => 'update'], function () {
+            Route::get('', [DepartmentController::class , 'updateUserForm']);
+        });
+    });
+
+    Route::get('logout', function () {
+        Auth::logout();
+        return redirect('');
+    });
 });

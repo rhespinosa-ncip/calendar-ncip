@@ -13,6 +13,8 @@ const loginSubmit = data => {
         data: data
     }).done(result => {
         if(result.message == 'success'){
+            setTimeOut('/')
+            
             toastr.success('Login success', '', {
                 progressBar: true,
                 timeOut: 1000,

@@ -10,14 +10,43 @@
 
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/calendar/full-calendar.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
     @stack('style')
 </head>
 
     <body>
         @auth
+            <nav class="navbar navbar-light bg-light navbar-expand-lg">
+                <a class="navbar-brand" href="/">
+                  <img src="{{asset('image/ncip-logo.png')}}" width="30" height="30" class="d-inline-block align-top" alt="">
+                  NCIP
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        @if (Auth::user()->user_type == 'admin')
+                            <li class="nav-item border-left">
+                                <a class="nav-link" href="/department">Department</a>
+                            </li>
+                            <li class="nav-item border-left">
+                                <a class="nav-link" href="/user">User</a>
+                            </li>
+                        @endif
+                    </ul>
+                    <span class="navbar-text">
+                        <a href="/logout">
+                            Logout
+                        </a>
+                    </span>
+                </div>
+            </nav>
             @yield('auth-content')
         @endauth
 
@@ -91,6 +120,8 @@
 
     <script src="{{asset('js/app.js')}}"></script>
     <script src="{{asset('js/sweetalert2.min.js')}}"></script>
+    <script src="{{asset('js/datatables.min.js')}}"></script>
     <script src="{{asset('js/global.js')}}"></script>
+    <script src="{{asset('js/calendar/full-calendar.js')}}"></script>
     @stack('script')
 </html>

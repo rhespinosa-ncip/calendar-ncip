@@ -92,3 +92,25 @@ code {
 .cursorPoint{
     cursor: pointer;
 }
+
+.form-control{
+    border-radius: 0 !important;
+}
+
+.ncip-title{
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.ncip-description{
+    font-size: 13px;
+}
+
+.ncip-card-meeting{
+    border-left: 3px solid #3f823b;
+}
+
+.ncip-meeting{
+    max-height: 30em;
+    overflow-y: auto;
+}

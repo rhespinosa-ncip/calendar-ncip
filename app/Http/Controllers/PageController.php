@@ -12,7 +12,7 @@ class PageController extends Controller
 {
     public function index(Request $request){
         if(Auth::check()){
-
+            return MeetingController::index();
         }
 
         return view('guest.login');
@@ -35,6 +35,8 @@ class PageController extends Controller
 
         if(isset($user)){
             if(Hash::check($request->password, $user->password)){
+                Auth::login($user);
+
                 return response()->json([
                     'message' => 'success',
                 ]);

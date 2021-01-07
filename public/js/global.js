@@ -14,6 +14,12 @@ $(function(){
                 clearError()
 
                 $.each(result.messages, (key, val) => {
+                    if(key == 'participant'){
+                        toastr.error('Participant field is required', '', {
+                            progressBar: true,
+                            timeOut: 1000,
+                        })
+                    }
                     inputError(key, val)
                 })
             }
@@ -28,8 +34,53 @@ $(function(){
         let id = $(this).attr('id');
         $(this).removeClass("error-input");
         $(this).next('.ncip-blinking').remove();
+    }).on('click', '.btn-remove-file', function(){
+        removeTbodyTr(this)
+        return false
+    }).on('click', '.add-file', function(){
+        appendFile()
+        return false
     })
 })
+
+const removeTbodyTr = thisRow => {
+    Swal.fire({
+        type: 'warning',
+        text: 'Are you sure you want to remove row?',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: 'Yes'
+    }).then(result => {
+        if (result.value) {
+            $(thisRow).closest('tr').remove()
+            storeAttrDocumentId(thisRow)
+        }
+    })
+}
+
+const storeAttrDocumentId = (thisData) =>{
+    let documentId = $(thisData).attr('document-id')
+    if(typeof documentId != 'undefined'){
+        let value = $('#documentIds').val()
+        $('#documentIds').val(documentId+','+value)
+    }
+}
+
+const appendFile = () => {
+    let toAppend = `
+        <tr>
+            <td><input type="file" class="form-control-file" id="file[]" name="file[]"></td>
+            <td>
+                <button class="btn btn-danger rounded-0 py-1 btn-remove-file">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `
+
+    $('#fileTbl > tbody').append(toAppend)
+}
 
 function clearError() {
     $('.ncip-blinking').remove();
