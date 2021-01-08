@@ -27,15 +27,17 @@ Class SystemLibrary{
         return array($status, ' Today');
     }
 
-    static function previlageInsert($permissionId){
-        $previlage = UserPermission::where([['user_id', Auth::id()],['permission_id', $permissionId]])->first();
+    static function day(){
+        $hour = date('H', time());
 
-        $insert = '';
-
-        if(Auth::user()->user_type == 'staff'){
-            $insert = isset($previlage->insert) ? ($previlage->insert == 'yes' ? '' : 'd-none') : 'd-none';
+        if( $hour > 6 && $hour <= 11) {
+            return "Good morning";
         }
-
-        return $insert;
+        else if($hour > 11 && $hour <= 16) {
+            return "Good afternoon";
+        }
+        else if($hour > 16 && $hour <= 23) {
+            return "Good evening";
+        }
     }
 }

@@ -29,14 +29,35 @@ Route::group(['middleware' => ['guest']], function () {
     Route::post('/login', [PageController::class, 'login']);
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
+
     Route::group(['prefix' => 'meeting'], function () {
         Route::group(['prefix' => 'add'], function () {
             Route::get('', [MeetingController::class, 'addMeetingForm']);
+            Route::get('option', [MeetingController::class, 'optionForm']);
             Route::post('submit', [MeetingController::class, 'addMeetingSubmit']);
         });
 
         Route::get('show', [MeetingController::class, 'showMeeting']);
+
+        Route::group(['prefix' => 'admin'], function () {
+            Route::get('', [MeetingController::class, 'adminMeetings']);
+            Route::post('list', [MeetingController::class , 'adminMeetingsList']);
+
+            Route::group(['prefix' => 'meeting-link'], function () {
+                Route::get('', [MeetingController::class, 'meetingLinkForm']);
+                Route::post('submit', [MeetingController::class, 'meetingLinkSubmit']);
+            });
+        });
+
+        Route::group(['prefix' => 'ended-meeting'], function () {
+            Route::post('list', [MeetingController::class , 'endedMeetingList']);
+
+            Route::group(['prefix' => 'maintenance'], function () {
+                Route::get('', [MeetingController::class , 'minutesForm']);
+                Route::post('submit', [MeetingController::class, 'minutesFormSubmit']);
+            });
+        });
     });
 
     Route::group(['prefix' => 'user'], function () {
@@ -61,11 +82,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('', [DepartmentController::class , 'addDepartmentForm']);
             Route::post('submit', [DepartmentController::class, 'addDepartmentSubmit']);
         });
-        
+
         Route::group(['prefix' => 'update'], function () {
             Route::get('', [DepartmentController::class , 'updateUserForm']);
         });
     });
+
+    Route::get('/show-document/{username}/{fileName}',[PageController::class, 'showDocuments']);
 
     Route::get('logout', function () {
         Auth::logout();

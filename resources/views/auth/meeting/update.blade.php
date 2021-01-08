@@ -23,22 +23,41 @@
          </div>
          <div class="col-12">
              <div class="form-group">
-                 <label for="zoomMeetingLink">Zoom meeting link: </label>
-                 <input type="text"class="form-control rounded-0" name="zoomMeetingLink" id="zoomMeetingLink" value="{{$data['meeting']->zoom_meeting_description}}">
+                @if ($data['meeting']->zoom_meeting_description == 'requestToAdmin')
+                    @php
+                        $isChecked = 'checked';
+                        $isInputNotShow = 'd-none';
+                        $inputZoomMeeting = 'requestToAdmin';
+                    @endphp
+                @endif
+
+                @if (Auth::user()->user_type == 'admin')
+                    <label for="zoomMeetingLink">Zoom meeting link: </label>
+                    <input type="text" class="form-control rounded-0" name="zoomMeetingLink" id="zoomMeetingLink" value="{{$data['meeting']->zoom_meeting_description}}">
+                @else
+                    <label for="zoomMeetingLink">Zoom meeting link: </label>
+                    <input type="text" class="form-control rounded-0 {{$isInputNotShow ?? ''}}" name="zoomMeetingLink" id="zoomMeetingLink" value="{{$inputZoomMeeting ?? $data['meeting']->zoom_meeting_description}}">
+                    <div class="form-check mb-1">
+                        <input type="checkbox" {{$isChecked ?? ''}} class="form-check-input" id="requestZoomMeetingLink">
+                        <label class="form-check-label" for="requestZoomMeetingLink">Request zoom meeting link to admin</label>
+                    </div>
+                @endif
              </div>
          </div>
          <div class="col-12">
              <div class="form-group">
-                 <label for="participant">Participant: </label>
-                 <select name="participant[]" id="participant[]" class="form-control rounded-0" multiple="multiple" style="display: none;">
-                     @foreach ($data['users'] as $user)
-                        <option 
-                            @foreach ($data['meeting']->participants as $participant)
-                                {{$participant->user_id == $user->id ? 'selected' : ''}}
-                            @endforeach
-                        value="{{$user->id}}">{{$user->fullName}}</option>
-                     @endforeach
-                 </select>
+                <label for="participant">Participant: </label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" {{$data['meeting']->participant == 'individual' ? 'checked' : ''}} meetingId="{{$data['meeting']->id}}" type="radio" name="participantsChoice" id="individual" value="individual">
+                    <label class="form-check-label" for="individual">Individual</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" {{$data['meeting']->participant == 'department' ? 'checked' : ''}} meetingId="{{$data['meeting']->id}}" type="radio" name="participantsChoice" id="department" value="department">
+                    <label class="form-check-label" for="department">Deparment</label>
+                </div>
+                <div class="optionSelectArea">
+
+                </div>
              </div>
          </div>
      </div>

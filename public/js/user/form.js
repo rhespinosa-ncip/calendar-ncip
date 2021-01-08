@@ -46,7 +46,8 @@ $(function(){
     }).on('keyup', '#firstName, #lastName', function(){
         let firstName = $('#firstName').val()
         let lastName = $('#lastName').val()
-        $('#password').val('ncip-'+firstName.toLowerCase()+lastName.toLowerCase())
+
+        $('#password').val('ncip-'+ firstName.toLowerCase().replace(/\s/g, '')+lastName.toLowerCase().replace(/\s/g, ''))
         return false
     }).on('submit', '#addUser', function(){
         var data = $(this).serialize()
@@ -98,7 +99,7 @@ const submitUser = data => {
         if(result.message == 'success'){
             closeModal('lg')
             setTimeOut('/user')
-            
+
             toastr.success('User added successfully', '', {
                 progressBar: true,
                 timeOut: 1000,
@@ -106,7 +107,7 @@ const submitUser = data => {
         }else if(result.message == 'updateSuccess'){
             closeModal('lg')
             setTimeOut('/user')
-            
+
             toastr.success('User updates successfully', '', {
                 progressBar: true,
                 timeOut: 1000,

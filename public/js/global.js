@@ -20,6 +20,13 @@ $(function(){
                             timeOut: 1000,
                         })
                     }
+
+                    if(key == 'departmentParticipant'){
+                        toastr.error('Department participant field is required', '', {
+                            progressBar: true,
+                            timeOut: 1000,
+                        })
+                    }
                     inputError(key, val)
                 })
             }

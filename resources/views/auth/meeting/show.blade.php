@@ -20,21 +20,38 @@
     <div class="col-12">
         <div class="form-group">
             <label for="zoomMeetingLink">Zoom meeting link: </label>
-            <a target="_blank" href="{{$data['meeting']->zoom_meeting_description}}">{{$data['meeting']->zoom_meeting_description}}</a>
+            @if ($data['meeting']->zoom_meeting_description == 'requestToAdmin')
+                No zoom meeting link
+            @else
+                <a target="_blank" href="{{$data['meeting']->zoom_meeting_description}}">{{$data['meeting']->zoom_meeting_description}}</a>
+            @endif
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label for="participant">Participant: </label>
-            <select class="form-control rounded-0" disabled multiple="multiple" style="display: none;">
-                @foreach ($data['users'] as $user)
-                <option 
-                    @foreach ($data['meeting']->participants as $participant)
-                        {{$participant->user_id == $user->id ? 'selected' : ''}}
+            @if ($data['meeting']->participant == 'department')
+                <label for="participant">Department Participant: </label>
+                <select class="form-control rounded-0" disabled multiple="multiple" style="display: none;">
+                    @foreach ($data['department'] as $department)
+                    <option
+                        @foreach ($data['meeting']->departmentParticipants as $departmentParticipants)
+                            {{$departmentParticipants->department_id == $department->id ? 'selected' : ''}}
+                        @endforeach
+                    value="{{$department->id}}">{{$department->name}}</option>
                     @endforeach
-                value="{{$user->id}}">{{$user->fullName}}</option>
-                @endforeach
-            </select>
+                </select>
+            @elseif($data['meeting']->participant == 'individual')
+                <label for="participant">Participant: </label>
+                <select class="form-control rounded-0" disabled multiple="multiple" style="display: none;">
+                    @foreach ($data['users'] as $user)
+                    <option
+                        @foreach ($data['meeting']->participants as $participant)
+                            {{$participant->user_id == $user->id ? 'selected' : ''}}
+                        @endforeach
+                    value="{{$user->id}}">{{$user->fullName}}</option>
+                    @endforeach
+                </select>
+            @endif
         </div>
     </div>
 </div>
@@ -64,3 +81,13 @@
         </table>
     </div>
 </div>
+
+<script>
+    $("select").bsMultiSelect({
+        cssPatch: {
+            choices: {
+                columnCount: '1'
+            },
+        }
+    });
+</script>

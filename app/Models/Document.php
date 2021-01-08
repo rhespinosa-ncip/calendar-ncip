@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Document extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'meeting_documents';
 
     /**
@@ -26,10 +26,10 @@ class Document extends Model
     static function insert($request, $tableName, $table, $folderName){
         if($request->hasFile('file')){
             foreach($request->file as $key => $value){
-                
+
                 $ext = $request->file[$key]->getClientOriginalExtension();
                 $filename = ucwords($request->file[$key]->getClientOriginalName()) . '.' . $ext;
-                
+
                 $path = $request->file[$key]->storeAs(
                     Auth::user()->username.'-'.$folderName, $filename, 'public'
                 );
@@ -49,7 +49,7 @@ class Document extends Model
         foreach($exploadedDocumentIds as $key){
             Document::where([['id', $key],['table_id', $table->id],['table_name',$tableName]])->delete();
         }
-         
+
         Document::insert($request, $tableName, $table, $folderName);
     }
 }

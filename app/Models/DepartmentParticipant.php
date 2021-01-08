@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
-class Participant extends Model
+class DepartmentParticipant extends Model
 {
     use HasFactory;
 
-    protected $table = 'meeting_participant';
+    protected $table = 'meeting_department_participant';
 
     /**
      * The attributes that are mass assignable.
@@ -19,30 +18,30 @@ class Participant extends Model
      */
     protected $fillable = [
         'meeting_schedule_id',
-        'user_id',
+        'department_id',
     ];
 
     public function meeting(){
         return $this->hasOne(MeetingSchedule::class, 'id', 'meeting_schedule_id');
     }
 
-    static function insert($userId, $meetingId){
-        Participant::create([
+    static function insert($departmentId, $meetingId){
+        DepartmentParticipant::create([
             'meeting_schedule_id' => $meetingId,
-            'user_id' => $userId,
+            'department_id' => $departmentId,
         ]);
     }
 
-    static function insertIndividual($request, $meeting){
-        foreach($request->participant as $key => $value){
+    static function insertDepartment($request, $meeting){
+        foreach($request->departmentParticipant as $key => $value){
             self::insert($value, $meeting->id);
         }
     }
 
-    static function updateIndividual($request, $meeting){
+    static function updateDepartment($request, $meeting){
         $partipant = Participant::where('meeting_schedule_id', $meeting->id)->delete();
         $departmentPartipant = DepartmentParticipant::where('meeting_schedule_id', $meeting->id)->delete();
 
-        self::insertIndividual($request, $meeting);
+        self::insertDepartment($request, $meeting);
     }
 }

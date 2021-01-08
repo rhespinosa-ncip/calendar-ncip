@@ -21,18 +21,45 @@
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label for="zoomMeetingLink">Zoom meeting link: </label>
-                <input type="text"class="form-control rounded-0" name="zoomMeetingLink" id="zoomMeetingLink">
+                @if (Auth::user()->user_type == 'admin')
+                    <label for="zoomMeetingLink">Zoom meeting link: </label>
+                    <input type="text" class="form-control rounded-0" name="zoomMeetingLink" id="zoomMeetingLink">
+                @else
+                    <label for="zoomMeetingLink">Zoom meeting link: </label>
+                    <input type="text" class="form-control rounded-0 d-none" name="zoomMeetingLink" id="zoomMeetingLink" value="requestToAdmin">
+                    <div class="form-check mb-1">
+                        <input type="checkbox" checked class="form-check-input" id="requestZoomMeetingLink">
+                        <label class="form-check-label" for="requestZoomMeetingLink">Request zoom meeting link to admin</label>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label for="participant">Participant: </label>
-                <select name="participant[]" id="participant[]" class="form-control rounded-0" multiple="multiple" style="display: none;">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="participantsChoice" id="individual" value="individual">
+                    <label class="form-check-label" for="individual">Individual</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="participantsChoice" id="department" value="department">
+                    <label class="form-check-label" for="department">Deparment</label>
+                </div>
+
+                <div class="optionSelectArea">
+
+                </div>
+                {{-- <select name="participant[]" id="participant[]" class="form-control rounded-0 individualParticipant" multiple="multiple" style="display: none;">
                     @foreach ($data['users'] as $user)
                         <option value="{{$user->id}}">{{$user->fullName}}</option>
                     @endforeach
                 </select>
+
+                <select name="departmentParticipant[]" id="departmentParticipant[]" class="form-control rounded-0 d-none departmentParticipant" multiple="multiple" style="display: none;">
+                    @foreach ($data['users'] as $user)
+                        <option value="{{$user->id}}">{{$user->fullName}}</option>
+                    @endforeach
+                </select> --}}
             </div>
         </div>
     </div>

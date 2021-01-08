@@ -22,29 +22,68 @@
                                 <label class="ncip-date p-0">{{date('F d, Y')}}</label>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <label class="p-0">{{\App\GlobalClass\SystemLibrary::day()}} {{Auth::user()->fullName}}</label>
+                            </div>
+                        </div>
                         <hr>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body ncip-meeting">
                         <div class="row ncip-body">
-                            @foreach ($data['todayMeetingAsParticipant'] as $todayMeetingAsParticipant)
-                                @if (isset($todayMeetingAsParticipant->meeting->title))
+                            @if (Auth::user()->user_type != 'admin')
+                                @foreach ($data['todayMeetingAsParticipant'] as $todayMeetingAsParticipant)
+                                    @if (isset($todayMeetingAsParticipant->meeting->title))
+                                        @if (date("Y-m-d H:i", strtotime($todayMeetingAsParticipant->meeting->date)) >= date("Y-m-d H:i"))
+                                            @php
+                                                $haveMeeting = true;
+                                            @endphp
+                                            <div class="col-12">
+                                                <div class="card ncip-card-meeting mb-2">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <label class="ncip-title">{{$todayMeetingAsParticipant->meeting->title}}</label>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label class="ncip-description">{{date('h:i A', strtotime($todayMeetingAsParticipant->meeting->date))}}</label>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label class="ncip-description">{{$todayMeetingAsParticipant->meeting->description}}</label>
+                                                            </div>
+                                                            <div class="col-12 text-center">
+                                                                <a class="btn-show-meeting" href="" meetingId="{{$todayMeetingAsParticipant->meeting->id}}">View in details</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
+                                @endforeach
+                            @endif
+                            @foreach ($data['todayMeeting'] as $todayMeeting)
+                                @if (date("Y-m-d H:i", strtotime($todayMeeting->date)) >= date("Y-m-d H:i"))
+                                    @php
+                                        $haveMeeting = true;
+                                    @endphp
                                     <div class="col-12">
                                         <div class="card ncip-card-meeting mb-2">
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <label class="ncip-title">{{$todayMeetingAsParticipant->meeting->title}}</label>
+                                                        <label class="ncip-title">{{$todayMeeting->title}}</label>
                                                     </div>
                                                     <div class="col-12">
-                                                        <label class="ncip-description">{{date('h:i A', strtotime($todayMeetingAsParticipant->meeting->date))}}</label>
+                                                        <label class="ncip-description">{{date('h:i A', strtotime($todayMeeting->date))}}</label>
                                                     </div>
                                                     <div class="col-12">
-                                                        <label class="ncip-description">{{$todayMeetingAsParticipant->meeting->description}}</label>
+                                                        <label class="ncip-description">{{$todayMeeting->description}}</label>
                                                     </div>
                                                     <div class="col-12 text-center">
-                                                        <a class="btn-show-meeting" href="" meetingId="{{$todayMeetingAsParticipant->meeting->id}}">View in details</a>
+                                                        <a class="btn-show-meeting" href="" meetingId="{{$todayMeeting->id}}">View in details</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -52,29 +91,36 @@
                                     </div>
                                 @endif
                             @endforeach
-                            @foreach ($data['todayMeeting'] as $todayMeeting)
-                                <div class="col-12">
-                                    <div class="card ncip-card-meeting mb-2">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <label class="ncip-title">{{$todayMeeting->title}}</label>
-                                                </div>
-                                                <div class="col-12">
-                                                    <label class="ncip-description">{{date('h:i A', strtotime($todayMeeting->date))}}</label>
-                                                </div>
-                                                <div class="col-12">
-                                                    <label class="ncip-description">{{$todayMeeting->description}}</label>
-                                                </div>
-                                                <div class="col-12 text-center">
-                                                    <a class="btn-show-meeting" href="" meetingId="{{$todayMeeting->id}}">View in details</a>
+                            @if (Auth::user()->user_type != 'admin')
+                                @foreach ($data['todayMeetingAsDepartment'] as $departmentMeeting)
+                                    @if (date("Y-m-d H:i", strtotime($departmentMeeting->date)) >= date("Y-m-d H:i"))
+                                        @php
+                                            $haveMeeting = true;
+                                        @endphp
+                                        <div class="col-12">
+                                            <div class="card ncip-card-meeting mb-2">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <label class="ncip-title">{{$departmentMeeting->title}}</label>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label class="ncip-description">{{date('h:i A', strtotime($departmentMeeting->date))}}</label>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label class="ncip-description">{{$departmentMeeting->description}}</label>
+                                                        </div>
+                                                        <div class="col-12 text-center">
+                                                            <a class="btn-show-meeting" href="" meetingId="{{$departmentMeeting->id}}">View in details</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                            @if (count($data['todayMeetingAsParticipant']) == 0 && count($data['todayMeeting']) == 0)
+                                    @endif
+                                @endforeach
+                            @endif
+                            @if (!isset($haveMeeting))
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-12 text-center p-5">
@@ -88,9 +134,26 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
                         <div id='ncip-calendar'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-border sample-table" id="endedMeetingList">
+                            <thead>
+                                <tr>
+                                    <th>Meeting title</th>
+                                    <th>Meeting date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -126,13 +189,24 @@
                         start: '{{$filedMeeting->date}}',
                     },
                     @endforeach
-                    @foreach($data['asParticipant'] as $asParticipant)
-                    {
-                        id: '{{$asParticipant->meeting->id}}',
-                        title: '{{$asParticipant->meeting->title}}',
-                        start: '{{$asParticipant->meeting->date}}',
-                    },
-                    @endforeach
+
+                    @if(Auth::user()->user_type != 'admin')
+                        @foreach($data['asParticipant'] as $asParticipant)
+                        {
+                            id: '{{$asParticipant->meeting->id}}',
+                            title: '{{$asParticipant->meeting->title}}',
+                            start: '{{$asParticipant->meeting->date}}',
+                        },
+                        @endforeach
+                        @foreach($data['departmentMeeting'] as $departmentMeeting)
+                        {
+                            id: '{{$departmentMeeting->id}}',
+                            title: '{{$departmentMeeting->title}}',
+                            start: '{{$departmentMeeting->date}}',
+                        },
+                        @endforeach
+                    @endif
+
                 ],
                 eventTimeFormat: {
                     hour: "numeric",

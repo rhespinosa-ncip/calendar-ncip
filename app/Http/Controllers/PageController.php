@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class PageController extends Controller
 {
@@ -46,5 +48,21 @@ class PageController extends Controller
         return response()->json([
             'message' => 'no-credential',
         ]);
+    }
+
+    public function showDocuments(Request $request){
+        $path = storage_path('app/public/' . $request->username.'/'.$request->fileName);
+
+        if (!File::exists($path)) {
+            return $path;
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+
+        return $response;
     }
 }

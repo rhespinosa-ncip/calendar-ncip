@@ -25,6 +25,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'username',
+        'user_type',
         'department_id',
         'password',
     ];
@@ -64,7 +65,7 @@ class User extends Authenticatable
             ]);
         }
 
-        $password = 'ncip-'.$request->firstName.$request->lastName;
+        $password = 'ncip-'.str_replace(" ","",$request->firstName).str_replace(" ","",$request->lastName);
 
         $user = User::create([
             'first_name' => $request->firstName,
@@ -74,8 +75,9 @@ class User extends Authenticatable
             'username' => $request->username,
             'password' => Hash::make($password),
             'department_id' => $request->departmentName,
+            'user_type' => 'user'
         ]);
-        
+
         return response()->json([
             'message' => 'success',
         ]);
@@ -92,7 +94,7 @@ class User extends Authenticatable
         }
 
         $user = User::whereId($request->userId)->first();
-        
+
         if(isset($user)){
             $user->first_name = $request->firstName;
             $user->middle_name = $request->middleName;
@@ -102,7 +104,7 @@ class User extends Authenticatable
             $user->department_id = $request->departmentName;
             $user->save();
         }
-        
+
         return response()->json([
             'message' => 'updateSuccess',
         ]);

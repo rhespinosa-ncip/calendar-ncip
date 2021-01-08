@@ -24,8 +24,8 @@ class UserController extends Controller
                     department.`name` as department_name
                 FROM
                     users
-                    JOIN department ON users.department_id = department.id';
-                    // where users.id != '.Auth::id().'';
+                    JOIN department ON users.department_id = department.id
+                    where users.id != '.Auth::id().'';
 
         return Datatables::of($query)
             ->addAction('action', function($result){

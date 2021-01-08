@@ -14,7 +14,7 @@
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
     <link href="{{ asset('css/calendar/full-calendar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
     @stack('style')
 </head>
@@ -37,6 +37,9 @@
                             </li>
                             <li class="nav-item border-left">
                                 <a class="nav-link" href="/user">User</a>
+                            </li>
+                            <li class="nav-item border-left">
+                                <a class="nav-link" href="/meeting/admin">Zoom meeting link</a>
                             </li>
                         @endif
                     </ul>
