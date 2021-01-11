@@ -19,14 +19,66 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 text-center">
+                                <h5 class="mb-0">
+                                    <label class="p-0">{{\App\GlobalClass\SystemLibrary::day()}} {{Auth::user()->fullName}},</label>
+                                </h5>
+                                <span>( {{Auth::user()->position}} )</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 text-center">
                                 <label class="ncip-date p-0">{{date('F d, Y')}}</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <label class="p-0">{{\App\GlobalClass\SystemLibrary::day()}} {{Auth::user()->fullName}}</label>
+                                <span class="ncip-date time" id="time">12:56</span>
+                                <span class="ampm" id="ampm">AM</span>
                             </div>
                         </div>
+                        @if (Auth::user()->user_type != 'admin')
+                            @if (isset($data['tito']->time_in))
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <h6><b>Time in</b></h6>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h6>{{date('h:i A', strtotime($data['tito']->time_in))}}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (isset($data['tito']->time_out))
+                                        <div class="col-6 text-center">
+                                            <h6><b>Time out</b></h6>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6>{{date('h:i A', strtotime($data['tito']->time_out))}}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="col-6 text-center">
+                                            <h6><b>Time out</b></h6>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6>NO TIME OUT</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-info rounded-0 btn-block btn-time-out">Time out</button>
+                                        </div>
+                                    @endif
+                                </div>
+                            @else
+                                <div class="row m-2">
+                                    <div class="col-12">
+                                        <button class="btn btn-info rounded-0 btn-block btn-time-in">Time in</button>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
                         <hr>
                     </div>
                 </div>
@@ -164,6 +216,7 @@
 @push('script')
     <script src="{{asset('js/multiple/js/BsMultiSelect.js')}}"></script>
     <script src="{{asset('js/calendar/form.js')}}"></script>
+    <script src="{{asset('js/calendar/tito/form.js')}}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('ncip-calendar');
@@ -187,6 +240,7 @@
                         id: '{{$filedMeeting->id}}',
                         title: '{{$filedMeeting->title}}',
                         start: '{{$filedMeeting->date}}',
+                        color: '{{$filedMeeting->user->department->hexa_color}}'
                     },
                     @endforeach
 
@@ -196,6 +250,7 @@
                             id: '{{$asParticipant->meeting->id}}',
                             title: '{{$asParticipant->meeting->title}}',
                             start: '{{$asParticipant->meeting->date}}',
+                            color: '{{$asParticipant->meeting->user->department->hexa_color}}'
                         },
                         @endforeach
                         @foreach($data['departmentMeeting'] as $departmentMeeting)
@@ -203,6 +258,7 @@
                             id: '{{$departmentMeeting->id}}',
                             title: '{{$departmentMeeting->title}}',
                             start: '{{$departmentMeeting->date}}',
+                            color: '{{$departmentMeeting->hexa_color}}'
                         },
                         @endforeach
                     @endif

@@ -36,7 +36,13 @@
                 <input disabled type="text" value="ncip" class="form-control rounded-0" name="password" id="password">
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="position">Position: </label>
+                <input type="text" class="form-control rounded-0" name="position" id="position">
+            </div>
+        </div>
+        <div class="col-6">
             <div class="form-group">
                 <label for="departmentName">Department name: </label>
                 <select class="form-control rounded-0" name="departmentName" id="departmentName">

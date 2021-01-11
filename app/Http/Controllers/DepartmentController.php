@@ -18,6 +18,8 @@ class DepartmentController extends Controller
         return Datatables::of($query)
             ->addAction('action', function($result){
                 return '<button class="btn btn-info  py-1 px-2 rounded-0 btn-update-department" departmentId="'.$result->id.'" data-toggle="tooltip" title="Update department"><i class="fas fa-edit"></i></button>';
+            })->addAction('department_color', function($result){
+                return '<span class="badge badge-pill" style="background-color: '.$result->hexa_color.'!important;">&nbsp</span>';
             })
             ->searchable(['name'])
             ->request($request)

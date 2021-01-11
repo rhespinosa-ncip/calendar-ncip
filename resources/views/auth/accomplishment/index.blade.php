@@ -1,22 +1,17 @@
 @extends('index.main')
 
-@push('style')
-    <link rel="stylesheet" href="css/calendar/calendar.css">
-@endpush
-
 @section('auth-content')
-    <div class="container-fluid mb-5">
+    <div class="container-fluid mb-5 mt-3">
         <div class="row mt-3">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table table-border sample-table" id="meetingAdminList">
+                        <table class="table table-border sample-table" id="accomplishmentTable">
                             <thead>
                                 <tr>
-                                    <th>Meeting title</th>
-                                    <th>Meeting schedule</th>
-                                    <th>Created by</th>
-                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Time in</th>
+                                    <th>Time out</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -29,5 +24,5 @@
 @endsection
 
 @push('script')
-    <script src="{{asset('js/meeting/admin/form.js')}}"></script>
+    <script src="{{asset('js/accomplishment/form.js')}}"></script>
 @endpush

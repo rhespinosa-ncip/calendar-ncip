@@ -44,6 +44,10 @@ class MeetingSchedule extends Model
         return $this->hasMany(Document::class, 'table_id', 'id')->where('table_name','minutes');
     }
 
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
+
     static function validation($request){
         $validate = Validator::make($request->all(),[
             'title' => 'required',

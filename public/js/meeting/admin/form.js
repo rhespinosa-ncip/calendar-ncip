@@ -26,6 +26,11 @@ $(function(){
                 orderable: false
             },
             {
+                data: 'meeting_link_status',
+                name: 'meeting_link_status',
+                orderable: false
+            },
+            {
                 data: 'action',
                 name: 'action',
                 orderable: false

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'first_name',
         'middle_name',
         'last_name',
+        'position',
         'email',
         'username',
         'user_type',
@@ -34,6 +35,10 @@ class User extends Authenticatable
         return ucfirst($this->first_name).' '.ucfirst($this->last_name);
     }
 
+    public function department(){
+        return $this->hasOne(Department::class, 'id', 'department_id');
+    }
+
     static function validate($request){
         $id = $request->userId ?? 0;
 
@@ -42,6 +47,7 @@ class User extends Authenticatable
             'middleName' => 'required',
             'lastName' => 'required',
             'departmentName' => 'required',
+            'position' => 'required',
             'email' => [
                 'required',
                 'regex:/\S+@\S+\.\S+/',
@@ -65,12 +71,13 @@ class User extends Authenticatable
             ]);
         }
 
-        $password = 'ncip-'.str_replace(" ","",$request->firstName).str_replace(" ","",$request->lastName);
+        $password = 'ncip-'.str_replace(" ","",strtolower($request->firstName)).str_replace(" ","",strtolower($request->lastName));
 
         $user = User::create([
             'first_name' => $request->firstName,
             'middle_name' => $request->middleName,
             'last_name' => $request->lastName,
+            'position' => $request->position,
             'email' => $request->email,
             'username' => $request->username,
             'password' => Hash::make($password),
@@ -99,6 +106,7 @@ class User extends Authenticatable
             $user->first_name = $request->firstName;
             $user->middle_name = $request->middleName;
             $user->last_name = $request->lastName;
+            $user->position = $request->position;
             $user->email = $request->email;
             $user->username = $request->username;
             $user->department_id = $request->departmentName;

@@ -1,5 +1,8 @@
 @extends('index.main')
 
+@push('style')
+@endpush
+
 @section('auth-content')
     <div class="container-fluid mb-5">
         <div class="row mt-3 mb-2">
@@ -16,7 +19,8 @@
                         <table class="table table-border sample-table" id="departmentList">
                             <thead>
                                 <tr>
-                                    <th>Department Name</th>
+                                    <th>Department name</th>
+                                    <th>Department color</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -29,5 +33,5 @@
 @endsection
 
 @push('script')
-    <script src="{{asset('js/department/form.js')}}"></script>
+    <script src="{{ asset('js/department/form.js')}}"></script>
 @endpush

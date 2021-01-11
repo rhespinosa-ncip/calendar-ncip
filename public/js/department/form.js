@@ -1,4 +1,5 @@
 $(function(){
+
     $('#departmentList').DataTable({
         searchDelay: 500,
         pagingType: 'full_numbers',
@@ -15,6 +16,10 @@ $(function(){
             {
                 data: 'name',
                 name: 'name'
+            },
+            {
+                data: 'department_color',
+                name: 'department_color'
             },
             {
                 data: 'action',
@@ -83,7 +88,7 @@ const submitDepartment = data => {
         if(result.message == 'success'){
             closeModal('lg')
             setTimeOut('/department')
-            
+
             toastr.success('User added successfully', '', {
                 progressBar: true,
                 timeOut: 1000,
@@ -91,7 +96,7 @@ const submitDepartment = data => {
         }else if(result.message == 'updateSuccess'){
             closeModal('lg')
             setTimeOut('/department')
-            
+
             toastr.success('User updates successfully', '', {
                 progressBar: true,
                 timeOut: 1000,

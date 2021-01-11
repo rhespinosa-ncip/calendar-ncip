@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PageController;
@@ -74,6 +75,10 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
         });
     });
 
+    Route::group(['prefix' => 'tito'], function () {
+        Route::post('time-in', [UserController::class, 'timeUser']);
+    });
+
     Route::group(['prefix' => 'department'], function () {
         Route::get('', [DepartmentController::class , 'index']);
         Route::post('list', [DepartmentController::class , 'indexList']);
@@ -85,6 +90,16 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
 
         Route::group(['prefix' => 'update'], function () {
             Route::get('', [DepartmentController::class , 'updateUserForm']);
+        });
+    });
+
+    Route::group(['prefix' => 'accomplishment'], function () {
+        Route::get('', [AccomplishmentController::class , 'index']);
+        Route::post('list', [AccomplishmentController::class, 'indexList']);
+
+        Route::group(['prefix' => 'record'], function () {
+            Route::get('', [AccomplishmentController::class, 'formAccomplishment']);
+            Route::post('submit', [AccomplishmentController::class, 'submitAccomplishment']);
         });
     });
 

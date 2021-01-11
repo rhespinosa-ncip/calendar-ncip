@@ -21,7 +21,7 @@
 
     <body>
         @auth
-            <nav class="navbar navbar-light bg-light navbar-expand-lg">
+            <nav class="navbar navbar-light bg-secondary navbar-expand-lg">
                 <a class="navbar-brand" href="/">
                   <img src="{{asset('image/ncip-logo.png')}}" width="30" height="30" class="d-inline-block align-top" alt="">
                   NCIP
@@ -29,18 +29,31 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                @php
+                    $segmentOne = Request::segment(1);
+                @endphp
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">HOME</a>
+                        </li>
                         @if (Auth::user()->user_type == 'admin')
-                            <li class="nav-item border-left">
-                                <a class="nav-link" href="/department">Department</a>
+                            <li class="nav-item {{$segmentOne == 'department' ? 'active' : ''}}">
+                                <a class="nav-link" href="/department">DEPARTMENT</a>
                             </li>
-                            <li class="nav-item border-left">
-                                <a class="nav-link" href="/user">User</a>
+                            <li class="nav-item {{$segmentOne == 'user' ? 'active' : ''}}">
+                                <a class="nav-link" href="/user">USER</a>
                             </li>
-                            <li class="nav-item border-left">
-                                <a class="nav-link" href="/meeting/admin">Zoom meeting link</a>
+                            <li class="nav-item {{$segmentOne == 'meeting' ? 'active' : ''}}">
+                                <a class="nav-link" href="/meeting/admin">ZOOM MEETING LINK</a>
                             </li>
+                        @elseif(Auth::user()->user_type == 'user')
+                            <li class="nav-item {{$segmentOne == 'accomplishment' ? 'active' : ''}}"">
+                                <a class="nav-link" href="/accomplishment">ACCOMPLISHMENT</a>
+                            </li>
+                            {{-- <li class="nav-item {{$segmentOne == 'reports' ? 'active' : ''}}"">
+                                <a class="nav-link" href="/reports">REPORTS</a>
+                            </li> --}}
                         @endif
                     </ul>
                     <span class="navbar-text">

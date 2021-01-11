@@ -28,7 +28,7 @@ class Document extends Model
             foreach($request->file as $key => $value){
 
                 $ext = $request->file[$key]->getClientOriginalExtension();
-                $filename = ucwords($request->file[$key]->getClientOriginalName()) . '.' . $ext;
+                $filename = ucwords($request->file[$key]->getClientOriginalName());
 
                 $path = $request->file[$key]->storeAs(
                     Auth::user()->username.'-'.$folderName, $filename, 'public'

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepartmentTable extends Migration
+class CreateAccomplishmentDocumentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateDepartmentTable extends Migration
      */
     public function up()
     {
-        Schema::create('department', function (Blueprint $table) {
+        Schema::create('accomplishment_document', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('hexa_color');
+            $table->string('accomplishment');
+            $table->unsignedBigInteger('tito_id');
+            $table->foreign('tito_id')->references('id')->on('tito');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateDepartmentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('department');
+        Schema::dropIfExists('accomplishment_document');
     }
 }

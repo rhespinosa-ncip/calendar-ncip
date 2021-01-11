@@ -7,6 +7,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12 text-right">
              <button form="addDepartment" class="btn btn-success py-1 px-5 rounded-0">ADD DEPARTMENT</button>

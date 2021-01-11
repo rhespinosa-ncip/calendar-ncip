@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('middle_name');
             $table->string('last_name');
             $table->string('email');
+            $table->string('position');
             $table->string('username');
             $table->string('password');
             $table->unsignedBigInteger('department_id');

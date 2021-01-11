@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Models\MeetingSchedule;
 use App\Models\Minutes;
 use App\Models\Participant;
+use App\Models\Tito;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,16 +41,20 @@ class MeetingController extends Controller
                     $query->whereDate('date', date('Y-m-d'));
                 }])->where('user_id', Auth::id())->get(),
                 'departmentMeeting' => DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
+                                        ->join('department', 'department.id','=','meeting_department_participant.department_id')
                                         ->where('department_id', Auth::user()->department_id)
                                         ->where('meeting_schedule.created_by', '!=', Auth::id())
-                                        ->select('meeting_schedule.*')
+                                        ->select('meeting_schedule.*','department.hexa_color')
                                         ->get(),
                 'todayMeetingAsDepartment' => DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
                                     ->where('department_id', Auth::user()->department_id)
                                     ->where('meeting_schedule.created_by', '!=', Auth::id())
                                     ->whereDate('meeting_schedule.date', date('Y-m-d'))
                                     ->select('meeting_schedule.*')
-                                    ->get()
+                                    ->get(),
+                'tito' => Tito::where('user_id', Auth::id())
+                            ->whereDate('created_at', date('Y-m-d'))
+                            ->first(),
             );
         }
 
@@ -105,7 +110,8 @@ class MeetingController extends Controller
                     users.last_name,
                     meeting_schedule.title,
                     meeting_schedule.date,
-                    meeting_schedule.id
+                    meeting_schedule.id,
+                    meeting_schedule.zoom_meeting_description
                 FROM meeting_schedule
                 JOIN users ON users.id = meeting_schedule.created_by';
 
@@ -118,6 +124,16 @@ class MeetingController extends Controller
             })
             ->addAction('created_by', function($result){
                 return $result->first_name.' '.$result->middle_name.' '.$result->last_name;
+            })
+            ->addAction('meeting_link_status', function($result){
+                if(date('Y-m-d', strtotime($result->date)) < date('Y-m-d')){
+                    return '<span class="badge badge-danger">Meeting ended</span>';
+                }
+                if($result->zoom_meeting_description == 'requestToAdmin'){
+                    return '<span class="badge badge-warning">No zoom meeting link</span>';
+                }else{
+                    return '<span class="badge badge-primary">Zoom meeting link provided</span>';
+                }
             })
             ->searchable(['meeting_schedule.title','first_name','middle_name','last_name'])
             ->request($request)
@@ -193,7 +209,14 @@ class MeetingController extends Controller
                     return '<button class="btn btn-success py-0 px-3 rounded-0 btn-add-minutes" meetingId="'.$result->id.'"> ADD </button>';
                 }
 
-                return '<button class="btn btn-success py-0 px-3 rounded-0 btn-view-minutes" meetingId="'.$result->id.'"> VIEW </button>';
+                $documents = Document::where([['table_id', $result->id],['table_name', 'minutes']])->get();
+                $links = '';
+
+                foreach($documents as $document){
+                    $links = '<li><a href="/show-document/'.$document->file_path.'" target="_blank" rel="noopener noreferrer">'.$document->file_path.'</a></li>'.$links;
+                }
+
+                return '<ul>'.$links.'</ul>';
             })
             ->addAction('meeting_schedule', function($result){
                 return date('F d, Y h:i A', strtotime($result->date));

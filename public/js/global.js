@@ -47,7 +47,19 @@ $(function(){
     }).on('click', '.add-file', function(){
         appendFile()
         return false
-    })
+    }).on('click', '.add-accomplishment', function(){
+        appenAccomplishment()
+        return false
+    }).on('click', '.toggle-password', function(){
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+
+        if (input.attr("type") == "password") {
+          input.attr("type", "text");
+        } else {
+          input.attr("type", "password");
+        }
+    });
 })
 
 const removeTbodyTr = thisRow => {
@@ -78,6 +90,23 @@ const appendFile = () => {
     let toAppend = `
         <tr>
             <td><input type="file" class="form-control-file" id="file[]" name="file[]"></td>
+            <td>
+                <button class="btn btn-danger rounded-0 py-1 btn-remove-file">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `
+
+    $('#fileTbl > tbody').append(toAppend)
+}
+
+const appenAccomplishment = () => {
+    let toAppend = `
+        <tr>
+            <td>
+                <input class="form-control" name="accomplishment[]" id="accomplishment[]" type="text">
+            </td>
             <td>
                 <button class="btn btn-danger rounded-0 py-1 btn-remove-file">
                     <i class="fa fa-trash"></i>

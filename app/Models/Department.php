@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 class Department extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'department';
 
     /**
@@ -20,6 +20,7 @@ class Department extends Model
      */
     protected $fillable = [
         'name',
+        'hexa_color'
     ];
 
     static function validate($request){
@@ -44,7 +45,12 @@ class Department extends Model
             ]);
         }
 
-        $department = Department::create(['name' => $request->departmentName]);
+        $color = substr(md5(rand()), 0, 6);
+
+        $department = Department::create([
+            'name' => $request->departmentName,
+            'hexa_color' => '#'.$color
+        ]);
 
         return response()->json([
             'message' => 'success',
@@ -60,7 +66,7 @@ class Department extends Model
                 'messages' => $validate->messages(),
             ]);
         }
-        
+
         $department = Department::find($request->departmentId);
 
         if(isset($department)){

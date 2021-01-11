@@ -14,6 +14,6 @@ class Department extends Seeder
      */
     public function run()
     {
-        ModelsDepartment::create(['name' => 'admin']);
+        ModelsDepartment::create(['name' => 'admin','hexa_color' => '#FF5733']);
     }
 }

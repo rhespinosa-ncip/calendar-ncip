@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\GlobalClass\Datatables;
 use App\Models\Department;
+use App\Models\Tito;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,5 +66,23 @@ class UserController extends Controller
 
             return view('auth.user.update', compact('data'));
         }
+    }
+
+    public function timeUser(Request $request){
+
+        $timeIn = Tito::where('user_id', Auth::id())
+                    ->whereDate('created_at', date('Y-m-d'))->first();
+
+        if(!isset($timeIn)){
+            Tito::insertTimeIn();
+        }else{
+            if($request->tito == 'timeOut'){
+                Tito::updateTimeOut();
+            }
+        }
+
+        return response()->json([
+            'message' => 'success',
+        ]);
     }
 }
