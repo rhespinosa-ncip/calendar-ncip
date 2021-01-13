@@ -13,6 +13,27 @@
                 </button>
             </div>
         </div>
+        @php
+            $tommorowMeeting = 0;
+
+            foreach ($data['asParticipant'] as $asParticipantKey => $asParticipantValue) {
+                if(date('Y-m-d', strtotime($asParticipantValue->meeting->date)) == date('Y-m-d', strtotime('+1 day'))){
+                    $tommorowMeeting++;
+                }
+            }
+
+            foreach ($data['filedMeeting'] as $filedMeetingKey => $filedMeetingValue) {
+                if(date('Y-m-d', strtotime($filedMeetingValue->date)) == date('Y-m-d', strtotime('+1 day'))){
+                    $tommorowMeeting++;
+                }
+            }
+
+            foreach ($data['departmentMeeting'] as $departmentMeetingKey) {
+                if(date('Y-m-d', strtotime($departmentMeetingKey->date)) == date('Y-m-d', strtotime('+1 day'))){
+                    $tommorowMeeting++;
+                }
+            }
+        @endphp
         <div class="row">
             <div class="col-lg-4 col-12">
                 <div class="card mb-3">
@@ -80,6 +101,15 @@
                             @endif
                         @endif
                         <hr>
+                        @if (isset($tommorowMeeting) && $tommorowMeeting != 0)
+                            <div class="row mt-2">
+                                <div class="col-12 text-center">
+                                    <span class="badge badge-danger p-2">
+                                        {{$tommorowMeeting ?? 0}} meeting's tommorow
+                                    </span>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="card">
@@ -91,27 +121,14 @@
                                         @if (date("Y-m-d H:i", strtotime($todayMeetingAsParticipant->meeting->date)) >= date("Y-m-d H:i"))
                                             @php
                                                 $haveMeeting = true;
+                                                array_push($todayMeetings, array(
+                                                    'id' => $todayMeetingAsParticipant->meeting->id,
+                                                    'hexa_color' => $todayMeetingAsParticipant->meeting->user->department->hexa_color,
+                                                    'title' => $todayMeetingAsParticipant->meeting->title,
+                                                    'time' => date('H:i', strtotime($todayMeetingAsParticipant->meeting->date)),
+                                                    'description' => $todayMeetingAsParticipant->meeting->description
+                                                ));
                                             @endphp
-                                            <div class="col-12">
-                                                <div class="card mb-2" style="border-left: 3px solid {{$todayMeetingAsParticipant->meeting->user->department->hexa_color}}; !important">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <label class="ncip-title">{{$todayMeetingAsParticipant->meeting->title}}</label>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <label class="ncip-description">{{date('h:i A', strtotime($todayMeetingAsParticipant->meeting->date))}}</label>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <label class="ncip-description">{{$todayMeetingAsParticipant->meeting->description}}</label>
-                                                            </div>
-                                                            <div class="col-12 text-center">
-                                                                <a class="btn-show-meeting" href="" meetingId="{{$todayMeetingAsParticipant->meeting->id}}">View in details</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         @endif
                                     @endif
                                 @endforeach
@@ -120,27 +137,14 @@
                                 @if (date("Y-m-d H:i", strtotime($todayMeeting->date)) >= date("Y-m-d H:i"))
                                     @php
                                         $haveMeeting = true;
+                                        array_push($todayMeetings, array(
+                                            'id' => $todayMeeting->id,
+                                            'hexa_color' => $todayMeeting->user->department->hexa_color,
+                                            'title' => $todayMeeting->title,
+                                            'time' => date('H:i', strtotime($todayMeeting->date)),
+                                            'description' => $todayMeeting->description
+                                        ));
                                     @endphp
-                                    <div class="col-12">
-                                        <div class="card mb-2" style="border-left: 3px solid {{$todayMeeting->user->department->hexa_color}}; !important">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <label class="ncip-title">{{$todayMeeting->title}}</label>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label class="ncip-description">{{date('h:i A', strtotime($todayMeeting->date))}}</label>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label class="ncip-description">{{$todayMeeting->description}}</label>
-                                                    </div>
-                                                    <div class="col-12 text-center">
-                                                        <a class="btn-show-meeting" href="" meetingId="{{$todayMeeting->id}}">View in details</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endif
                             @endforeach
                             @if (Auth::user()->user_type != 'admin')
@@ -148,35 +152,54 @@
                                     @if (date("Y-m-d H:i", strtotime($departmentMeeting->date)) >= date("Y-m-d H:i"))
                                         @php
                                             $haveMeeting = true;
+                                            array_push($todayMeetings, array(
+                                                'id' => $departmentMeeting->id,
+                                                'hexa_color' => $departmentMeeting->hexa_color,
+                                                'title' => $departmentMeeting->title,
+                                                'time' => date('H:i', strtotime($departmentMeeting->date)),
+                                                'description' => $departmentMeeting->description
+                                            ));
                                         @endphp
-                                        <div class="col-12">
-                                            <div class="card mb-2" style="border-left: 3px solid {{$departmentMeeting->hexa_color}}; !important">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <label class="ncip-title">{{$departmentMeeting->title}}</label>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <label class="ncip-description">{{date('h:i A', strtotime($departmentMeeting->date))}}</label>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <label class="ncip-description">{{$departmentMeeting->description}}</label>
-                                                        </div>
-                                                        <div class="col-12 text-center">
-                                                            <a class="btn-show-meeting" href="" meetingId="{{$departmentMeeting->id}}">View in details</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     @endif
                                 @endforeach
                             @endif
+                            @php
+                                foreach ($todayMeetings as $key => $row) {
+                                    $timeColumn[$key]  = $row['time'];
+                                }
+
+                                $timeColumn  = array_column($todayMeetings, 'time');
+
+                                array_multisort($timeColumn, SORT_ASC, $todayMeetings);
+                            @endphp
+                            @foreach ($todayMeetings as $todayMeetingKey => $todayMeetingValue)
+                                <div class="col-12">
+                                    <div class="card mb-2" style="border-left: 3px solid {{$todayMeetingValue['hexa_color']}}; !important">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label class="ncip-title">{{$todayMeetingValue['title']}}</label>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="ncip-description">{{date('h:i A', strtotime($todayMeetingValue['time']))}}</label>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="ncip-description">{{$todayMeetingValue['description']}}</label>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <a class="btn-show-meeting" href="" meetingId="{{$todayMeetingValue['id']}}">View in details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
                             @if (!isset($haveMeeting))
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-12 text-center p-5">
-                                            <label class="">No meeting</label>
+                                            <label class="">No meeting today</label>
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +257,6 @@
                     startTime: '01:00',
                     endTime: '24:00',
                 },
-
                 events: [
                     @foreach($data['filedMeeting'] as $filedMeeting)
                     {

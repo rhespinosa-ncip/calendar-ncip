@@ -40,7 +40,7 @@
         <div class="col-6">
             <div class="form-group">
                 <label for="position">Position: </label>
-                <input type="text" class="form-control rounded-0" name="position" id="position" value="{{$department->position}}">
+                <input type="text" class="form-control rounded-0" name="position" id="position" value="{{$data['user']->position}}">
             </div>
         </div>
         <div class="col-6">
@@ -48,7 +48,7 @@
                 <label for="departmentName">Department name: </label>
                 <select class="form-control rounded-0" name="departmentName" id="departmentName">
                     @foreach ($data['departments'] as $department)
-                        <option value="{{$department->id}}">{{$department->name}}</option>
+                        <option {{$data['user']->department_id == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
                     @endforeach
                 </select>
             </div>

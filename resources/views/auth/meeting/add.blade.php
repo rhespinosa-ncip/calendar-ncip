@@ -45,21 +45,9 @@
                     <input class="form-check-input" type="radio" name="participantsChoice" id="department" value="department">
                     <label class="form-check-label" for="department">Deparment</label>
                 </div>
-
                 <div class="optionSelectArea">
 
                 </div>
-                {{-- <select name="participant[]" id="participant[]" class="form-control rounded-0 individualParticipant" multiple="multiple" style="display: none;">
-                    @foreach ($data['users'] as $user)
-                        <option value="{{$user->id}}">{{$user->fullName}}</option>
-                    @endforeach
-                </select>
-
-                <select name="departmentParticipant[]" id="departmentParticipant[]" class="form-control rounded-0 d-none departmentParticipant" multiple="multiple" style="display: none;">
-                    @foreach ($data['users'] as $user)
-                        <option value="{{$user->id}}">{{$user->fullName}}</option>
-                    @endforeach
-                </select> --}}
             </div>
         </div>
     </div>

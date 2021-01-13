@@ -23,7 +23,7 @@ Route::fallback(function () {
 });
 
 Route::group(['prefix' => ''], function () {
-    Route::get('', [PageController::class, 'index']);
+    Route::get('', [PageController::class, 'index'])->name('login');
 });
 
 Route::group(['middleware' => ['guest']], function () {

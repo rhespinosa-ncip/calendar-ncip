@@ -19,6 +19,7 @@ class MeetingController extends Controller
 {
     static function index(){
         $count = 0;
+        $todayMeetings = array();
 
         if(Auth::user()->user_type == 'admin'){
             $data = array(
@@ -59,9 +60,10 @@ class MeetingController extends Controller
                             ->whereDate('created_at', date('Y-m-d'))
                             ->first(),
             );
+
         }
 
-        return view('auth.dashboard.index', compact('data', 'count'));
+        return view('auth.dashboard.index', compact('data', 'count', 'todayMeetings'));
     }
 
     public function addMeetingForm(){
@@ -120,6 +122,9 @@ class MeetingController extends Controller
 
         return Datatables::of($query)
             ->addAction('action', function($result){
+                if(date('Y-m-d', strtotime($result->date)) < date('Y-m-d')){
+                    return 'no action available';
+                }
                 return '<button class="btn btn-info  py-1 px-2 rounded-0 btn-update-meeting" meetingId="'.$result->id.'" data-toggle="tooltip" title="Update meeting link"><i class="fas fa-edit"></i></button>';
             })
             ->addAction('meeting_schedule', function($result){
@@ -140,6 +145,7 @@ class MeetingController extends Controller
             })
             ->searchable(['meeting_schedule.title','first_name','middle_name','last_name'])
             ->request($request)
+            ->orderBy('ORDER BY date DESC')
             ->make();
     }
 
@@ -178,7 +184,7 @@ class MeetingController extends Controller
     public function optionForm(Request $request){
         if($request->value == 'individual'){
             $data = array(
-                'users' => User::where('id','!=', Auth::id())->get(),
+                'users' => User::where([['id','!=', Auth::id()],['user_type','!=', 'admin']])->get(),
                 'selectedParticipant' => Participant::where('meeting_schedule_id', $request->meetingId)->get()
             );
 
@@ -202,10 +208,12 @@ class MeetingController extends Controller
                     AND (meeting_schedule.created_by = ".Auth::id()."
                     OR meeting_participant.user_id = ".Auth::id()."
                     OR meeting_department_participant.department_id = ".Auth::user()->department_id.")";
+
         if(Auth::user()->user_type = 'admin'){
             $query = "SELECT *
             FROM meeting_schedule WHERE DATE <= '".now()."'";
         }
+
         return Datatables::of($query)
             ->addAction('action', function($result){
                 if(Auth::id() == $result->created_by){
@@ -217,6 +225,10 @@ class MeetingController extends Controller
 
                 foreach($documents as $document){
                     $links = '<li><a href="/show-document/'.$document->file_path.'" target="_blank" rel="noopener noreferrer">'.$document->file_path.'</a></li>'.$links;
+                }
+
+                if($links == ''){
+                    return 'No file uploaded';
                 }
 
                 return '<ul>'.$links.'</ul>';
