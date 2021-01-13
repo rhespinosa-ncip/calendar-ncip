@@ -41,16 +41,19 @@ class MeetingController extends Controller
                     $query->whereDate('date', date('Y-m-d'));
                 }])->where('user_id', Auth::id())->get(),
                 'departmentMeeting' => DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
-                                        ->join('department', 'department.id','=','meeting_department_participant.department_id')
-                                        ->where('department_id', Auth::user()->department_id)
+                                        ->join('users', 'meeting_schedule.created_by','=','users.id')
+                                        ->join('department', 'department.id','=','users.department_id')
+                                        ->where('meeting_department_participant.department_id', Auth::user()->department_id)
                                         ->where('meeting_schedule.created_by', '!=', Auth::id())
                                         ->select('meeting_schedule.*','department.hexa_color')
                                         ->get(),
                 'todayMeetingAsDepartment' => DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
-                                    ->where('department_id', Auth::user()->department_id)
+                                    ->join('users', 'meeting_schedule.created_by','=','users.id')
+                                    ->join('department', 'department.id','=','users.department_id')
+                                    ->where('meeting_department_participant.department_id', Auth::user()->department_id)
                                     ->where('meeting_schedule.created_by', '!=', Auth::id())
                                     ->whereDate('meeting_schedule.date', date('Y-m-d'))
-                                    ->select('meeting_schedule.*')
+                                    ->select('meeting_schedule.*','department.hexa_color')
                                     ->get(),
                 'tito' => Tito::where('user_id', Auth::id())
                             ->whereDate('created_at', date('Y-m-d'))

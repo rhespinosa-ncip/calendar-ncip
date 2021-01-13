@@ -93,7 +93,7 @@
                                                 $haveMeeting = true;
                                             @endphp
                                             <div class="col-12">
-                                                <div class="card ncip-card-meeting mb-2">
+                                                <div class="card mb-2" style="border-left: 3px solid {{$todayMeetingAsParticipant->meeting->user->department->hexa_color}}; !important">
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col-12">
@@ -122,7 +122,7 @@
                                         $haveMeeting = true;
                                     @endphp
                                     <div class="col-12">
-                                        <div class="card ncip-card-meeting mb-2">
+                                        <div class="card mb-2" style="border-left: 3px solid {{$todayMeeting->user->department->hexa_color}}; !important">
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-12">
@@ -150,7 +150,7 @@
                                             $haveMeeting = true;
                                         @endphp
                                         <div class="col-12">
-                                            <div class="card ncip-card-meeting mb-2">
+                                            <div class="card mb-2" style="border-left: 3px solid {{$departmentMeeting->hexa_color}}; !important">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-12">
@@ -234,6 +234,7 @@
                     startTime: '01:00',
                     endTime: '24:00',
                 },
+
                 events: [
                     @foreach($data['filedMeeting'] as $filedMeeting)
                     {
