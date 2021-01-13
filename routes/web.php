@@ -105,6 +105,13 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
 
     Route::get('/show-document/{username}/{fileName}',[PageController::class, 'showDocuments']);
 
+    Route::group(['prefix' => 'change-password'], function () {
+        Route::group(['prefix' => 'form'], function () {
+            Route::get('', [PageController::class , 'passwordForm']);
+            Route::post('submit', [PageController::class , 'passwordSubmit']);
+        });
+    });
+
     Route::get('logout', function () {
         Auth::logout();
         return redirect('');

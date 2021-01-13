@@ -65,4 +65,30 @@ class PageController extends Controller
 
         return $response;
     }
+
+    public function passwordForm(Request $request){
+        return view('auth.user.password.form');
+    }
+
+    public function passwordSubmit(Request $request){
+        if(Hash::check($request->oldPassword, Auth::user()->password)){
+            if(!isset($request->newPassword)){
+                return response()->json([
+                    'message' => 'provideNewPassword'
+                ]);
+            }
+
+            $user = Auth::user();
+            $user->password = Hash::make($request->newPassword);
+            $user->save();
+
+            return response()->json([
+                'message' => 'success'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'wrongOldPassword'
+        ]);
+    }
 }

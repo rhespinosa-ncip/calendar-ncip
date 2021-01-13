@@ -33,7 +33,7 @@
                     $segmentOne = Request::segment(1);
                 @endphp
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav w-100">
                         <li class="nav-item">
                             <a class="nav-link" href="/">HOME</a>
                         </li>
@@ -55,12 +55,14 @@
                                 <a class="nav-link" href="/reports">REPORTS</a>
                             </li> --}}
                         @endif
+                        <li class="nav-item dropdown ml-auto">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Settings </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item change-password" href="#">Change password</a>
+                                <a class="dropdown-item" href="/logout">logout</a>
+                            </div>
+                        </li>
                     </ul>
-                    <span class="navbar-text">
-                        <a href="/logout">
-                            Logout
-                        </a>
-                    </span>
                 </div>
             </nav>
             @yield('auth-content')

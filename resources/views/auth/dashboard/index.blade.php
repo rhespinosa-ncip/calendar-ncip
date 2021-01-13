@@ -16,21 +16,27 @@
         @php
             $tommorowMeeting = 0;
 
-            foreach ($data['asParticipant'] as $asParticipantKey => $asParticipantValue) {
-                if(date('Y-m-d', strtotime($asParticipantValue->meeting->date)) == date('Y-m-d', strtotime('+1 day'))){
-                    $tommorowMeeting++;
+            if(isset($data['asParticipant'])){
+                foreach ($data['asParticipant'] as $asParticipantKey => $asParticipantValue) {
+                    if(date('Y-m-d', strtotime($asParticipantValue->meeting->date)) == date('Y-m-d', strtotime('+1 day'))){
+                        $tommorowMeeting++;
+                    }
                 }
             }
 
-            foreach ($data['filedMeeting'] as $filedMeetingKey => $filedMeetingValue) {
-                if(date('Y-m-d', strtotime($filedMeetingValue->date)) == date('Y-m-d', strtotime('+1 day'))){
-                    $tommorowMeeting++;
+            if(isset($data['filedMeeting'])){
+                foreach ($data['filedMeeting'] as $filedMeetingKey => $filedMeetingValue) {
+                    if(date('Y-m-d', strtotime($filedMeetingValue->date)) == date('Y-m-d', strtotime('+1 day'))){
+                        $tommorowMeeting++;
+                    }
                 }
             }
 
-            foreach ($data['departmentMeeting'] as $departmentMeetingKey) {
-                if(date('Y-m-d', strtotime($departmentMeetingKey->date)) == date('Y-m-d', strtotime('+1 day'))){
-                    $tommorowMeeting++;
+            if(isset($data['departmentMeeting'])){
+                foreach ($data['departmentMeeting'] as $departmentMeetingKey) {
+                    if(date('Y-m-d', strtotime($departmentMeetingKey->date)) == date('Y-m-d', strtotime('+1 day'))){
+                        $tommorowMeeting++;
+                    }
                 }
             }
         @endphp

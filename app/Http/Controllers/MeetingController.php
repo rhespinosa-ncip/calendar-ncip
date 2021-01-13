@@ -25,40 +25,31 @@ class MeetingController extends Controller
             $data = array(
                 'filedMeeting' => MeetingSchedule::all(),
                 'todayMeeting' => MeetingSchedule::whereDate('date', date('Y-m-d'))->get(),
-                'todayMeetingAsParticipant' => Participant::with(['meeting' => function($query){
-                    $query->whereDate('date', date('Y-m-d'));
-                }])->get(),
-                'departmentMeeting' => DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
-                                        ->select('meeting_schedule.*')
-                                        ->get()
             );
         }else{
-            $data = array(
-                'filedMeeting' => MeetingSchedule::where('created_by', Auth::id())->get(),
-                'asParticipant' => Participant::where('user_id', Auth::id())->get(),
-                'todayMeeting' => MeetingSchedule::where('created_by', Auth::id())
-                                ->whereDate('date', date('Y-m-d'))->get(),
-                'todayMeetingAsParticipant' => Participant::with(['meeting' => function($query){
-                    $query->whereDate('date', date('Y-m-d'));
-                }])->where('user_id', Auth::id())->get(),
-                'departmentMeeting' => DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
+            $departmentParticipant = DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
                                         ->join('users', 'meeting_schedule.created_by','=','users.id')
                                         ->join('department', 'department.id','=','users.department_id')
                                         ->where('meeting_department_participant.department_id', Auth::user()->department_id)
                                         ->where('meeting_schedule.created_by', '!=', Auth::id())
-                                        ->select('meeting_schedule.*','department.hexa_color')
-                                        ->get(),
-                'todayMeetingAsDepartment' => DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
-                                    ->join('users', 'meeting_schedule.created_by','=','users.id')
-                                    ->join('department', 'department.id','=','users.department_id')
-                                    ->where('meeting_department_participant.department_id', Auth::user()->department_id)
-                                    ->where('meeting_schedule.created_by', '!=', Auth::id())
-                                    ->whereDate('meeting_schedule.date', date('Y-m-d'))
-                                    ->select('meeting_schedule.*','department.hexa_color')
-                                    ->get(),
-                'tito' => Tito::where('user_id', Auth::id())
-                            ->whereDate('created_at', date('Y-m-d'))
-                            ->first(),
+                                        ->select('meeting_schedule.*','department.hexa_color');
+
+            $meetingSchedule = MeetingSchedule::where('created_by', Auth::id());
+            $participant = Participant::where('user_id', Auth::id());
+
+            $data = array(
+                'filedMeeting' => $meetingSchedule->get(),
+                'todayMeeting' => $meetingSchedule->whereDate('date', date('Y-m-d'))->get(),
+
+                'asParticipant' => $participant->get(),
+                'todayMeetingAsParticipant' => $participant->with(['meeting' => function($query){
+                    $query->whereDate('date', date('Y-m-d'));
+                }])->get(),
+
+                'departmentMeeting' => $departmentParticipant->get(),
+                'todayMeetingAsDepartment' => $departmentParticipant->whereDate('meeting_schedule.date', date('Y-m-d'))->get(),
+
+                'tito' => Tito::today(),
             );
 
         }
@@ -109,16 +100,14 @@ class MeetingController extends Controller
     }
 
     public function adminMeetingsList(Request $request){
-        $query = 'SELECT
-                    users.first_name,
-                    users.middle_name,
-                    users.last_name,
-                    meeting_schedule.title,
-                    meeting_schedule.date,
-                    meeting_schedule.id,
-                    meeting_schedule.zoom_meeting_description
-                FROM meeting_schedule
-                JOIN users ON users.id = meeting_schedule.created_by';
+        $query = MeetingSchedule::join('users','users.id', '=', 'meeting_schedule.created_by')
+                            ->select('users.first_name',
+                            'users.middle_name',
+                            'users.last_name',
+                            'meeting_schedule.title',
+                            'meeting_schedule.date',
+                            'meeting_schedule.id',
+                            'meeting_schedule.zoom_meeting_description')->toSql();
 
         return Datatables::of($query)
             ->addAction('action', function($result){
@@ -137,6 +126,7 @@ class MeetingController extends Controller
                 if(date('Y-m-d', strtotime($result->date)) < date('Y-m-d')){
                     return '<span class="badge badge-danger">Meeting ended</span>';
                 }
+
                 if($result->zoom_meeting_description == 'requestToAdmin'){
                     return '<span class="badge badge-warning">No zoom meeting link</span>';
                 }else{

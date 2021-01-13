@@ -59,8 +59,57 @@ $(function(){
         } else {
           input.attr("type", "password");
         }
-    });
+
+    }).on('click', '.change-password', function(){
+        showPasswordForm()
+        return false
+    }).on('submit', '#changePassword', function(){
+        let data = $(this).serialize()
+        submitNewPassword(data)
+        return false
+    })
 })
+
+const showPasswordForm = meetingId => {
+    $.ajax({
+        url: '/change-password/form',
+        type: 'GET',
+    }).done(result => {
+        showModal({
+            type: '',
+            title: 'Password',
+            bodyContent: result
+        })
+    })
+}
+
+const submitNewPassword = data => {
+    $.ajax({
+        url: '/change-password/form/submit',
+        type: 'POST',
+        data: data
+    }).done(result => {
+        if(result.message == 'success'){
+            closeModal('')
+            setTimeOut('/')
+
+            toastr.success('Password update successfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }else if(result.message == 'wrongOldPassword'){
+            toastr.error('Wrong old password', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }else if(result.message == 'provideNewPassword'){
+            toastr.error('New password field is required', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
+    })
+}
 
 const removeTbodyTr = thisRow => {
     Swal.fire({

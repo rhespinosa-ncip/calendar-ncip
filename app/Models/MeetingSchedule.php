@@ -127,20 +127,22 @@ class MeetingSchedule extends Model
         $meeting = MeetingSchedule::find($request->meetingId);
 
         if(isset($meeting)){
-            $meeting->title = $request->title;
-            $meeting->description = $request->description;
-            $meeting->zoom_meeting_description = $request->zoomMeetingLink;
-            $meeting->date = $request->date;
-            $meeting->participant = $request->participantsChoice;
-            $meeting->save();
+            if($meeting->created_by == Auth::id()){
+                $meeting->title = $request->title;
+                $meeting->description = $request->description;
+                $meeting->zoom_meeting_description = $request->zoomMeetingLink;
+                $meeting->date = $request->date;
+                $meeting->participant = $request->participantsChoice;
+                $meeting->save();
 
-            if($request->participantsChoice == 'individual'){
-                Participant::updateIndividual($request, $meeting);
-            }else if($request->participantsChoice == 'department'){
-                DepartmentParticipant::updateDepartment($request, $meeting);
+                if($request->participantsChoice == 'individual'){
+                    Participant::updateIndividual($request, $meeting);
+                }else if($request->participantsChoice == 'department'){
+                    DepartmentParticipant::updateDepartment($request, $meeting);
+                }
+
+                Document::updateData($request, 'meeting_schedule', $meeting, 'meeting_schedule_'.$meeting->id);
             }
-
-            Document::updateData($request, 'meeting_schedule', $meeting, 'meeting_schedule_'.$meeting->id);
         }
 
         return response()->json([

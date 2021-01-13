@@ -27,6 +27,10 @@ class Tito extends Model
         return $this->hasMany(Accomplishment::class, 'tito_id', 'id');
     }
 
+    static function today(){
+        return Tito::where('user_id', Auth::id())->whereDate('created_at', date('Y-m-d'))->first();
+    }
+
     static function insertTimeIn(){
         Tito::create([
             'time_in' => date('H:i:s'),
