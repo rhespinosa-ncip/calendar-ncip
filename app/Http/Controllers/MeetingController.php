@@ -199,7 +199,7 @@ class MeetingController extends Controller
                     OR meeting_participant.user_id = ".Auth::id()."
                     OR meeting_department_participant.department_id = ".Auth::user()->department_id.")";
 
-        if(Auth::user()->user_type = 'admin'){
+        if(Auth::user()->user_type == 'admin'){
             $query = "SELECT *
             FROM meeting_schedule WHERE DATE <= '".now()."'";
         }

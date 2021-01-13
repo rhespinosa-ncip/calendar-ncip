@@ -138,22 +138,7 @@
                                         @endif
                                     @endif
                                 @endforeach
-                            @endif
-                            @foreach ($data['todayMeeting'] as $todayMeeting)
-                                @if (date("Y-m-d H:i", strtotime($todayMeeting->date)) >= date("Y-m-d H:i"))
-                                    @php
-                                        $haveMeeting = true;
-                                        array_push($todayMeetings, array(
-                                            'id' => $todayMeeting->id,
-                                            'hexa_color' => $todayMeeting->user->department->hexa_color,
-                                            'title' => $todayMeeting->title,
-                                            'time' => date('H:i', strtotime($todayMeeting->date)),
-                                            'description' => $todayMeeting->description
-                                        ));
-                                    @endphp
-                                @endif
-                            @endforeach
-                            @if (Auth::user()->user_type != 'admin')
+
                                 @foreach ($data['todayMeetingAsDepartment'] as $departmentMeeting)
                                     @if (date("Y-m-d H:i", strtotime($departmentMeeting->date)) >= date("Y-m-d H:i"))
                                         @php
@@ -169,6 +154,21 @@
                                     @endif
                                 @endforeach
                             @endif
+
+                            @foreach ($data['todayMeeting'] as $todayMeeting)
+                                @if (date("Y-m-d H:i", strtotime($todayMeeting->date)) >= date("Y-m-d H:i"))
+                                    @php
+                                        $haveMeeting = true;
+                                        array_push($todayMeetings, array(
+                                            'id' => $todayMeeting->id,
+                                            'hexa_color' => $todayMeeting->user->department->hexa_color,
+                                            'title' => $todayMeeting->title,
+                                            'time' => date('H:i', strtotime($todayMeeting->date)),
+                                            'description' => $todayMeeting->description
+                                        ));
+                                    @endphp
+                                @endif
+                            @endforeach
                             @php
                                 foreach ($todayMeetings as $key => $row) {
                                     $timeColumn[$key]  = $row['time'];
@@ -231,7 +231,7 @@
                                 <tr>
                                     <th>Meeting title</th>
                                     <th>Meeting date</th>
-                                    <th>Action</th>
+                                    <th>File or Action</th>
                                 </tr>
                             </thead>
                         </table>

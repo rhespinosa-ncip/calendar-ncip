@@ -21,7 +21,9 @@
         <div class="form-group">
             <label for="zoomMeetingLink">Zoom meeting link: </label>
             @if ($data['meeting']->zoom_meeting_description == 'requestToAdmin')
-                No zoom meeting link
+                <span class="badge badge-warning">
+                    No zoom meeting link
+                </span>
             @else
                 <a target="_blank" href="{{$data['meeting']->zoom_meeting_description}}">{{$data['meeting']->zoom_meeting_description}}</a>
             @endif
