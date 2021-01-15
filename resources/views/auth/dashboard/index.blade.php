@@ -39,6 +39,14 @@
                     }
                 }
             }
+
+            if(isset($data['todayMeetingAsBureau'])){
+                foreach ($data['todayMeetingAsBureau'] as $todayMeetingAsBureauKey) {
+                    if(date('Y-m-d', strtotime($todayMeetingAsBureauKey->date)) == date('Y-m-d', strtotime('+1 day'))){
+                        $tommorowMeeting++;
+                    }
+                }
+            }
         @endphp
         <div class="row">
             <div class="col-lg-4 col-12">
@@ -138,7 +146,6 @@
                                         @endif
                                     @endif
                                 @endforeach
-
                                 @foreach ($data['todayMeetingAsDepartment'] as $departmentMeeting)
                                     @if (date("Y-m-d H:i", strtotime($departmentMeeting->date)) >= date("Y-m-d H:i"))
                                         @php
@@ -153,8 +160,21 @@
                                         @endphp
                                     @endif
                                 @endforeach
+                                @foreach ($data['todayMeetingAsBureau'] as $todayMeetingAsBureau)
+                                    @if (date("Y-m-d H:i", strtotime($todayMeetingAsBureau->date)) >= date("Y-m-d H:i"))
+                                        @php
+                                            $haveMeeting = true;
+                                            array_push($todayMeetings, array(
+                                                'id' => $todayMeetingAsBureau->id,
+                                                'hexa_color' => $todayMeetingAsBureau->hexa_color,
+                                                'title' => $todayMeetingAsBureau->title,
+                                                'time' => date('H:i', strtotime($todayMeetingAsBureau->date)),
+                                                'description' => $todayMeetingAsBureau->description
+                                            ));
+                                        @endphp
+                                    @endif
+                                @endforeach
                             @endif
-
                             @foreach ($data['todayMeeting'] as $todayMeeting)
                                 @if (date("Y-m-d H:i", strtotime($todayMeeting->date)) >= date("Y-m-d H:i"))
                                     @php
@@ -288,6 +308,14 @@
                             title: '{{$departmentMeeting->title}}',
                             start: '{{$departmentMeeting->date}}',
                             color: '{{$departmentMeeting->hexa_color}}'
+                        },
+                        @endforeach
+                        @foreach($data['asBureau'] as $asBureau)
+                        {
+                            id: '{{$asBureau->id}}',
+                            title: '{{$asBureau->title}}',
+                            start: '{{$asBureau->date}}',
+                            color: '{{$asBureau->hexa_color}}'
                         },
                         @endforeach
                     @endif

@@ -54,9 +54,11 @@
                             <li class="nav-item {{$segmentOne == 'accomplishment' ? 'active' : ''}}"">
                                 <a class="nav-link" href="/accomplishment">ACCOMPLISHMENT</a>
                             </li>
-                            {{-- <li class="nav-item {{$segmentOne == 'reports' ? 'active' : ''}}"">
-                                <a class="nav-link" href="/reports">REPORTS</a>
-                            </li> --}}
+                            @if (Auth::user()->user_type == 'head')
+                                <li class="nav-item {{$segmentOne == 'reports' ? 'active' : ''}}"">
+                                    <a class="nav-link" href="/reports">REPORTS</a>
+                                </li>
+                            @endif
                         @endif
                         <li class="nav-item dropdown ml-auto">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Settings </a>
