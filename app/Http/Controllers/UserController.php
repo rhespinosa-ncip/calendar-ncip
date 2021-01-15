@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\GlobalClass\Datatables;
+use App\Models\Bureau;
+use App\Models\BureauDivision;
 use App\Models\Department;
 use App\Models\Tito;
 use App\Models\User;
@@ -22,10 +24,12 @@ class UserController extends Controller
                     users.first_name,
                     users.middle_name,
                     users.last_name,
-                    department.`name` as department_name
+                    department.`name` as department_name,
+                    bureau.`name` as bureau_name
                 FROM
                     users
-                    JOIN department ON users.department_id = department.id
+                    LEFT JOIN department ON users.department_id = department.id
+                    JOIN bureau ON users.bureau_id = bureau.id
                     where users.id != '.Auth::id().'';
 
         return Datatables::of($query)
@@ -42,6 +46,7 @@ class UserController extends Controller
 
     public function addUserForm(){
         $data = array(
+            'bureaus' => Bureau::all(),
             'departments' => Department::where('id', '!=', '1')->get(),
         );
 
@@ -61,10 +66,14 @@ class UserController extends Controller
         if(isset($user)){
             $data = array(
                 'departments' => Department::where('id', '!=', '1')->get(),
+                'bureaus' => Bureau::all(),
                 'user' => $user
             );
 
-            return view('auth.user.update', compact('data'));
+            return response()->json([
+                'view' => view('auth.user.update', compact('data'))->render(),
+                'bureauId' => $user->department_id
+            ]);
         }
     }
 
@@ -84,5 +93,17 @@ class UserController extends Controller
         return response()->json([
             'message' => 'success',
         ]);
+    }
+
+    public function getDivisions(Request $request){
+        $bureau = Bureau::find($request->bureauId);
+
+        if(isset($bureau)){
+            $bureauDivisions = BureauDivision::with('department')->where('bureau_id', $bureau->id)->get();
+
+            return response()->json([
+                'divisions' => $bureauDivisions
+            ]);
+        }
     }
 }

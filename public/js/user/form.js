@@ -22,6 +22,11 @@ $(function(){
                 orderable: false
             },
             {
+                data: 'bureau_name',
+                name: 'bureau_name',
+                orderable: false
+            },
+            {
                 data: 'department_name',
                 name: 'department_name',
                 orderable: false
@@ -60,8 +65,31 @@ $(function(){
         var data = $(this).serialize()
         submitUser(data+'&userStatus=update')
         return false
+    }).on('change', '#bureauName', function(event, updateId){
+        showDivisions($(this).val(), updateId)
+        return false
     })
 })
+
+const showDivisions = (bureauId, updateId) => {
+    $.ajax({
+        url: '/user/bureau/get-division',
+        type: 'GET',
+        data: {bureauId: bureauId}
+    }).done(result => {
+        $('#departmentName').empty()
+        $('#departmentName').append('<option selected disabled>-- select department --</option>')
+
+        let options = '';
+
+        $.each(result.divisions, function (i, item) {
+            let isSelected = updateId == item.department.id ? 'selected' : ''
+            options += '<option '+isSelected+' value="'+item.department.id+'">'+item.department.name+'</option>'
+        });
+
+        $('#departmentName').append(options);
+    })
+}
 
 const addUser = () => {
     $.ajax({
@@ -85,8 +113,9 @@ const updateUser = (userId) => {
         showModal({
             type: 'lg',
             title: 'Update user',
-            bodyContent: result
+            bodyContent: result.view
         })
+        $('[name="bureauName"]').trigger("change", [result.bureauId] );
     })
 }
 

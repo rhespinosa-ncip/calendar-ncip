@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DepartmentParticipant extends Model
+class BureauParticipant extends Model
 {
     use HasFactory;
 
-    protected $table = 'meeting_department_participant';
+    protected $table = 'bureau_participant';
 
     /**
      * The attributes that are mass assignable.
@@ -18,35 +18,31 @@ class DepartmentParticipant extends Model
      */
     protected $fillable = [
         'meeting_schedule_id',
-        'department_id',
+        'bureau_id',
     ];
 
-    public function meeting(){
-        return $this->hasOne(MeetingSchedule::class, 'id', 'meeting_schedule_id');
-    }
-
-    static function insert($departmentId, $meetingId){
-        DepartmentParticipant::create([
+    static function insert($bureauId, $meetingId){
+        BureauParticipant::create([
             'meeting_schedule_id' => $meetingId,
-            'department_id' => $departmentId,
+            'bureau_id' => $bureauId,
         ]);
     }
 
-    static function insertDepartment($request, $meeting){
-        foreach($request->departmentParticipant as $key => $value){
+    static function insertBureau($request, $meeting){
+        foreach($request->bureauParticipant as $key => $value){
             $check = explode("-", $value);
 
-            if($check[0] == 'department'){
+            if($check[0] == 'bureau'){
                 self::insert($check[1], $meeting->id);
             }
         }
     }
 
-    static function updateDepartment($request, $meeting){
+    static function updateBureau($request, $meeting){
         $partipant = Participant::where('meeting_schedule_id', $meeting->id)->delete();
         $bureauParticipant = BureauParticipant::where('meeting_schedule_id', $meeting->id)->delete();
         $departmentPartipant = DepartmentParticipant::where('meeting_schedule_id', $meeting->id)->delete();
 
-        self::insertDepartment($request, $meeting);
+        self::insertBureau($request, $meeting);
     }
 }

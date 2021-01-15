@@ -19,7 +19,8 @@ class CreateMeetingScheduleTable extends Migration
             $table->string('description');
             $table->string('zoom_meeting_description');
             $table->dateTime('date', 0);
-            $table->enum('participant', ['individual', 'department']);
+            $table->enum('participant', ['bureau', 'department']);
+            $table->enum('is_participant', ['yes', 'no']);
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();

@@ -1,10 +1,10 @@
 <select name="participant[]" id="participant[]" class="form-control rounded-0 individualParticipant" multiple="multiple" style="display: none;">
-    @foreach ($data['users'] as $user)
+    @foreach ($data['participant'] as $participant)
         <option
         @foreach ($data['selectedParticipant'] as $selectedParticipant)
-            {{$selectedParticipant->user_id == $user->id ? 'selected' : ''}}
+            {{$selectedParticipant->user_id == $participant->id ? 'selected' : ''}}
         @endforeach
-        value="{{$user->id}}">{{$user->fullName}}</option>
+        value="participant-{{$participant->id}}">{{$participant->fullName}}</option>
     @endforeach
 </select>
 

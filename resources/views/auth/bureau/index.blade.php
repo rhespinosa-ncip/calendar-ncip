@@ -1,15 +1,14 @@
 @extends('index.main')
 
 @push('style')
-    <link rel="stylesheet" href="css/calendar/calendar.css">
 @endpush
 
 @section('auth-content')
     <div class="container-fluid mb-5">
         <div class="row mt-3 mb-2">
             <div class="col-12 text-right">
-                <button class="btn btn-success rounded-0 py-1 px-3 btn-add-user">
-                     ADD USER
+                <button class="btn btn-success rounded-0 py-1 px-3 btn-add-bureau">
+                     ADD BUREAU
                 </button>
             </div>
         </div>
@@ -17,13 +16,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table table-border sample-table" id="userList">
+                        <table class="table table-border sample-table" id="bureauList">
                             <thead>
                                 <tr>
-                                    <th>Username</th>
-                                    <th>Fullname</th>
-                                    <th>Bureau</th>
-                                    <th>Department</th>
+                                    <th>Bureau name</th>
+                                    <th>Bureau color</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -36,5 +33,6 @@
 @endsection
 
 @push('script')
-    <script src="{{asset('js/user/form.js')}}"></script>
+    <script src="{{asset('js/multiple/js/BsMultiSelect.js')}}"></script>
+    <script src="{{ asset('js/bureau/form.js')}}"></script>
 @endpush

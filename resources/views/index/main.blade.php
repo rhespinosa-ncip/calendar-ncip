@@ -41,13 +41,16 @@
                             <li class="nav-item {{$segmentOne == 'department' ? 'active' : ''}}">
                                 <a class="nav-link" href="/department">DEPARTMENT</a>
                             </li>
+                            <li class="nav-item {{$segmentOne == 'bureau' ? 'active' : ''}}">
+                                <a class="nav-link" href="/bureau">BUREAU</a>
+                            </li>
                             <li class="nav-item {{$segmentOne == 'user' ? 'active' : ''}}">
                                 <a class="nav-link" href="/user">USER</a>
                             </li>
                             <li class="nav-item {{$segmentOne == 'meeting' ? 'active' : ''}}">
                                 <a class="nav-link" href="/meeting/admin">ZOOM MEETING LINK</a>
                             </li>
-                        @elseif(Auth::user()->user_type == 'user')
+                        @elseif(Auth::user()->user_type != 'admin')
                             <li class="nav-item {{$segmentOne == 'accomplishment' ? 'active' : ''}}"">
                                 <a class="nav-link" href="/accomplishment">ACCOMPLISHMENT</a>
                             </li>

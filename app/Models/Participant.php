@@ -34,13 +34,46 @@ class Participant extends Model
     }
 
     static function insertIndividual($request, $meeting){
-        foreach($request->participant as $key => $value){
-            self::insert($value, $meeting->id);
+        if(isset($request->participant)){
+            self::insertNow($request->participant, $meeting);
+        }else if(isset($request->bureauParticipant)){
+            self::insertNow($request->bureauParticipant, $meeting);
+        }else if(isset($request->departmentParticipant)){
+            self::insertNow($request->departmentParticipant, $meeting);
+        }
+    }
+
+    static function insertNow($participant, $meeting){
+        foreach($participant as $key => $value){
+            $check = explode("-", $value);
+
+            if($check[0] == 'participant'){
+                $user = User::whereId($check[1])->first();
+
+                $bureauParticipant = BureauParticipant::where([
+                    ['meeting_schedule_id', $meeting->id],
+                    ['bureau_id', $user->bureau_id]
+                ])->first();
+
+                $departmentParticipant = DepartmentParticipant::where([
+                    ['meeting_schedule_id', $meeting->id],
+                    ['department_id', $user->department_id]
+                ])->first();
+
+                if(!isset($bureauParticipant) && !isset($departmentParticipant)){
+                    $meeting = MeetingSchedule::where('id', $meeting->id)->first();
+                    $meeting->is_participant = 'yes';
+                    $meeting->save();
+
+                    self::insert($check[1], $meeting->id);
+                }
+            }
         }
     }
 
     static function updateIndividual($request, $meeting){
         $partipant = Participant::where('meeting_schedule_id', $meeting->id)->delete();
+        $bureauParticipant = BureauParticipant::where('meeting_schedule_id', $meeting->id)->delete();
         $departmentPartipant = DepartmentParticipant::where('meeting_schedule_id', $meeting->id)->delete();
 
         self::insertIndividual($request, $meeting);

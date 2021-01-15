@@ -25,9 +25,10 @@ $(function(){
             $('#zoomMeetingLink').val('')
         }
         return false
-    }).on('change', '[name="participantsChoice"]', function(){
-        let value = $('input[name="participantsChoice"]:checked').val()
-        showOptions(value, $(this).attr('meetingId'))
+    }).on('change', '[name="participantsChoice"], #isIndividual', function(){
+        let valueRadio = $('input[name="participantsChoice"]:checked').val()
+        let valueCheck = $('#isIndividual:checked').val()
+        showOptions(valueRadio, $(this).attr('meetingId'), valueCheck)
         return false
     }).on('click', '.btn-add-minutes', function(){
         maintenanceMinutes($(this).attr('meetingId'))
@@ -44,11 +45,11 @@ $(function(){
     showEndedMeeting()
 })
 
-const showOptions = (value, meetingId = 0) => {
+const showOptions = (value, meetingId = 0, valueCheck) => {
     $.ajax({
         url: '/meeting/add/option',
         type: 'GET',
-        data: {value: value, meetingId: meetingId}
+        data: {value: value, meetingId: meetingId, valueCheck: valueCheck}
     }).done(result => {
         $('.optionSelectArea').empty()
         $('.optionSelectArea').append(result)

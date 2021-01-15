@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\GlobalClass\Datatables;
+use App\Models\Bureau;
+use App\Models\BureauParticipant;
 use App\Models\Department;
 use App\Models\DepartmentParticipant;
 use App\Models\Document;
@@ -37,6 +39,12 @@ class MeetingController extends Controller
             $meetingSchedule = MeetingSchedule::where('created_by', Auth::id());
             $participant = Participant::where('user_id', Auth::id());
 
+            $bureauParticipant = BureauParticipant::join('meeting_schedule', 'meeting_schedule.id','=','bureau_participant.meeting_schedule_id')
+                                            ->join('users', 'meeting_schedule.created_by','=','users.id')
+                                            ->join('bureau', 'bureau.id','=','users.bureau_id')
+                                            ->where('bureau_participant.bureau_id', Auth::user()->bureau_id)
+                                            ->where('meeting_schedule.created_by', '!=', Auth::id())
+                                            ->select('meeting_schedule.*','bureau.hexa_color');
             $data = array(
                 'filedMeeting' => $meetingSchedule->get(),
                 'todayMeeting' => $meetingSchedule->whereDate('date', date('Y-m-d'))->get(),
@@ -48,6 +56,9 @@ class MeetingController extends Controller
 
                 'departmentMeeting' => $departmentParticipant->get(),
                 'todayMeetingAsDepartment' => $departmentParticipant->whereDate('meeting_schedule.date', date('Y-m-d'))->get(),
+
+                'asBureau' => $bureauParticipant->get(),
+                'todayMeetingAsBureau' => $bureauParticipant->whereDate('meeting_schedule.date', date('Y-m-d'))->get(),
 
                 'tito' => Tito::today(),
             );
@@ -172,20 +183,31 @@ class MeetingController extends Controller
     }
 
     public function optionForm(Request $request){
-        if($request->value == 'individual'){
+        if($request->value == 'bureau'){
             $data = array(
-                'users' => User::where([['id','!=', Auth::id()],['user_type','!=', 'admin']])->get(),
-                'selectedParticipant' => Participant::where('meeting_schedule_id', $request->meetingId)->get()
+                'bureau' => Bureau::all(),
+                'participant' => $request->valueCheck == 'on' ? User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get() : array(),
+                'selectedParticipant' => $request->valueCheck == 'on' ? Participant::where('meeting_schedule_id', $request->meetingId)->get() : array(),
+                'selectedBureau' => BureauParticipant::where('meeting_schedule_id', $request->meetingId)->get(),
             );
 
-            return view('auth.meeting.options.individual', compact('data'))->render();
+            return view('auth.meeting.options.bureau', compact('data'))->render();
         }else if($request->value == 'department'){
             $data = array(
                 'departments' => Department::where('id','!=', '1')->get(),
+                'participant' => $request->valueCheck == 'on' ? User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get() : array(),
+                'selectedParticipant' => $request->valueCheck == 'on' ? Participant::where('meeting_schedule_id', $request->meetingId)->get() : array(),
                 'selectedDepartment' => DepartmentParticipant::where('meeting_schedule_id', $request->meetingId)->get()
             );
 
             return view('auth.meeting.options.department', compact('data'))->render();
+        }else if($request->valueCheck == 'on'){
+            $data = array(
+                'participant' => User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get(),
+                'selectedParticipant' => Participant::where('meeting_schedule_id', $request->meetingId)->get(),
+            );
+
+            return view('auth.meeting.options.individual', compact('data'))->render();
         }
     }
 

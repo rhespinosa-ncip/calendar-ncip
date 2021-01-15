@@ -36,20 +36,39 @@
                 <input disabled type="text" value="ncip" class="form-control rounded-0" name="password" id="password">
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             <div class="form-group">
-                <label for="position">Position: </label>
-                <input type="text" class="form-control rounded-0" name="position" id="position">
+                <label for="bureauName">Bureau name: </label>
+                <select class="form-control rounded-0" name="bureauName" id="bureauName">
+                    <option selected disabled>-- select bureau --</option>
+                    @foreach ($data['bureaus'] as $bureaus)
+                        <option value="{{$bureaus->id}}">{{$bureaus->name}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             <div class="form-group">
                 <label for="departmentName">Department name: </label>
                 <select class="form-control rounded-0" name="departmentName" id="departmentName">
-                    @foreach ($data['departments'] as $department)
-                        <option value="{{$department->id}}">{{$department->name}}</option>
-                    @endforeach
+                    <option selected disabled>-- select department --</option>
                 </select>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label for="userType">User type: </label>
+                <select class="form-control rounded-0" name="userType" id="userType">
+                    <option selected disabled>-- select user type --</option>
+                    <option value="head">Head</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="position">Position: </label>
+                <input type="text" class="form-control rounded-0" name="position" id="position">
             </div>
         </div>
     </div>

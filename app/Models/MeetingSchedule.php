@@ -23,6 +23,7 @@ class MeetingSchedule extends Model
         'title',
         'description',
         'zoom_meeting_description',
+        'is_participant',
         'participant',
         'date',
         'created_by',
@@ -57,13 +58,13 @@ class MeetingSchedule extends Model
             'participant' => [
                 'array',
                 'min:1',
-                Rule::requiredIf($request->participantsChoice == 'individual')
+                Rule::requiredIf($request->isIndividual == 'on' && !isset($request->participantsChoice))
             ],
             'participant.*' => [
                 'string',
                 'distinct',
                 'min:1',
-                Rule::requiredIf($request->participantsChoice == 'individual')
+                Rule::requiredIf($request->isIndividual == 'on' && !isset($request->participantsChoice))
             ],
             'departmentParticipant' => [
                 'array',
@@ -75,6 +76,17 @@ class MeetingSchedule extends Model
                 'distinct',
                 'min:1',
                 Rule::requiredIf($request->participantsChoice == 'department')
+            ],
+            'bureauParticipant' => [
+                'array',
+                'min:1',
+                Rule::requiredIf($request->participantsChoice == 'bureau')
+            ],
+            'bureauParticipant.*' => [
+                'string',
+                'distinct',
+                'min:1',
+                Rule::requiredIf($request->participantsChoice == 'bureau')
             ],
         ]);
 
@@ -96,16 +108,21 @@ class MeetingSchedule extends Model
             'description' => $request->description,
             'zoom_meeting_description' => $request->zoomMeetingLink,
             'participant' => $request->participantsChoice,
+            'is_participant' => 'no',
             'date' => $request->date,
             'created_by' => Auth::id(),
         ]);
 
         Document::insert($request, 'meeting_schedule', $meeting, 'meeting_schedule_'.$meeting->id);
 
-        if($request->participantsChoice == 'individual'){
+        if($request->participantsChoice == 'bureau'){
+            BureauParticipant::insertBureau($request, $meeting);
             Participant::insertIndividual($request, $meeting);
         }else if($request->participantsChoice == 'department'){
             DepartmentParticipant::insertDepartment($request, $meeting);
+            Participant::insertIndividual($request, $meeting);
+        }else if($request->valueCheck == 'on'){
+            Participant::insertIndividual($request, $meeting);
         }
 
 
@@ -135,10 +152,14 @@ class MeetingSchedule extends Model
                 $meeting->participant = $request->participantsChoice;
                 $meeting->save();
 
-                if($request->participantsChoice == 'individual'){
-                    Participant::updateIndividual($request, $meeting);
+                if($request->participantsChoice == 'bureau'){
+                    BureauParticipant::updateBureau($request, $meeting);
+                    Participant::insertIndividual($request, $meeting);
                 }else if($request->participantsChoice == 'department'){
                     DepartmentParticipant::updateDepartment($request, $meeting);
+                    Participant::insertIndividual($request, $meeting);
+                }else if($request->valueCheck == 'on'){
+                    Participant::updateIndividual($request, $meeting);
                 }
 
                 Document::updateData($request, 'meeting_schedule', $meeting, 'meeting_schedule_'.$meeting->id);

@@ -1,10 +1,10 @@
-<select name="departmentParticipant[]" id="departmentParticipant[]" class="form-control rounded-0 individualParticipant" multiple="multiple" style="display: none;">
-    @foreach ($data['departments'] as $department)
+<select name="bureauParticipant[]" id="bureauParticipant[]" class="form-control rounded-0 bureauParticipant" multiple="multiple" style="display: none;">
+    @foreach ($data['bureau'] as $bureau)
         <option
-        @foreach ($data['selectedDepartment'] as $selectedDepartment)
-            {{$selectedDepartment->department_id == $department->id ? 'selected' : ''}}
+        @foreach ($data['selectedBureau'] as $selectedBureau)
+            {{$selectedBureau->bureau_id == $bureau->id ? 'selected' : ''}}
         @endforeach
-        value="department-{{$department->id}}">{{$department->name}}</option>
+        value="bureau-{{$bureau->id}}">{{$bureau->name}}</option>
     @endforeach
     @foreach ($data['participant'] as $participant)
     <option

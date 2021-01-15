@@ -28,6 +28,7 @@ class User extends Authenticatable
         'username',
         'user_type',
         'department_id',
+        'bureau_id',
         'password',
     ];
 
@@ -46,7 +47,7 @@ class User extends Authenticatable
             'firstName' => 'required',
             'middleName' => 'required',
             'lastName' => 'required',
-            'departmentName' => 'required',
+            'bureauName' => 'required',
             'position' => 'required',
             'email' => [
                 'required',
@@ -57,6 +58,7 @@ class User extends Authenticatable
                 'required',
                 Rule::unique('users')->ignore($id ?? 0),
             ],
+            'userType' => 'required'
         ]);
 
     }
@@ -82,7 +84,8 @@ class User extends Authenticatable
             'username' => $request->username,
             'password' => Hash::make($password),
             'department_id' => $request->departmentName,
-            'user_type' => 'user'
+            'bureau_id' => $request->bureauName,
+            'user_type' => $request->userType
         ]);
 
         return response()->json([

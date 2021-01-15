@@ -22,9 +22,11 @@ class CreateUsersTable extends Migration
             $table->string('position');
             $table->string('username');
             $table->string('password');
-            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('department_id')->nullable()->unsigned();
             $table->foreign('department_id')->references('id')->on('department');
-            $table->enum('user_type', ['admin', 'user']);
+            $table->unsignedBigInteger('bureau_id')->nullable()->unsigned();
+            $table->foreign('bureau_id')->references('id')->on('bureau');
+            $table->enum('user_type', ['admin', 'user', 'head']);
             $table->timestamps();
         });
     }

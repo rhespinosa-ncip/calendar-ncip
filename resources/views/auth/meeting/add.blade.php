@@ -38,12 +38,16 @@
             <div class="form-group">
                 <label for="participant">Participant: </label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="participantsChoice" id="individual" value="individual">
-                    <label class="form-check-label" for="individual">Individual</label>
+                    <input type="checkbox" class="form-check-input" id="isIndividual" name="isIndividual">
+                    <label class="form-check-label" for="isIndividual">Individual</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="participantsChoice" id="bureau" value="bureau">
+                    <label class="form-check-label" for="bureau">Bureau</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="participantsChoice" id="department" value="department">
-                    <label class="form-check-label" for="department">Deparment</label>
+                    <label class="form-check-label" for="department">Division</label>
                 </div>
                 <div class="optionSelectArea">
 

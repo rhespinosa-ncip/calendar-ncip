@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccomplishmentController;
+use App\Http\Controllers\BureauController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PageController;
@@ -77,6 +78,10 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
         Route::group(['prefix' => 'update'], function () {
             Route::get('', [UserController::class , 'updateUserForm']);
         });
+
+        Route::group(['prefix' => 'bureau'], function () {
+            Route::get('get-division', [UserController::class , 'getDivisions']);
+        });
     });
 
     Route::group(['prefix' => 'tito'], function () {
@@ -94,6 +99,20 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
 
         Route::group(['prefix' => 'update'], function () {
             Route::get('', [DepartmentController::class , 'updateUserForm']);
+        });
+    });
+
+    Route::group(['prefix' => 'bureau'], function () {
+        Route::get('', [BureauController::class, 'index']);
+        Route::post('list', [BureauController::class , 'indexList']);
+
+        Route::group(['prefix' => 'add'], function () {
+            Route::get('', [BureauController::class, 'addForm']);
+            Route::post('submit', [BureauController::class, 'addSubmit']);
+        });
+
+        Route::group(['prefix' => 'update'], function () {
+            Route::get('', [BureauController::class , 'updateForm']);
         });
     });
 

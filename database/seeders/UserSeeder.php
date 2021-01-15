@@ -23,7 +23,6 @@ class UserSeeder extends Seeder
             'email' => 'admin',
             'username' => 'admin',
             'user_type' => 'admin',
-            'department_id' => '1',
             'password' => Hash::make('password'),
         ]);
     }
