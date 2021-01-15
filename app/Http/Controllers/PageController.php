@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tito;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,7 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
-
+use Illuminate\Support\Facades\Storage;
+use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
 class PageController extends Controller
 {
     public function index(Request $request){
@@ -89,6 +91,58 @@ class PageController extends Controller
 
         return response()->json([
             'message' => 'wrongOldPassword'
+        ]);
+    }
+
+    public function barcode(){
+        Storage::disk('public')->put('test.png',base64_decode(DNS2D::getBarcodePNG("4", "QRCODE")));
+    }
+
+    public function myQrCode(Request $request){
+        return view('auth.user.qr-code.view');
+    }
+
+    public function downloadMyQrCode(Request $request){
+        $url = $request->root();
+        $param ='/auto-time/tito?username='.Auth::user()->username.'&password='.Auth::user()->password;
+
+        Storage::disk('public')->put('qr-codes/'.Auth::user()->username.'.png',base64_decode(DNS2D::getBarcodePNG($url.$param, "QRCODE")));
+
+        $path = storage_path('app/public/qr-codes/' .Auth::user()->username.'.png');
+
+        return Response::download($path);
+    }
+
+    public function autoTito(Request $request){
+        $username = $request->username;
+        $password = $request->password;
+
+        $user = User::where('username', $username)->first();
+
+        if(isset($user)){
+            $userTito = Tito::where('user_id', $user->id)->whereDate('created_at', date('Y-m-d'))->first();
+
+            if(isset($userTito)){
+                $userTito->time_out =  date('H:i:s');
+                $userTito->save();
+
+                return response()->json([
+                    'message' => 'success'
+                ]);
+            }
+
+            Tito::create([
+                'time_in' => date('H:i:s'),
+                'user_id' => $user->id
+            ]);
+
+            return response()->json([
+                'message' => 'success'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'error'
         ]);
     }
 }

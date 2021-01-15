@@ -28,6 +28,10 @@ Route::group(['prefix' => ''], function () {
 
 Route::group(['middleware' => ['guest']], function () {
     Route::post('/login', [PageController::class, 'login']);
+
+    Route::group(['prefix' => 'auto-time'], function () {
+        Route::get('tito', [PageController::class, 'autoTito']);
+    });
 });
 
 Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
@@ -110,6 +114,12 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
             Route::get('', [PageController::class , 'passwordForm']);
             Route::post('submit', [PageController::class , 'passwordSubmit']);
         });
+    });
+
+    Route::group(['prefix' => 'my-qr-code'], function () {
+        Route::get('', [PageController::class , 'myQrCode']);
+        Route::get('download', [PageController::class , 'downloadMyQrCode']);
+
     });
 
     Route::get('logout', function () {

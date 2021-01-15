@@ -67,8 +67,23 @@ $(function(){
         let data = $(this).serialize()
         submitNewPassword(data)
         return false
+    }).on('click', '.my-qr-code', function(){
+        showMyQrCode()
     })
 })
+
+const showMyQrCode = download => {
+    $.ajax({
+        url: '/my-qr-code',
+        type: 'GET',
+    }).done(result => {
+        showModal({
+            type: '',
+            title: 'QR CODE',
+            bodyContent: result
+        })
+    })
+}
 
 const showPasswordForm = meetingId => {
     $.ajax({
