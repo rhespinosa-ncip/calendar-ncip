@@ -76,7 +76,10 @@ $(function(){
         return false
     }).on('click', '.my-qr-code', function(){
         showMyQrCode()
-    })
+    }).on('click', '.btn-print-report', function(){
+        printElement(document.getElementById("printAreaReports"))
+    })        
+
 })
 
 const showMyQrCode = download => {
@@ -333,4 +336,22 @@ function failError(){
         progressBar: true,
         timeOut: 2000,
     })
+}
+
+const printElement = elem => {
+    var domClone = elem.cloneNode(true);
+
+    var printSection = document.getElementById("printSection");
+
+    if (!printSection) {
+        var printSection = document.createElement("div");
+        printSection.id = "printSection";
+
+        document.body.appendChild(printSection);
+    }
+
+    printSection.innerHTML = "";
+    printSection.appendChild(domClone);
+    window.print();
+    printSection.innerHTML = "";
 }

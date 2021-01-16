@@ -55,8 +55,14 @@
                                 <a class="nav-link" href="/accomplishment">ACCOMPLISHMENT</a>
                             </li>
                             @if (Auth::user()->user_type == 'head')
-                                <li class="nav-item {{$segmentOne == 'reports' ? 'active' : ''}}"">
-                                    <a class="nav-link" href="/reports">REPORTS</a>
+                                <li class="nav-item dropdown  {{$segmentOne == 'report' ? 'active' : ''}}">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        REPORTS
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="/report/accomplishment">ACCOMPLISHMENT REPORT</a>
+                                    <a class="dropdown-item" href="/report/ti-to">TiTo REPORT</a>
+                                    </div>
                                 </li>
                             @endif
                         @endif

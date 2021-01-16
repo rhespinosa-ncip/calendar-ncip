@@ -114,3 +114,21 @@ code {
     max-height: 30em;
     overflow-y: auto;
 }
+
+@page { size: auto; margin: 0mm; }
+
+@media print{
+    body * {
+        visibility:hidden;
+    }
+
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+}

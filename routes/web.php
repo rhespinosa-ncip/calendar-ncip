@@ -5,6 +5,7 @@ use App\Http\Controllers\BureauController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -123,6 +124,16 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
         Route::group(['prefix' => 'record'], function () {
             Route::get('', [AccomplishmentController::class, 'formAccomplishment']);
             Route::post('submit', [AccomplishmentController::class, 'submitAccomplishment']);
+        });
+    });
+
+    Route::group(['prefix' => 'report'], function () {
+        Route::group(['prefix' => 'accomplishment'], function () {
+            Route::get('', [ReportController::class, 'indexAccomplishment']);
+        });
+
+        Route::group(['prefix' => 'ti-to'], function () {
+            Route::get('', [ReportController::class, 'indexTiTo']);
         });
     });
 
