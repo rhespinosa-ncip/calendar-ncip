@@ -181,7 +181,7 @@
                                         $haveMeeting = true;
                                         array_push($todayMeetings, array(
                                             'id' => $todayMeeting->id,
-                                            'hexa_color' => $todayMeeting->user->department->hexa_color,
+                                            'hexa_color' => $todayMeeting->user->department->hexa_color ??  $todayMeeting->user->bureau->hexa_color,
                                             'title' => $todayMeeting->title,
                                             'time' => date('H:i', strtotime($todayMeeting->date)),
                                             'description' => $todayMeeting->description
@@ -289,7 +289,7 @@
                         id: '{{$filedMeeting->id}}',
                         title: '{{$filedMeeting->title}}',
                         start: '{{$filedMeeting->date}}',
-                        color: '{{$filedMeeting->user->department->hexa_color}}'
+                        color: '{{$filedMeeting->user->department->hexa_color ?? $filedMeeting->user->bureau->hexa_color}}'
                     },
                     @endforeach
 
@@ -330,6 +330,7 @@
                     info.jsEvent.preventDefault(); // don't let the browser navigate
 
                     if(info.event.id){
+                        alert(info.event.id)
                         showMeeting(info.event.id)
                     }
                 }

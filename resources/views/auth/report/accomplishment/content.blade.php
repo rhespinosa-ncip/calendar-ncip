@@ -6,15 +6,15 @@
 <div class="row mt-2">
     <div class="col-12">
         <b>
-            Bureau/Office : 
-        </b>
+            Office :
+        </b> -
     </div>
 </div>
 <div class="row">
     <div class="col-12">
         <b>
-            Period : 
-        </b>
+            Period :
+        </b> -
     </div>
 </div>
 <div class="row mt-3">
@@ -29,9 +29,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Reymond H. Espinosa</td>
-                    <td>Computer Programmer II</td>
-                    <td>sample</td>
+                    <td colspan="3" class="text-center"> NO ACCOMPLISHMENT </td>
                 </tr>
             </tbody>
         </table>

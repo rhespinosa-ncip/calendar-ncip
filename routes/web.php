@@ -135,6 +135,11 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
         Route::group(['prefix' => 'ti-to'], function () {
             Route::get('', [ReportController::class, 'indexTiTo']);
         });
+
+        Route::group(['prefix' => 'filter'], function () {
+            Route::get('', [ReportController::class, 'filterForm']);
+            Route::post('submit', [ReportController::class, 'filterSubmit']);
+        });
     });
 
     Route::get('/show-document/{username}/{fileName}',[PageController::class, 'showDocuments']);

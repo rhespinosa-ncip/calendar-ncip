@@ -40,6 +40,14 @@ class User extends Authenticatable
         return $this->hasOne(Department::class, 'id', 'department_id');
     }
 
+    public function bureau(){
+        return $this->hasOne(Bureau::class, 'id', 'bureau_id');
+    }
+
+    public function tito(){
+        return $this->hasMany(Tito::class, 'user_id', 'id');
+    }
+
     static function validate($request){
         $id = $request->userId ?? 0;
 

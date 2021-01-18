@@ -23,6 +23,7 @@ class Bureau extends Model
         'hexa_color'
     ];
 
+
     static function validate($request){
         $id = $request->bureauId ?? 0;
 

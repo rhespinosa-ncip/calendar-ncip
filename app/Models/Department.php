@@ -23,6 +23,10 @@ class Department extends Model
         'hexa_color'
     ];
 
+    public function users(){
+        return $this->hasMany(User::class, 'department_id', 'id');
+    }
+
     static function validate($request){
         $id = $request->departmentId ?? 0;
 

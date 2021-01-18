@@ -54,23 +54,23 @@
                             <li class="nav-item {{$segmentOne == 'accomplishment' ? 'active' : ''}}"">
                                 <a class="nav-link" href="/accomplishment">ACCOMPLISHMENT</a>
                             </li>
-                            @if (Auth::user()->user_type == 'head')
-                                <li class="nav-item dropdown  {{$segmentOne == 'report' ? 'active' : ''}}">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        REPORTS
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="/report/accomplishment">ACCOMPLISHMENT REPORT</a>
-                                    <a class="dropdown-item" href="/report/ti-to">TiTo REPORT</a>
-                                    </div>
-                                </li>
-                            @endif
+                            <li class="nav-item dropdown  {{$segmentOne == 'report' ? 'active' : ''}}">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    REPORTS
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/report/accomplishment">ACCOMPLISHMENT REPORT</a>
+                                <a class="dropdown-item" href="/report/ti-to">TiTo REPORT</a>
+                                </div>
+                            </li>
                         @endif
                         <li class="nav-item dropdown ml-auto">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Settings </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item change-password" href="#">Change password</a>
-                                <a class="dropdown-item my-qr-code" href="#">My QR Code</a>
+                                @if (Auth::user()->user_type != 'admin')
+                                    <a class="dropdown-item my-qr-code" href="#">My QR Code</a>
+                                @endif
                                 <a class="dropdown-item" href="/logout">logout</a>
                             </div>
                         </li>

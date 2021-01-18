@@ -132,3 +132,7 @@ code {
         top:0;
     }
 }
+
+body{
+    background-color: #ffffff !important;
+}

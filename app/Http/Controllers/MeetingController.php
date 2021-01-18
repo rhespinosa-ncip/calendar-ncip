@@ -212,14 +212,28 @@ class MeetingController extends Controller
     }
 
     public function endedMeetingList(Request $request){
-        $query = "SELECT *
+        $department = Auth::user()->department_id ?? '0';
+
+        $departmentJoin = '';
+        $departmentWhere = '';
+        $orAnd = ' AND';
+
+        if(isset(Auth::user()->department_id)){
+            $departmentJoin = 'LEFT JOIN meeting_department_participant ON meeting_department_participant.meeting_schedule_id = meeting_schedule.id';
+            $departmentWhere = " OR meeting_department_participant.department_id = ".$department;
+            $orAnd = ' OR';
+        }
+
+        $query = "SELECT
+                    meeting_schedule.*
                     FROM meeting_schedule
                     LEFT JOIN meeting_participant ON meeting_participant.meeting_schedule_id = meeting_schedule.id
-                    LEFT JOIN meeting_department_participant ON meeting_department_participant.meeting_schedule_id = meeting_schedule.id
+                    LEFT JOIN bureau_participant ON bureau_participant.meeting_schedule_id  = meeting_schedule.id
+                    ".$departmentJoin ."
                 WHERE DATE <= '".now()."'
                     AND (meeting_schedule.created_by = ".Auth::id()."
-                    OR meeting_participant.user_id = ".Auth::id()."
-                    OR meeting_department_participant.department_id = ".Auth::user()->department_id.")";
+                    OR meeting_participant.user_id = ".Auth::id(). $departmentWhere.")
+                    ".$orAnd." bureau_participant.bureau_id = ".Auth::user()->bureau_id."";
 
         if(Auth::user()->user_type == 'admin'){
             $query = "SELECT *
