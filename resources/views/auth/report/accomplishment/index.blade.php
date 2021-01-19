@@ -22,6 +22,9 @@
                     <div class="content-report">
                         @include('auth.report.accomplishment.content')
                     </div>
+                    <div class="row mt-4">
+                        @include('prepared-by')
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             @include('fullwidth')

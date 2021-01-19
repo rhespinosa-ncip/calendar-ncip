@@ -39,7 +39,7 @@
                         </li>
                         @if (Auth::user()->user_type == 'admin')
                             <li class="nav-item {{$segmentOne == 'department' ? 'active' : ''}}">
-                                <a class="nav-link" href="/department">DEPARTMENT</a>
+                                <a class="nav-link" href="/department">DIVISION</a>
                             </li>
                             <li class="nav-item {{$segmentOne == 'bureau' ? 'active' : ''}}">
                                 <a class="nav-link" href="/bureau">BUREAU</a>
@@ -54,16 +54,16 @@
                             <li class="nav-item {{$segmentOne == 'accomplishment' ? 'active' : ''}}"">
                                 <a class="nav-link" href="/accomplishment">ACCOMPLISHMENT</a>
                             </li>
-                            <li class="nav-item dropdown  {{$segmentOne == 'report' ? 'active' : ''}}">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    REPORTS
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/report/accomplishment">ACCOMPLISHMENT REPORT</a>
-                                <a class="dropdown-item" href="/report/ti-to">TiTo REPORT</a>
-                                </div>
-                            </li>
                         @endif
+                        <li class="nav-item dropdown  {{$segmentOne == 'report' ? 'active' : ''}}">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                REPORTS
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/report/accomplishment">ACCOMPLISHMENT REPORT</a>
+                            <a class="dropdown-item" href="/report/ti-to">TiTo REPORT</a>
+                            </div>
+                        </li>
                         <li class="nav-item dropdown ml-auto">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Settings </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

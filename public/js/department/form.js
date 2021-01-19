@@ -59,7 +59,7 @@ const addDepartment = () => {
     }).done(result => {
         showModal({
             type: '',
-            title: 'Add department',
+            title: 'Add division',
             bodyContent: result
         })
     })
@@ -73,7 +73,7 @@ const updateDepartment = departmentId => {
     }).done(result => {
         showModal({
             type: '',
-            title: 'Update department',
+            title: 'Update division',
             bodyContent: result
         })
     })
@@ -89,7 +89,7 @@ const submitDepartment = data => {
             closeModal('')
             setTimeOut('/department')
 
-            toastr.success('Department added successfully', '', {
+            toastr.success('Division added successfully', '', {
                 progressBar: true,
                 timeOut: 1000,
             })
@@ -97,7 +97,7 @@ const submitDepartment = data => {
             closeModal('')
             setTimeOut('/department')
 
-            toastr.success('Department updates successfully', '', {
+            toastr.success('Division updates successfully', '', {
                 progressBar: true,
                 timeOut: 1000,
             })

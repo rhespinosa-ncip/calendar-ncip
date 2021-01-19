@@ -56,6 +56,21 @@
                 </div>
             @endif
         </div>
+    @elseif(Auth::user()->user_type == 'admin')
+        <div class="row mt-1">
+            <div class="col-12">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="bureauAdmin">Bureau's: </label>
+                        <select name="bureauAdmin[]" id="bureauAdmin[]" class="form-control rounded-0" multiple="multiple" style="display: none;">
+                            @foreach ($data['bureauAdmin'] as $bureauAdmin)
+                                <option value="{{$bureauAdmin->id}}">{{$bureauAdmin->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
     <div class="row">
         <div class="col-12 text-right">

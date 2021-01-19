@@ -23,6 +23,13 @@ class Bureau extends Model
         'hexa_color'
     ];
 
+    public function users(){
+        return $this->hasMany(User::class, 'bureau_id', 'id');
+    }
+    
+    public function bureauDivision(){
+        return $this->hasMany(BureauDivision::class, 'bureau_id', 'id');
+    }
 
     static function validate($request){
         $id = $request->bureauId ?? 0;

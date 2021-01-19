@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bureau;
 use App\Models\Tito;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class ReportController extends Controller
             'bureauDepartment' => BureauDivision::where('bureau_id', Auth::user()->bureau_id)->get(),
             'bureauUser' => User::where([['bureau_id', Auth::user()->bureau_id],['department_id', null]])->get(),
             'userPerDepartment' => User::where([['department_id', Auth::user()->department_id]])->get(),
+            'bureauAdmin' => Bureau::all(),
             'type' => $request->type,
         );
 
@@ -42,6 +44,9 @@ class ReportController extends Controller
             'dateTo' => 'required',
             'departmentUser' => [
                 Rule::requiredIf(Auth::user()->user_type == 'head' && isset(Auth::user()->department_id))
+            ],
+            'bureauAdmin' => [
+                Rule::requiredIf(Auth::user()->user_type == 'admin')
             ],
         ]);
 
@@ -77,6 +82,9 @@ class ReportController extends Controller
                     $query->wherebetween('created_at', [$dateFrom, $dateTo]);
                 }])->get();
             }
+        }else if(Auth::user()->user_type == 'admin'){
+            $view = 'auth.report.accomplishment.admin-content';
+            $accomplishments = Bureau::whereIn('id', $request->bureauAdmin)->get();
         }else{
             $view = 'auth.report.accomplishment.user-content';
             $accomplishments = Tito::where('user_id', Auth::id())->wherebetween('created_at', [$dateFrom, $dateTo])->get();
@@ -114,6 +122,9 @@ class ReportController extends Controller
                     $query->wherebetween('created_at', [$dateFrom, $dateTo]);
                 }])->get();
             }
+        }else if(Auth::user()->user_type == 'admin'){
+            $view = 'auth.report.tito.admin-content';
+            $tito = Bureau::whereIn('id', $request->bureauAdmin)->get();
         }else{
             $view = 'auth.report.tito.user-content';
             $tito = User::whereId(Auth::id())->with(['tito' => function($query) use ($dateFrom, $dateTo){
