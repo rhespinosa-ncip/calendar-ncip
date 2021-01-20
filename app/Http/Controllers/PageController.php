@@ -123,8 +123,13 @@ class PageController extends Controller
             $userTito = Tito::where('user_id', $user->id)->whereDate('created_at', date('Y-m-d'))->first();
 
             if(isset($userTito)){
-                $userTito->time_out =  date('H:i:s');
-                $userTito->save();
+                if(strtotime($userTito->time_in) > strtotime("-30 minutes")){
+
+                }else{
+                    $userTito->time_out =  date('H:i:s');
+                    $userTito->save();
+                }
+
 
                 return response()->json([
                     'message' => 'success'
