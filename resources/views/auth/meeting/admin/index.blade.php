@@ -1,7 +1,7 @@
 @extends('index.main')
 
 @push('style')
-    <link rel="stylesheet" href="css/calendar/calendar.css">
+    <link rel="stylesheet" href="{{asset('css/calendar/calendar.css')}}">
 @endpush
 
 @section('auth-content')
