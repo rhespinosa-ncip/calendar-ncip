@@ -15,11 +15,11 @@ class CreateMeetingScheduleTable extends Migration
     {
         Schema::create('meeting_schedule', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
-            $table->string('zoom_meeting_description');
+            $table->longText('title');
+            $table->longText('description');
+            $table->longText('zoom_meeting_description');
             $table->dateTime('date', 0);
-            $table->enum('participant', ['bureau', 'department']);
+            $table->enum('participant', ['bureau', 'department', 'individual']);
             $table->enum('is_participant', ['yes', 'no']);
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');

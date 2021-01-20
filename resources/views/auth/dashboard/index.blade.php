@@ -330,7 +330,6 @@
                     info.jsEvent.preventDefault(); // don't let the browser navigate
 
                     if(info.event.id){
-                        alert(info.event.id)
                         showMeeting(info.event.id)
                     }
                 }
