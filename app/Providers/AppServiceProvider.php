@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (App::environment(['production'])) {
-            Config::set('app.asset_url', 'http://ncip-hrmd.com/public');
+            Config::set('app.asset_url', 'http://accomplishment.ncip-hrmd.com/public');
         }
     }
 }

@@ -33,6 +33,9 @@ class User extends Authenticatable
     ];
 
     public function getFullnameAttribute(){
+        if(isset($this->middle_name)){
+            return ucfirst($this->first_name).' '.ucfirst($this->middle_name[0]).'. '.ucfirst($this->last_name);
+        }
         return ucfirst($this->first_name).' '.ucfirst($this->last_name);
     }
 
@@ -53,7 +56,6 @@ class User extends Authenticatable
 
         return $validate = Validator::make($request->all(), [
             'firstName' => 'required',
-            'middleName' => 'required',
             'lastName' => 'required',
             'bureauName' => 'required',
             'position' => 'required',
