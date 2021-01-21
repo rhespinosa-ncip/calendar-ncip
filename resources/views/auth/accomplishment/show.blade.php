@@ -18,6 +18,9 @@
                             @foreach ($data['tito']->accomplishments as $accomplishment)
                                 <li>
                                     {{$accomplishment->accomplishment}}
+                                    <ul>
+                                        <li>{{$accomplishment->remarks}}</li>
+                                    </ul>
                                 </li>
                             @endforeach
                         </ul>

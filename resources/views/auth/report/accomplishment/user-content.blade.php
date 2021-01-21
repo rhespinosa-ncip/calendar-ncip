@@ -40,7 +40,12 @@
                             <label for="">{{date('F d, Y', strtotime($accomplishment->created_at))}}</label>
                             <ul>
                                 @forelse ($accomplishment->accomplishments as $accomplishment)
-                                    <li>{{$accomplishment->accomplishment}}</li>
+                                    <li>
+                                        {{$accomplishment->accomplishment}}
+                                        <ul>
+                                            <li>{{$accomplishment->remarks}}</li>
+                                        </ul>
+                                    </li>
                                 @empty
                                     <li> NO ACCOMPLISHMENT </li>
                                 @endforelse

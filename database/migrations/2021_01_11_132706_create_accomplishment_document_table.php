@@ -16,6 +16,7 @@ class CreateAccomplishmentDocumentTable extends Migration
         Schema::create('accomplishment_document', function (Blueprint $table) {
             $table->id();
             $table->longText('accomplishment');
+            $table->longText('remarks');
             $table->unsignedBigInteger('tito_id');
             $table->foreign('tito_id')->references('id')->on('tito');
             $table->timestamps();

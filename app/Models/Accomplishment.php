@@ -18,13 +18,14 @@ class Accomplishment extends Model
      */
     protected $fillable = [
         'accomplishment',
+        'remarks',
         'tito_id'
     ];
 
     static function insert($request){
         foreach($request->accomplishment as $key => $value){
             if($request->accomplishment[$key] != ''){
-                self::insertData($request->accomplishment[$key] , $request->titoId);
+                self::insertData($request->accomplishment[$key], $request->remarks[$key], $request->titoId);
             }
         }
 
@@ -33,9 +34,10 @@ class Accomplishment extends Model
         ]);
     }
 
-    static function insertData($accomplishment, $titoId){
+    static function insertData($accomplishment, $remarks, $titoId){
         Accomplishment::create([
             'accomplishment' => $accomplishment,
+            'remarks' => $remarks,
             'tito_id' =>  $titoId
         ]);
     }

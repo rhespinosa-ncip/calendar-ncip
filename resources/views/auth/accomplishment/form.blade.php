@@ -10,6 +10,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Accomplishment</th>
+                        <th scope="col">Remarks</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -18,6 +19,9 @@
                         <tr>
                             <td>
                                 <input class="form-control" name="accomplishment[]" id="accomplishment[]" type="text" value="{{$accomplishment->accomplishment}}">
+                            </td>
+                            <td>
+                                <input class="form-control" name="remarks[]" id="remarks[]" type="text" value="{{$accomplishment->remarks}}">
                             </td>
                             <td>
                                 <button class="btn btn-danger rounded-0 py-1 btn-remove-file" document-id="{{$accomplishment->id}}">
@@ -29,6 +33,9 @@
                     <tr>
                         <td>
                             <input class="form-control" name="accomplishment[]" id="accomplishment[]" type="text">
+                        </td>
+                        <td>
+                            <input class="form-control" name="remarks[]" id="remarks[]" type="text">
                         </td>
                         <td>
                             <button class="btn btn-danger rounded-0 py-1 btn-remove-file">

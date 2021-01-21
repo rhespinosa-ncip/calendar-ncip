@@ -78,7 +78,7 @@ $(function(){
         showMyQrCode()
     }).on('click', '.btn-print-report', function(){
         printElement(document.getElementById("printAreaReports"))
-    })        
+    })
 
 })
 
@@ -180,6 +180,9 @@ const appenAccomplishment = () => {
         <tr>
             <td>
                 <input class="form-control" name="accomplishment[]" id="accomplishment[]" type="text">
+            </td>
+            <td>
+                <input class="form-control" name="remarks[]" id="remarks[]" type="text">
             </td>
             <td>
                 <button class="btn btn-danger rounded-0 py-1 btn-remove-file">
