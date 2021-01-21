@@ -31,29 +31,22 @@
     </div>
     <div class="col-12">
         <div class="form-group">
-            @if ($data['meeting']->participant == 'department')
-                <label for="participant">Department Participant: </label>
-                <select class="form-control rounded-0" disabled multiple="multiple" style="display: none;">
-                    @foreach ($data['department'] as $department)
-                    <option
-                        @foreach ($data['meeting']->departmentParticipants as $departmentParticipants)
-                            {{$departmentParticipants->department_id == $department->id ? 'selected' : ''}}
-                        @endforeach
-                    value="{{$department->id}}">{{$department->name}}</option>
-                    @endforeach
-                </select>
-            @elseif($data['meeting']->participant == 'individual')
-                <label for="participant">Participant: </label>
-                <select class="form-control rounded-0" disabled multiple="multiple" style="display: none;">
-                    @foreach ($data['users'] as $user)
-                    <option
-                        @foreach ($data['meeting']->participants as $participant)
-                            {{$participant->user_id == $user->id ? 'selected' : ''}}
-                        @endforeach
-                    value="{{$user->id}}">{{$user->fullName}}</option>
-                    @endforeach
-                </select>
-            @endif
+            <label for="participant">Participant: </label>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" disabled class="form-check-input" {{$data['meeting']->is_participant == 'yes' ? 'checked' : ''}} id="isIndividual" name="isIndividual">
+                <label class="form-check-label" for="isIndividual">Individual</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" disabled {{$data['meeting']->participant == 'bureau' ? 'checked' : ''}} meetingId="{{$data['meeting']->id}}" type="radio" name="participantsChoice" id="bureau" value="bureau">
+                <label class="form-check-label" for="bureau">Bureau</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" disabled {{$data['meeting']->participant == 'department' ? 'checked' : ''}} meetingId="{{$data['meeting']->id}}" type="radio" name="participantsChoice" id="department" value="department">
+                <label class="form-check-label" for="department">Division</label>
+            </div>
+            <div class="optionSelectArea">
+
+            </div>
         </div>
     </div>
 </div>

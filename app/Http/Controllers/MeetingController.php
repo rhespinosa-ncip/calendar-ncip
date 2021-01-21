@@ -183,6 +183,8 @@ class MeetingController extends Controller
     }
 
     public function optionForm(Request $request){
+        $meeting = MeetingSchedule::find($request->meetingId);
+
         if($request->value == 'bureau'){
             $data = array(
                 'bureau' => Bureau::all(),
@@ -191,7 +193,7 @@ class MeetingController extends Controller
                 'selectedBureau' => BureauParticipant::where('meeting_schedule_id', $request->meetingId)->get(),
             );
 
-            return view('auth.meeting.options.bureau', compact('data'))->render();
+            return view('auth.meeting.options.bureau', compact('data','meeting'))->render();
         }else if($request->value == 'department'){
             $data = array(
                 'departments' => Department::where('id','!=', '1')->get(),
@@ -200,14 +202,14 @@ class MeetingController extends Controller
                 'selectedDepartment' => DepartmentParticipant::where('meeting_schedule_id', $request->meetingId)->get()
             );
 
-            return view('auth.meeting.options.department', compact('data'))->render();
+            return view('auth.meeting.options.department', compact('data','meeting'))->render();
         }else if($request->valueCheck == 'on'){
             $data = array(
                 'participant' => User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get(),
                 'selectedParticipant' => Participant::where('meeting_schedule_id', $request->meetingId)->get(),
             );
 
-            return view('auth.meeting.options.individual', compact('data'))->render();
+            return view('auth.meeting.options.individual', compact('data','meeting'))->render();
         }
     }
 
