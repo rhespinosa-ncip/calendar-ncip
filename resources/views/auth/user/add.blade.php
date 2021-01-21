@@ -51,7 +51,7 @@
             <div class="form-group">
                 <label for="departmentName">Department name: </label>
                 <select class="form-control rounded-0" name="departmentName" id="departmentName">
-                    <option selected disabled>-- select department --</option>
+                    <option selected>-- select department --</option>
                 </select>
             </div>
         </div>

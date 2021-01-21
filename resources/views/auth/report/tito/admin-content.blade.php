@@ -45,13 +45,13 @@
                                             <li>Time out: {{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_in)) : 'NO TIME OUT'}}</li>
                                         </ul>
                                     @empty
-                                        <li> NO TIME IN AND TIME OUT </li>
+                                        <li> NO DTR </li>
                                     @endforelse
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center"> NO TIME IN AND TIME OUT </td>
+                                <td colspan="3" class="text-center"> NO DTR </td>
                             </tr>
                         @endforelse
                     </tbody>

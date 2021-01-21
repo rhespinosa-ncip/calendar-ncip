@@ -61,7 +61,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/report/accomplishment">ACCOMPLISHMENT REPORT</a>
-                            <a class="dropdown-item" href="/report/ti-to">TiTo REPORT</a>
+                            <a class="dropdown-item" href="/report/dtr">DTR REPORT</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown ml-auto">

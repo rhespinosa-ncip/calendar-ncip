@@ -1,6 +1,6 @@
 <div class="row mt-4">
     <div class="col-12 text-center">
-        <h4>TIME IN AND TIME OUT REPORT</h4>
+        <h4>DTR REPORT</h4>
     </div>
 </div>
 <div class="row mt-2">
@@ -29,7 +29,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="3" class="text-center"> NO TIME IN TIME OUT</td>
+                    <td colspan="3" class="text-center"> NO DTR</td>
                 </tr>
             </tbody>
         </table>

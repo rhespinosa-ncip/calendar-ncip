@@ -185,10 +185,18 @@ class MeetingController extends Controller
     public function optionForm(Request $request){
         $meeting = MeetingSchedule::find($request->meetingId);
 
+        $userQuery = User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get();
+
+        if(isset($meeting->date)){
+            if(date('y-m-d H:i', strtotime($meeting->date)) <= date('y-m-d H:i')){
+                $userQuery = User::where([['user_type','!=','admin']])->get();
+            }
+        }
+
         if($request->value == 'bureau'){
             $data = array(
                 'bureau' => Bureau::all(),
-                'participant' => $request->valueCheck == 'on' ? User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get() : array(),
+                'participant' => $request->valueCheck == 'on' ? $userQuery : array(),
                 'selectedParticipant' => $request->valueCheck == 'on' ? Participant::where('meeting_schedule_id', $request->meetingId)->get() : array(),
                 'selectedBureau' => BureauParticipant::where('meeting_schedule_id', $request->meetingId)->get(),
             );
@@ -197,7 +205,7 @@ class MeetingController extends Controller
         }else if($request->value == 'department'){
             $data = array(
                 'departments' => Department::where('id','!=', '1')->get(),
-                'participant' => $request->valueCheck == 'on' ? User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get() : array(),
+                'participant' => $request->valueCheck == 'on' ? $userQuery : array(),
                 'selectedParticipant' => $request->valueCheck == 'on' ? Participant::where('meeting_schedule_id', $request->meetingId)->get() : array(),
                 'selectedDepartment' => DepartmentParticipant::where('meeting_schedule_id', $request->meetingId)->get()
             );
@@ -205,7 +213,7 @@ class MeetingController extends Controller
             return view('auth.meeting.options.department', compact('data','meeting'))->render();
         }else if($request->valueCheck == 'on'){
             $data = array(
-                'participant' => User::where([['user_type','!=','admin'],['id', '!=', Auth::id()]])->get(),
+                'participant' => $userQuery,
                 'selectedParticipant' => Participant::where('meeting_schedule_id', $request->meetingId)->get(),
             );
 
@@ -227,7 +235,7 @@ class MeetingController extends Controller
         }
 
         $query = "SELECT
-                    meeting_schedule.*
+                    DISTINCT meeting_schedule.*
                     FROM meeting_schedule
                     LEFT JOIN meeting_participant ON meeting_participant.meeting_schedule_id = meeting_schedule.id
                     LEFT JOIN bureau_participant ON bureau_participant.meeting_schedule_id  = meeting_schedule.id

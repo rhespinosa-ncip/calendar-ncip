@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,8 +44,16 @@ class User extends Authenticatable
         return $this->hasOne(Department::class, 'id', 'department_id');
     }
 
+    static function departmentHead(){
+        return User::where([['department_id', Auth::user()->department_id], ['user_type', 'head']])->first();
+    }
+
     public function bureau(){
         return $this->hasOne(Bureau::class, 'id', 'bureau_id');
+    }
+
+    static function bureauHead(){
+        return User::where([['department_id', null],['bureau_id', Auth::user()->bureau_id], ['user_type', 'head']])->orderBy('id', 'desc')->first();
     }
 
     public function tito(){

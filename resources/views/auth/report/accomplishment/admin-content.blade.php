@@ -48,7 +48,7 @@
                                             @endforelse
                                         </ul>
                                     @empty
-                                        <li> NO TIME IN AND TIME OUT </li>
+                                        <li> NO DTR </li>
                                     @endforelse
                                 </td>
                             </tr>

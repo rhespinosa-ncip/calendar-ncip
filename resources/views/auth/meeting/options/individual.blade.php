@@ -1,4 +1,4 @@
-<select {{date("Y-m-d H:i", strtotime($meeting->date)) >= date("Y-m-d H:i") ? '' : 'disabled'}} name="participant[]" id="participant[]" class="form-control rounded-0 individualParticipant" multiple="multiple" style="display: none;">
+<select {{isset($meeting->date) ? date("Y-m-d H:i", strtotime($meeting->date)) >= date("Y-m-d H:i") ? '' : 'disabled' : ''}} name="participant[]" id="participant[]" class="form-control rounded-0 individualParticipant" multiple="multiple" style="display: none;">
     @foreach ($data['participant'] as $participant)
         <option
         @foreach ($data['selectedParticipant'] as $selectedParticipant)

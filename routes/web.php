@@ -132,7 +132,7 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
             Route::get('', [ReportController::class, 'indexAccomplishment']);
         });
 
-        Route::group(['prefix' => 'ti-to'], function () {
+        Route::group(['prefix' => 'dtr'], function () {
             Route::get('', [ReportController::class, 'indexTiTo']);
         });
 

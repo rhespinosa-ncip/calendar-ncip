@@ -46,9 +46,8 @@
                         </td>
                     </tr>
                 @empty
-                    NO TIME IN AND TIME OUT
+                    NO DTR
                 @endforelse
-
             </tbody>
         </table>
     </div>
