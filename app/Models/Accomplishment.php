@@ -37,7 +37,7 @@ class Accomplishment extends Model
     static function insertData($accomplishment, $remarks, $titoId){
         Accomplishment::create([
             'accomplishment' => $accomplishment,
-            'remarks' => $remarks,
+            'remarks' => $remarks ?? '',
             'tito_id' =>  $titoId
         ]);
     }
