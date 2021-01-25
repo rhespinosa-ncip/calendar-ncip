@@ -60,6 +60,7 @@
                 <label for="userType">User type: </label>
                 <select class="form-control rounded-0" name="userType" id="userType">
                     <option selected disabled>-- select user type --</option>
+                    {{-- <option value="admin">Admin</option> --}}
                     <option value="head">Head</option>
                     <option value="user">User</option>
                 </select>

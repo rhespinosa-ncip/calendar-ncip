@@ -59,6 +59,26 @@
             </div>
         </div>
     @endif
+@elseif(Auth::user()->user_type == 'admin')
+    <div class="col-6">
+        <div class="row">
+            <div class="col-12">
+                <label for="preparedBy">
+                    Prepared by:
+                </label>
+            </div>
+            <div class="col-12">
+                <label for="preparedBy">
+                    {{Auth::user()->fullName}}
+                </label>
+            </div>
+            <div class="col-12">
+                <label for="preparedBy">
+                    (<b>{{Auth::user()->position}}</b>)
+                </label>
+            </div>
+        </div>
+    </div>
 @else
     @if (isset(Auth::user()->department_id))
         <div class="col-4">

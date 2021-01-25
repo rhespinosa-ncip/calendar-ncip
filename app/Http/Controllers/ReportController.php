@@ -132,7 +132,6 @@ class ReportController extends Controller
             }])->first();
         }
 
-
         return response()->json([
             'message' => 'success',
             'content' => view($view, compact(

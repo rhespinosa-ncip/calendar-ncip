@@ -61,6 +61,7 @@
                 <label for="userType">User type: </label>
                 <select class="form-control rounded-0" name="userType" id="userType">
                     <option selected disabled>-- select user type --</option>
+                    {{-- <option value="admin" {{$data['user']->user_type == 'admin' ? 'selected' : ''}}>Admin</option> --}}
                     <option value="head" {{$data['user']->user_type == 'head' ? 'selected' : ''}}>Head</option>
                     <option value="user" {{$data['user']->user_type == 'user' ? 'selected' : ''}}>User</option>
                 </select>

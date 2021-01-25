@@ -29,29 +29,55 @@
                         <tr>
                             <th scope="col">NAME OF PERSONNEL</th>
                             <th scope="col">POSITION</th>
-                            <th scope="col">DATE / TIME IN / TIME OUT</th>
+                            <th scope="col">DATE</th>
+                            <th scope="col">TIME IN</th>
+                            <th scope="col">TIME OUT</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($bureauDivision->department->users as $user)
-                            <tr>
-                                <td>{{$user->fullName}}</td>
-                                <td>{{$user->position}}</td>
-                                <td>
-                                    @forelse ($user->tito as $tito)
-                                        <label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label>
-                                        <ul>
-                                            <li>Time in: {{date('h:i A', strtotime($tito->time_in))}}</li>
-                                            <li>Time out: {{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_in)) : 'NO TIME OUT'}}</li>
-                                        </ul>
-                                    @empty
-                                        <li> NO DTR </li>
-                                    @endforelse
-                                </td>
-                            </tr>
+                            @php
+                                $count = 0;
+                            @endphp
+                            @forelse ($user->tito as $tito)
+                                @if ($count == 0)
+                                    <tr>
+                                        <td class="align-middle" rowspan="{{$user->tito->count()}}">{{$user->fullName}}</td>
+                                        <td class="align-middle" rowspan="{{$user->tito->count()}}">{{$user->position}}</td>
+                                        <td>
+                                            <label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label>
+                                        </td>
+                                        <td>
+                                            <label for="">{{date('h:i A', strtotime($tito->time_in))}}</label>
+                                        </td>
+                                        <td>
+                                            <label for="">{{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_out)) : 'NO TIME OUT'}}</label>
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $count++;
+                                    @endphp
+                                @else
+                                    <tr>
+                                        <td>
+                                            <label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label>
+                                        </td>
+                                        <td>
+                                            <label for="">{{date('h:i A', strtotime($tito->time_in))}}</label>
+                                        </td>
+                                        <td>
+                                            <label for="">{{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_out)) : 'NO TIME OUT'}}</label>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center"> NO DTR </td>
+                                </tr>
+                            @endforelse
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center"> NO DTR </td>
+                                <td colspan="5" class="text-center"> NO DTR </td>
                             </tr>
                         @endforelse
                     </tbody>

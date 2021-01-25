@@ -26,25 +26,52 @@
                 <tr>
                     <th scope="col">NAME OF PERSONNEL</th>
                     <th scope="col">POSITION</th>
-                    <th scope="col">DATE / TIME IN / TIME OUT</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">TIME IN</th>
+                    <th scope="col">TIME OUT</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($tito as $tito)
-                    <tr>
-                        <td>{{$tito->fullName}}</td>
-                        <td>{{$tito->position}}</td>
-                        <td>
-                            @forelse ($tito->tito as $tito)
-                                <label>{{date('F d, Y', strtotime($tito->created_at))}}</label>
-                                <ul>
-                                    <li>Time in: {{date('h:i A', strtotime($tito->time_in))}}</li>
-                                    <li>Time out: {{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_in)) : 'NO TIME OUT'}}</li>
-                                </ul>
-                            @empty
-                            @endforelse
-                        </td>
-                    </tr>
+                    @php
+                        $count = 0;
+                    @endphp
+
+                    @forelse ($tito->tito as $titoValue)
+                        @if ($count == 0)
+                            <tr>
+                                <td class="align-middle" rowspan="{{$tito->tito->count()}}">{{$tito->fullName}}</td>
+                                <td class="align-middle" rowspan="{{$tito->tito->count()}}">{{$tito->position}}</td>
+                                <td>
+                                    <label>{{date('F d, Y', strtotime($titoValue->created_at))}}</label>
+                                </td>
+                                <td>
+                                    <label>{{date('h:i A', strtotime($titoValue->time_in))}}</label>
+                                </td>
+                                <td>
+                                    <label>{{isset($titoValue->time_out) ? date('h:i A', strtotime($titoValue->time_in)) : 'NO TIME OUT'}}</label>
+                                </td>
+                            </tr>
+                            @php
+                                $count++;
+                            @endphp
+                        @else
+                            <tr>
+                                <td>
+                                    <label>{{date('F d, Y', strtotime($titoValue->created_at))}}</label>
+                                </td>
+                                <td>
+                                    <label>{{date('h:i A', strtotime($titoValue->time_in))}}</label>
+                                </td>
+                                <td>
+                                    <label>{{isset($titoValue->time_out) ? date('h:i A', strtotime($titoValue->time_in)) : 'NO TIME OUT'}}</label>
+                                </td>
+                            </tr>
+                        @endif
+                    @empty
+                        NO DTR
+                    @endforelse
+
                 @empty
                     NO DTR
                 @endforelse

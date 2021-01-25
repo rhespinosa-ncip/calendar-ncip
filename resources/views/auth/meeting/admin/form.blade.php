@@ -13,6 +13,18 @@
                 <input type="text"class="form-control rounded-0" name="meetingLink" id="meetingLink" value="{{$meeting->zoom_meeting_description == 'requestToAdmin' ? '' : $meeting->zoom_meeting_description}}">
             </div>
         </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="meetingId">Meeting id: </label>
+                <input type="text"class="form-control rounded-0" name="personalMeetingId" id="personalMeetingId" value="{{$meeting->zoom_meeting_id}}">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="meetingPasscode">Meeting password: </label>
+                <input type="text"class="form-control rounded-0" name="meetingPasscode" id="meetingPasscode" value="{{$meeting->zoom_meeting_passcode}}">
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-12 text-right">

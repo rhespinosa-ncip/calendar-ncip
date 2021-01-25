@@ -132,6 +132,7 @@ class User extends Authenticatable
             $user->email = $request->email;
             $user->username = $request->username;
             $user->department_id = $request->departmentName;
+            $user->user_type = $request->userType;
             $user->save();
         }
 

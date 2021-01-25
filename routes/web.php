@@ -43,6 +43,11 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
             Route::get('', [MeetingController::class, 'addMeetingForm']);
             Route::get('option', [MeetingController::class, 'optionForm']);
             Route::post('submit', [MeetingController::class, 'addMeetingSubmit']);
+
+            Route::group(['prefix' => 'remarks'], function () {
+                Route::get('', [MeetingController::class, 'addRemarksForm']);
+                Route::post('submit', [MeetingController::class, 'addRemarksSubmit']);
+            });
         });
 
         Route::get('show', [MeetingController::class, 'showMeeting']);

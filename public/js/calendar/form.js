@@ -19,10 +19,18 @@ $(function(){
     }).on('change', '#requestZoomMeetingLink', function(){
         if($(this).is(":checked") == true){
             $('#zoomMeetingLink').addClass('d-none')
+            $('#zoomMeetingId').addClass('d-none')
+            $('#zoomMeetingPasscode').addClass('d-none')
             $('#zoomMeetingLink').val('requestToAdmin')
+            $('#zoomMeetingId').val('')
+            $('#zoomMeetingPasscode').val('')
         }else{
             $('#zoomMeetingLink').removeClass('d-none')
+            $('#zoomMeetingId').removeClass('d-none')
+            $('#zoomMeetingPasscode').removeClass('d-none')
             $('#zoomMeetingLink').val('')
+            $('#zoomMeetingId').val('')
+            $('#zoomMeetingPasscode').val('')
         }
         return false
     }).on('change', '[name="participantsChoice"], #isIndividual', function(){
@@ -33,12 +41,21 @@ $(function(){
     }).on('click', '.btn-add-minutes', function(){
         maintenanceMinutes($(this).attr('meetingId'))
         return false
+    }).on('click', '.btn-add-remarks', function(){
+        maintenanceRemarks($(this).attr('meetingId'))
+        return false
     }).on('submit', '#saveMinutes', function(){
         var data = new FormData(this)
         saveMinutes(data)
         return false
     }).on('click', '.btn-view-minutes', function(){
         maintenanceMinutes($(this).attr('meetingId'), 'showOnly')
+        return false
+    }).on('submit', '#submitRemakrs', function(){
+        submitRemarks($(this).serialize())
+        return false
+    }).on('click', '.view-remarks', function(){
+        maintenanceRemarks($(this).attr('meetingId'), 'showOnly')
         return false
     })
 
@@ -56,6 +73,38 @@ const showOptions = (value, meetingId = 0, valueCheck) => {
     })
 }
 
+const maintenanceRemarks = (meetingId, status = '') => {
+    $.ajax({
+        url: '/meeting/add/remarks',
+        type: 'GET',
+        data: {meetingId: meetingId, status: status}
+    }).done(result => {
+        showModal({
+            type: status == '' ? '' : 'lg',
+            title: status == '' ? 'Add remarks' : 'Remarks',
+            bodyContent: result
+        })
+    })
+}
+
+const submitRemarks = data => {
+    $.ajax({
+        url: '/meeting/add/remarks/submit',
+        type: 'POST',
+        data: data
+    }).done(result => {
+        if(result.message == 'success'){
+            closeModal('')
+            setTimeOut('/')
+
+            toastr.success('Remarks submitted successfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
+    })
+}
+
 const showAddMeeting = () => {
     $.ajax({
         url: '/meeting/add',
@@ -66,6 +115,10 @@ const showAddMeeting = () => {
             title: 'Add meeting',
             bodyContent: result
         })
+
+        var dateToday = new Date();
+        dateToday.setMinutes(dateToday.getMinutes() - dateToday.getTimezoneOffset());
+        $('[name="date"]').attr('min', dateToday.toISOString().slice(0,16))
     })
 }
 
@@ -111,6 +164,10 @@ const showMeeting = meetingId => {
         })
 
         $('[name="participantsChoice"]').trigger("change");
+
+        var dateToday = new Date();
+        dateToday.setMinutes(dateToday.getMinutes() - dateToday.getTimezoneOffset());
+        $('[name="date"]').attr('min', dateToday.toISOString().slice(0,16))
     })
 }
 
@@ -134,7 +191,13 @@ const showEndedMeeting = () => {
             },
             {
                 data: 'meeting_schedule',
-                name: 'meeting_schedule'
+                name: 'meeting_schedule',
+                orderable: false
+            },
+            {
+                data: 'meeting_remarks',
+                name: 'meeting_remarks',
+                orderable: false
             },
             {
                 data: 'action',

@@ -21,6 +21,10 @@ class BureauParticipant extends Model
         'bureau_id',
     ];
 
+    public function meetingSchedule(){
+        return $this->hasOne(MeetingSchedule::class, 'id', 'meeting_schedule_id');
+    }
+
     static function insert($bureauId, $meetingId){
         BureauParticipant::create([
             'meeting_schedule_id' => $meetingId,

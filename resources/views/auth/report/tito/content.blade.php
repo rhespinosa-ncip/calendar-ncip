@@ -24,12 +24,14 @@
                 <tr>
                     <th scope="col">NAME OF PERSONNEL</th>
                     <th scope="col">POSITION</th>
-                    <th scope="col">DATE / TIME IN / TIME OUT</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">TIME IN</th>
+                    <th scope="col">TIME OUT</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="3" class="text-center"> NO DTR</td>
+                    <td colspan="5" class="text-center"> NO DTR</td>
                 </tr>
             </tbody>
         </table>

@@ -25,6 +25,7 @@
                     <th scope="col">NAME OF PERSONNEL</th>
                     <th scope="col">POSITION</th>
                     <th scope="col">ACCOMPLISHMENT</th>
+                    <th scope="col">DATE</th>
                 </tr>
             </thead>
             <tbody>

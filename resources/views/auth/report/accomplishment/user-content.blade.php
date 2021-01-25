@@ -29,29 +29,60 @@
                     <th scope="col">NAME OF PERSONNEL</th>
                     <th scope="col">POSITION</th>
                     <th scope="col">ACCOMPLISHMENT</th>
+                    <th scope="col">DATE</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $count = 0;
+                @endphp
                 @forelse($accomplishments as $accomplishment)
-                    <tr>
-                        <td>{{$accomplishment->user->fullName}}</td>
-                        <td>{{$accomplishment->user->position}}</td>
-                        <td>
-                            <label for="">{{date('F d, Y', strtotime($accomplishment->created_at))}}</label>
-                            <ul>
-                                @forelse ($accomplishment->accomplishments as $accomplishment)
-                                    <li>
-                                        {{$accomplishment->accomplishment}}
-                                        <ul>
-                                            <li>{{$accomplishment->remarks}}</li>
-                                        </ul>
-                                    </li>
-                                @empty
-                                    <li> NO ACCOMPLISHMENT </li>
-                                @endforelse
-                            </ul>
-                        </td>
-                    </tr>
+                    @if ($count == 0)
+                        <tr>
+                            <td class="align-middle" rowspan="{{$accomplishment->accomplishments->count()}}">{{$accomplishment->user->fullName}}</td>
+                            <td class="align-middle" rowspan="{{$accomplishment->accomplishments->count()}}">{{$accomplishment->user->position}}</td>
+                            <td>
+                                <ul>
+                                    @forelse ($accomplishment->accomplishments as $accomplishment)
+                                        <li>
+                                            {{$accomplishment->accomplishment}}
+                                            <ul>
+                                                <li>{{$accomplishment->remarks}}</li>
+                                            </ul>
+                                        </li>
+                                    @empty
+                                        <li> NO ACCOMPLISHMENT </li>
+                                    @endforelse
+                                </ul>
+                            </td>
+                            <td class="align-middle" >
+                                <label for="">{{date('F d, Y', strtotime($accomplishment->created_at))}}</label>
+                            </td>
+                        </tr>
+                        @php
+                            $count++;
+                        @endphp
+                    @else
+                        <tr>
+                            <td>
+                                <ul>
+                                    @forelse ($accomplishment->accomplishments as $accomplishment)
+                                        <li>
+                                            {{$accomplishment->accomplishment}}
+                                            <ul>
+                                                <li>{{$accomplishment->remarks}}</li>
+                                            </ul>
+                                        </li>
+                                    @empty
+                                        <li> NO ACCOMPLISHMENT </li>
+                                    @endforelse
+                                </ul>
+                            </td>
+                            <td class="align-middle" >
+                                <label for="">{{date('F d, Y', strtotime($accomplishment->created_at))}}</label>
+                            </td>
+                        </tr>
+                    @endif
                 @empty
                     <tr>
                         <td colspan="3" class="text-center"> NO ACCOMPLISHMENT </td>

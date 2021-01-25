@@ -23,6 +23,8 @@ class MeetingSchedule extends Model
         'title',
         'description',
         'zoom_meeting_description',
+        'zoom_meeting_id',
+        'zoom_meeting_passcode',
         'is_participant',
         'participant',
         'date',
@@ -49,12 +51,24 @@ class MeetingSchedule extends Model
         return $this->hasOne(User::class, 'id', 'created_by');
     }
 
+    public function remarks(){
+        return $this->hasMany(MeetingRemarks::class, 'meeting_schedule_id', 'id')->orderBy('id', 'desc');
+    }
+
     static function validation($request){
         $validate = Validator::make($request->all(),[
             'title' => 'required',
             'date' => 'required',
             'description' => 'required',
-            'zoomMeetingLink' => 'required',
+            'zoomMeetingLink' => [
+                Rule::requiredIf($request->requestZoomMeetingLink != 'on')
+            ],
+            'zoomMeetingId' => [
+                Rule::requiredIf($request->requestZoomMeetingLink != 'on')
+            ],
+            'zoomMeetingPasscode' => [
+                Rule::requiredIf($request->requestZoomMeetingLink != 'on')
+            ],
             'participant' => [
                 'array',
                 'min:1',
@@ -107,6 +121,8 @@ class MeetingSchedule extends Model
             'title' => $request->title,
             'description' => $request->description,
             'zoom_meeting_description' => $request->zoomMeetingLink,
+            'zoom_meeting_id' => $request->zoomMeetingId,
+            'zoom_meeting_passcode' =>  $request->zoomMeetingPasscode,
             'participant' => $request->participantsChoice ?? 'individual',
             'is_participant' => 'no',
             'date' => $request->date,
@@ -148,6 +164,8 @@ class MeetingSchedule extends Model
                 $meeting->title = $request->title;
                 $meeting->description = $request->description;
                 $meeting->zoom_meeting_description = $request->zoomMeetingLink;
+                $meeting->zoom_meeting_id = $request->zoomMeetingId;
+                $meeting->zoom_meeting_passcode = $request->zoomMeetingPasscode;
                 $meeting->date = $request->date;
                 $meeting->is_participant = 'no';
                 $meeting->participant = $request->participantsChoice ?? 'individual';

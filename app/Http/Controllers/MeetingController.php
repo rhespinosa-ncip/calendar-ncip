@@ -8,6 +8,7 @@ use App\Models\BureauParticipant;
 use App\Models\Department;
 use App\Models\DepartmentParticipant;
 use App\Models\Document;
+use App\Models\MeetingRemarks;
 use App\Models\MeetingSchedule;
 use App\Models\Minutes;
 use App\Models\Participant;
@@ -29,22 +30,17 @@ class MeetingController extends Controller
                 'todayMeeting' => MeetingSchedule::whereDate('date', date('Y-m-d'))->get(),
             );
         }else{
-            $departmentParticipant = DepartmentParticipant::join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
-                                        ->join('users', 'meeting_schedule.created_by','=','users.id')
-                                        ->join('department', 'department.id','=','users.department_id')
-                                        ->where('meeting_department_participant.department_id', Auth::user()->department_id)
-                                        ->where('meeting_schedule.created_by', '!=', Auth::id())
-                                        ->select('meeting_schedule.*','department.hexa_color');
+            $departmentParticipant = DepartmentParticipant::with('meeting.user.department')->join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
+                                        ->join('department', 'department.id','=','meeting_department_participant.department_id')
+                                        ->where('department.id', Auth::user()->department_id);
 
             $meetingSchedule = MeetingSchedule::where('created_by', Auth::id());
             $participant = Participant::where('user_id', Auth::id());
 
-            $bureauParticipant = BureauParticipant::join('meeting_schedule', 'meeting_schedule.id','=','bureau_participant.meeting_schedule_id')
-                                            ->join('users', 'meeting_schedule.created_by','=','users.id')
-                                            ->join('bureau', 'bureau.id','=','users.bureau_id')
-                                            ->where('bureau_participant.bureau_id', Auth::user()->bureau_id)
-                                            ->where('meeting_schedule.created_by', '!=', Auth::id())
-                                            ->select('meeting_schedule.*','bureau.hexa_color');
+            $bureauParticipant = BureauParticipant::with('meetingSchedule.user.bureau')
+                                            ->join('meeting_schedule', 'meeting_schedule.id','=','bureau_participant.meeting_schedule_id')
+                                            ->join('bureau', 'bureau.id','=','bureau_participant.bureau_id')
+                                            ->where('bureau.id', Auth::user()->bureau_id);
             $data = array(
                 'filedMeeting' => $meetingSchedule->get(),
                 'todayMeeting' => $meetingSchedule->whereDate('date', date('Y-m-d'))->get(),
@@ -161,6 +157,8 @@ class MeetingController extends Controller
     public function meetingLinkSubmit(Request $request){
         $validate = Validator::make($request->all(),[
             'meetingLink' => 'required',
+            'personalMeetingId' => 'required',
+            'meetingPasscode' => 'required',
         ]);
 
         if($validate->fails()){
@@ -174,6 +172,8 @@ class MeetingController extends Controller
 
         if(isset($meeting)){
             $meeting->zoom_meeting_description = $request->meetingLink;
+            $meeting->zoom_meeting_id = $request->personalMeetingId;
+            $meeting->zoom_meeting_passcode = $request->meetingPasscode;
             $meeting->save();
         }
 
@@ -240,10 +240,9 @@ class MeetingController extends Controller
                     LEFT JOIN meeting_participant ON meeting_participant.meeting_schedule_id = meeting_schedule.id
                     LEFT JOIN bureau_participant ON bureau_participant.meeting_schedule_id  = meeting_schedule.id
                     ".$departmentJoin ."
-                WHERE DATE <= '".now()."'
-                    AND (meeting_schedule.created_by = ".Auth::id()."
-                    OR meeting_participant.user_id = ".Auth::id(). $departmentWhere.")
-                    ".$orAnd." bureau_participant.bureau_id = ".Auth::user()->bureau_id."";
+                WHERE (meeting_schedule.created_by = ".Auth::id()."
+                    OR meeting_participant.user_id = ".Auth::id(). $departmentWhere."
+                    OR bureau_participant.bureau_id = ".Auth::user()->bureau_id.") AND DATE <= '".now()."' ";
 
         if(Auth::user()->user_type == 'admin'){
             $query = "SELECT *
@@ -272,8 +271,13 @@ class MeetingController extends Controller
             ->addAction('meeting_schedule', function($result){
                 return date('F d, Y h:i A', strtotime($result->date));
             })
+            ->addAction('meeting_remarks', function($result){
+                return '<a href="#" class="mr-2 view-remarks" meetingId="'.$result->id.'">View remarks</a>
+                <button class="btn btn-success py-0 px-3 rounded-0 btn-add-remarks" meetingId="'.$result->id.'"> ADD REMARKS </button>';
+            })
             ->searchable(['title'])
             ->request($request)
+            ->orderBy('ORDER BY DATE DESC')
             ->make();
     }
 
@@ -297,5 +301,21 @@ class MeetingController extends Controller
         return response()->json([
             'message' => 'success',
         ]);
+    }
+
+    public function addRemarksForm(Request $request){
+        $data = array(
+            'minute' => MeetingSchedule::where('id', $request->meetingId)->first(),
+        );
+
+        if(isset($request->status) && $request->status == 'showOnly'){
+            return view('auth.meeting.remarks.show', compact('data'));
+        }
+
+        return view('auth.meeting.remarks.form', compact('data'));
+    }
+
+    public function addRemarksSubmit(Request $request){
+        return MeetingRemarks::insert($request);
     }
 }

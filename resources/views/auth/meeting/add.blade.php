@@ -19,21 +19,51 @@
                     cols="10" rows="5"></textarea>
             </div>
         </div>
-        <div class="col-12">
-            <div class="form-group">
-                @if (Auth::user()->user_type == 'admin')
+        @if (Auth::user()->user_type == 'admin')
+            <div class="col-12">
+                <div class="form-group">
                     <label for="zoomMeetingLink">Zoom meeting link: </label>
                     <input type="text" class="form-control rounded-0" name="zoomMeetingLink" id="zoomMeetingLink">
-                @else
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="zoomMeetingId">Zoom meeting id: </label>
+                    <input type="text" class="form-control rounded-0" name="zoomMeetingId" id="zoomMeetingId">
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="zoomMeetingPasscode">Zoom meeting passcode: </label>
+                    <input type="text" class="form-control rounded-0" name="zoomMeetingPasscode" id="zoomMeetingPasscode">
+                </div>
+            </div>
+        @else
+            <div class="col-12">
+                <div class="form-group">
                     <label for="zoomMeetingLink">Zoom meeting link: </label>
                     <input type="text" class="form-control rounded-0 d-none" name="zoomMeetingLink" id="zoomMeetingLink" value="requestToAdmin">
-                    <div class="form-check mb-1">
-                        <input type="checkbox" checked class="form-check-input" id="requestZoomMeetingLink">
-                        <label class="form-check-label" for="requestZoomMeetingLink">Request zoom meeting link to admin</label>
-                    </div>
-                @endif
+                </div>
             </div>
-        </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="zoomMeetingId">Zoom meeting id: </label>
+                    <input type="text" class="form-control rounded-0 d-none" name="zoomMeetingId" id="zoomMeetingId">
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="zoomMeetingPasscode">Zoom meeting passcode: </label>
+                    <input type="text" class="form-control rounded-0 d-none" name="zoomMeetingPasscode" id="zoomMeetingPasscode">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check mb-1">
+                    <input type="checkbox" checked class="form-check-input" id="requestZoomMeetingLink" name="requestZoomMeetingLink">
+                    <label class="form-check-label" for="requestZoomMeetingLink">Request zoom meeting link to admin</label>
+                </div>
+            </div>
+        @endif
         <div class="col-12">
             <div class="form-group">
                 <label for="participant">Participant: </label>

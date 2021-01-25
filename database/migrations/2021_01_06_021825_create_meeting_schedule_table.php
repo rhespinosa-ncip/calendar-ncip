@@ -18,6 +18,8 @@ class CreateMeetingScheduleTable extends Migration
             $table->longText('title');
             $table->longText('description');
             $table->longText('zoom_meeting_description');
+            $table->string('zoom_meeting_id')->nullable();
+            $table->string('zoom_meeting_passcode')->nullable();
             $table->dateTime('date', 0);
             $table->enum('participant', ['bureau', 'department', 'individual']);
             $table->enum('is_participant', ['yes', 'no']);

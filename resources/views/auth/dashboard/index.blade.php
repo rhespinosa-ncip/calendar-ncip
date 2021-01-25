@@ -137,7 +137,7 @@
                                                 $haveMeeting = true;
                                                 array_push($todayMeetings, array(
                                                     'id' => $todayMeetingAsParticipant->meeting->id,
-                                                    'hexa_color' => $todayMeetingAsParticipant->meeting->user->department->hexa_color,
+                                                    'hexa_color' => $todayMeetingAsParticipant->meeting->user->department->hexa_color ?? '#3788d8',
                                                     'title' => $todayMeetingAsParticipant->meeting->title,
                                                     'time' => date('H:i', strtotime($todayMeetingAsParticipant->meeting->date)),
                                                     'description' => $todayMeetingAsParticipant->meeting->description
@@ -151,8 +151,8 @@
                                         @php
                                             $haveMeeting = true;
                                             array_push($todayMeetings, array(
-                                                'id' => $departmentMeeting->id,
-                                                'hexa_color' => $departmentMeeting->hexa_color,
+                                                'id' => $departmentMeeting->meeting_schedule_id,
+                                                'hexa_color' => $departmentMeeting->meetingSchedule->user->department->hexa_color ?? '#3788d8',
                                                 'title' => $departmentMeeting->title,
                                                 'time' => date('H:i', strtotime($departmentMeeting->date)),
                                                 'description' => $departmentMeeting->description
@@ -165,8 +165,8 @@
                                         @php
                                             $haveMeeting = true;
                                             array_push($todayMeetings, array(
-                                                'id' => $todayMeetingAsBureau->id,
-                                                'hexa_color' => $todayMeetingAsBureau->hexa_color,
+                                                'id' => $todayMeetingAsBureau->meeting_schedule_id,
+                                                'hexa_color' => $todayMeetingAsBureau->meetingSchedule->user->bureau->hexa_color ?? '#3788d8',
                                                 'title' => $todayMeetingAsBureau->title,
                                                 'time' => date('H:i', strtotime($todayMeetingAsBureau->date)),
                                                 'description' => $todayMeetingAsBureau->description
@@ -181,7 +181,7 @@
                                         $haveMeeting = true;
                                         array_push($todayMeetings, array(
                                             'id' => $todayMeeting->id,
-                                            'hexa_color' => $todayMeeting->user->department->hexa_color ??  $todayMeeting->user->bureau->hexa_color,
+                                            'hexa_color' => $todayMeeting->user->department->hexa_color ??  ($todayMeeting->user->bureau->hexa_color ?? '#3788d8'),
                                             'title' => $todayMeeting->title,
                                             'time' => date('H:i', strtotime($todayMeeting->date)),
                                             'description' => $todayMeeting->description
@@ -251,6 +251,7 @@
                                 <tr>
                                     <th>Meeting title</th>
                                     <th>Meeting date</th>
+                                    <th>Meeting Remarks</th>
                                     <th>File or Action</th>
                                 </tr>
                             </thead>
@@ -289,7 +290,7 @@
                         id: '{{$filedMeeting->id}}',
                         title: '{{$filedMeeting->title}}',
                         start: '{{$filedMeeting->date}}',
-                        color: '{{$filedMeeting->user->department->hexa_color ?? $filedMeeting->user->bureau->hexa_color}}'
+                        color: '{{$filedMeeting->user->department->hexa_color ?? ($filedMeeting->user->bureau->hexa_color ?? '')}}'
                     },
                     @endforeach
 
@@ -304,18 +305,18 @@
                         @endforeach
                         @foreach($data['departmentMeeting'] as $departmentMeeting)
                         {
-                            id: '{{$departmentMeeting->id}}',
+                            id: '{{$departmentMeeting->meeting_schedule_id}}',
                             title: '{{$departmentMeeting->title}}',
                             start: '{{$departmentMeeting->date}}',
-                            color: '{{$departmentMeeting->hexa_color}}'
+                            color: '{{$departmentMeeting->meetingSchedule->user->department->hexa_color ?? ''}}'
                         },
                         @endforeach
                         @foreach($data['asBureau'] as $asBureau)
                         {
-                            id: '{{$asBureau->id}}',
+                            id: '{{$asBureau->meeting_schedule_id}}',
                             title: '{{$asBureau->title}}',
                             start: '{{$asBureau->date}}',
-                            color: '{{$asBureau->hexa_color}}'
+                            color: '{{$asBureau->meetingSchedule->user->bureau->hexa_color ?? ''}}'
                         },
                         @endforeach
                     @endif

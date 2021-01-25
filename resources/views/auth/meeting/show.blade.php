@@ -29,6 +29,30 @@
             @endif
         </div>
     </div>
+    <div class="col-6">
+        <div class="form-group">
+            <label for="zoomMeetingLink">Zoom meeting id: </label>
+            @if ($data['meeting']->zoom_meeting_id == '')
+                <span class="badge badge-warning">
+                    No zoom meeting id
+                </span>
+            @else
+                <label for="">{{$data['meeting']->zoom_meeting_id}}</label>
+            @endif
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <label for="zoomMeetingLink">Zoom meeting passcode: </label>
+            @if ($data['meeting']->zoom_meeting_passcode == '')
+                <span class="badge badge-warning">
+                    No zoom meeting passcode
+                </span>
+            @else
+                <label for="">{{$data['meeting']->zoom_meeting_passcode}}</label>
+            @endif
+        </div>
+    </div>
     <div class="col-12">
         <div class="form-group">
             <label for="participant">Participant: </label>

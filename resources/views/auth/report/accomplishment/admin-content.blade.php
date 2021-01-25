@@ -30,17 +30,20 @@
                             <th scope="col">NAME OF PERSONNEL</th>
                             <th scope="col">POSITION</th>
                             <th scope="col">ACCOMPLISHMENT</th>
+                            <th scope="col">DATE</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($bureauDivision->department->users as $user)
-                            <tr>
-                                <td>{{$user->fullName}}</td>
-                                <td>{{$user->position}}</td>
-                                <td>
-                                    @forelse ($user->tito as $tito)
-                                        <label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label>
-                                        <ul>
+                            @php
+                                $count = 0;
+                            @endphp
+                            @forelse ($user->tito as $tito)
+                                @if ($count == 0)
+                                    <tr>
+                                        <td class="align-middle" rowspan="{{$user->tito->count()}}">{{$user->fullName}}</td>
+                                        <td class="align-middle" rowspan="{{$user->tito->count()}}">{{$user->position}}</td>
+                                        <td>
                                             @forelse ($tito->accomplishments as $accomplishment)
                                                 <li>
                                                     {{$accomplishment->accomplishment}}
@@ -51,15 +54,35 @@
                                             @empty
                                                 <li> NO ACCOMPLISHMENT </li>
                                             @endforelse
-                                        </ul>
-                                    @empty
-                                        <li> NO DTR </li>
-                                    @endforelse
-                                </td>
-                            </tr>
+                                        </td>
+                                        <td class="align-middle">{{date('F d, Y', strtotime($tito->created_at))}}</td>
+                                    </tr>
+                                    @php
+                                        $count++;
+                                    @endphp
+                                @else
+                                    <tr>
+                                        <td>
+                                            @forelse ($tito->accomplishments as $accomplishment)
+                                                <li>
+                                                    {{$accomplishment->accomplishment}}
+                                                    <ul>
+                                                        <li>{{$accomplishment->remarks}}</li>
+                                                    </ul>
+                                                </li>
+                                            @empty
+                                                <li> NO ACCOMPLISHMENT </li>
+                                            @endforelse
+                                        </td>
+                                        <td class="align-middle">{{date('F d, Y', strtotime($tito->created_at))}}</td>
+                                    </tr>
+                                @endif
+                            @empty
+                                <li> NO DTR </li>
+                            @endforelse
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center"> NO ACCOMPLISHMENT </td>
+                                <td colspan="4" class="text-center"> NO ACCOMPLISHMENT </td>
                             </tr>
                         @endforelse
                     </tbody>
