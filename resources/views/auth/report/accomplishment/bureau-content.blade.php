@@ -40,13 +40,18 @@
                                     <td>
                                         <ul>
                                             @forelse ($tito->accomplishments as $accomplishment)
-                                                <li> {{$accomplishment->accomplishment}} </li>
+                                                <li> 
+                                                    {{$accomplishment->accomplishment}} 
+                                                    <ul>
+                                                        <li>{{$accomplishment->remarks}}</li>
+                                                    </ul>
+                                                </li>
                                             @empty
                                                 <li> NO ACCOMPLISHMENT </li>
                                             @endforelse
                                         </ul>
                                     </td>
-                                    <td>
+                                    <td class="align-middle" >
                                         <label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label>
                                     </td>
                                 </tr>
@@ -64,7 +69,7 @@
                                             @endforelse
                                         </ul>
                                     </td>
-                                    <td>
+                                    <td class="align-middle" >
                                         <label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label>
                                     </td>
                                 </tr>

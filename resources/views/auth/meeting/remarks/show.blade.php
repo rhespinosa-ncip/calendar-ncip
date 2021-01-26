@@ -8,12 +8,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data['minute']->remarks as $remark)
+                @forelse ($data['minute']->remarks as $remark)
                     <tr>
                         <td><textarea class="border-0 form-control">{{$remark->remarks}}</textarea></td>
                         <td>{{$remark->user->fullName}}</td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td class="text-center" colspan="2">NO REMARKS</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

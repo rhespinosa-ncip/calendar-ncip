@@ -85,7 +85,9 @@
                         @endif
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center"> NO ACCOMPLISHMENT </td>
+                            <td class="align-middle" rowspan="{{$accomplishment->tito->count()}}">{{$accomplishment->fullName}}</td>
+                            <td class="align-middle" rowspan="{{$accomplishment->tito->count()}}">{{$accomplishment->position}}</td>
+                            <td colspan="2" class="text-center">  NO ACCOMPLISHMENT </td>
                         </tr>
                     @endforelse
                 @empty
