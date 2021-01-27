@@ -40,8 +40,8 @@
                                     <td>
                                         <ul>
                                             @forelse ($tito->accomplishments as $accomplishment)
-                                                <li> 
-                                                    {{$accomplishment->accomplishment}} 
+                                                <li>
+                                                    {{$accomplishment->accomplishment}}
                                                     <ul>
                                                         <li>{{$accomplishment->remarks}}</li>
                                                     </ul>
@@ -76,7 +76,9 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center"> NO ACCOMPLISHMENT </td>
+                                <td class="align-middle">{{$user->fullName}}</td>
+                                <td class="align-middle">{{$user->position}}</td>
+                                <td colspan="2" class="text-center"> NO ACCOMPLISHMENT </td>
                             </tr>
                         @endforelse
                     @empty
@@ -168,7 +170,9 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center"> NO ACCOMPLISHMENT </td>
+                                <td class="align-middle">{{$perUserBureau->fullName}}</td>
+                                <td class="align-middle">{{$perUserBureau->position}}</td>
+                                <td colspan="2" class="text-center"> NO ACCOMPLISHMENT </td>
                             </tr>
                         @endforelse
                     @empty

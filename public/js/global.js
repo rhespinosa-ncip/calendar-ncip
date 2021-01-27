@@ -212,7 +212,7 @@ function inputError(key, val){
 
 function setTimeOut(url){
     setTimeout(function() {
-        window.location.href = url;
+        window.location.href = url
     }, 1000);
 }
 

@@ -79,8 +79,8 @@
                                 @endif
                             @empty
                                 <tr>
-                                    <td>{{$user->fullName}}</td>
-                                    <td>{{$user->position}}</td>
+                                    <td class="align-middle">{{$user->fullName}}</td>
+                                    <td class="align-middle">{{$user->position}}</td>
                                     <td colspan="2" class="text-center"> NO ACCOMPLISHMENT </td>
                                 </tr>
                             @endforelse

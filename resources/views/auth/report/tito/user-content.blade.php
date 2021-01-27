@@ -69,7 +69,9 @@
                         </tr>
                     @endif
                 @empty
-                    NO DTR
+                   <tr>
+                       <td class="text-center" colspan="5"> NO DTR </td>
+                   </tr>
                 @endforelse
             </tbody>
         </table>

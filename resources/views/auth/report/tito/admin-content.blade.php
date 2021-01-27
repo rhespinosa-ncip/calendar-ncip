@@ -72,7 +72,9 @@
                                 @endif
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center"> NO DTR </td>
+                                    <td class="align-middle">{{$user->fullName}}</td>
+                                    <td class="align-middle">{{$user->position}}</td>
+                                    <td colspan="3" class="text-center"> NO DTR </td>
                                 </tr>
                             @endforelse
                         @empty

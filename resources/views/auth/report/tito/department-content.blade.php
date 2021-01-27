@@ -36,7 +36,6 @@
                     @php
                         $count = 0;
                     @endphp
-
                     @forelse ($tito->tito as $titoValue)
                         @if ($count == 0)
                             <tr>
@@ -69,11 +68,16 @@
                             </tr>
                         @endif
                     @empty
-                        NO DTR
+                        <tr>
+                            <td class="align-middle">{{$tito->fullName}}</td>
+                            <td class="align-middle">{{$tito->position}}</td>
+                            <td colspan="3" class="text-center"> NO DTR </td>
+                        </tr>
                     @endforelse
-
                 @empty
-                    NO DTR
+                    <tr>
+                        <td colspan="5" class="text-center"> NO DTR </td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>

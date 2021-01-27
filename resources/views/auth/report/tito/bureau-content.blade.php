@@ -103,46 +103,47 @@
                 <tbody>
                     @if (isset($tito['perUserBureau']))
                         @forelse ($tito['perUserBureau'] as $perUserBureau)
-                        @php
-                            $count = 0;
-                        @endphp
-
-                                @forelse ($perUserBureau->tito as $tito)
-                                    @if ($count == 0)
-                                        <tr>
-                                            <td class="align-middle" rowspan="{{$perUserBureau->tito->count()}}">{{$perUserBureau->fullName}}</td>
-                                            <td class="align-middle" rowspan="{{$perUserBureau->tito->count()}}">{{$perUserBureau->position}}</td>
-                                            <td><label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label></td>
-                                            <td>
-                                                <label>{{date('h:i A', strtotime($tito->time_in))}}</label>
-                                            </td>
-                                            <td>
-                                                <label>{{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_in)) : 'NO TIME OUT'}}</label>
-                                            </td>
-                                            @php
-                                                $count++;
-                                            @endphp
-                                        </tr>
-                                    @else
-                                        <tr>
-                                            <td><label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label></td>
-                                            <td>
-                                                <label>{{date('h:i A', strtotime($tito->time_in))}}</label>
-                                            </td>
-                                            <td>
-                                                <label>{{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_in)) : 'NO TIME OUT'}}</label>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @empty
+                            @php
+                                $count = 0;
+                            @endphp
+                            @forelse ($perUserBureau->tito as $tito)
+                                @if ($count == 0)
                                     <tr>
-                                        <td colspan="5" class="text-center"> NO ACCOMPLISHMENT </td>
+                                        <td class="align-middle" rowspan="{{$perUserBureau->tito->count()}}">{{$perUserBureau->fullName}}</td>
+                                        <td class="align-middle" rowspan="{{$perUserBureau->tito->count()}}">{{$perUserBureau->position}}</td>
+                                        <td><label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label></td>
+                                        <td>
+                                            <label>{{date('h:i A', strtotime($tito->time_in))}}</label>
+                                        </td>
+                                        <td>
+                                            <label>{{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_in)) : 'NO TIME OUT'}}</label>
+                                        </td>
+                                        @php
+                                            $count++;
+                                        @endphp
                                     </tr>
-                                @endforelse
+                                @else
+                                    <tr>
+                                        <td><label for="">{{date('F d, Y', strtotime($tito->created_at))}}</label></td>
+                                        <td>
+                                            <label>{{date('h:i A', strtotime($tito->time_in))}}</label>
+                                        </td>
+                                        <td>
+                                            <label>{{isset($tito->time_out) ? date('h:i A', strtotime($tito->time_in)) : 'NO TIME OUT'}}</label>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @empty
+                                <tr>
+                                    <td class="align-middle">{{$perUserBureau->fullName}}</td>
+                                    <td class="align-middle">{{$perUserBureau->position}}</td>
+                                    <td colspan="3" class="text-center"> NO DTR </td>
+                                </tr>
+                            @endforelse
                         @empty
-                        <tr>
-                            <td colspan="5" class="text-center"> NO ACCOMPLISHMENT </td>
-                        </tr>
+                            <tr>
+                                <td colspan="5" class="text-center"> NO DTR </td>
+                            </tr>
                         @endforelse
                     @endif
                 </tbody>

@@ -25,8 +25,7 @@ const loginSubmit = data => {
         data: data
     }).done(result => {
         if(result.message == 'success'){
-            setTimeOut('')
-
+            setTimeOut('/')
             toastr.success('Login success', '', {
                 progressBar: true,
                 timeOut: 1000,
@@ -47,7 +46,6 @@ const forgotPassword = data => {
         data: data
     }).done(result => {
         if(result.message == 'success'){
-            setTimeOut('')
             toastr.success('Link sent successfully', '', {
                 progressBar: true,
                 timeOut: 1000,
