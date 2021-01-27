@@ -18,7 +18,8 @@ $(function(){
             },
             {
                 data: 'bureau_color',
-                name: 'bureau_color'
+                name: 'bureau_color',
+                orderable: false
             },
             {
                 data: 'action',

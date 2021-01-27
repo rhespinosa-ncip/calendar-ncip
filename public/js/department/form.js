@@ -19,7 +19,8 @@ $(function(){
             },
             {
                 data: 'department_color',
-                name: 'department_color'
+                name: 'department_color',
+                orderable: false
             },
             {
                 data: 'action',
