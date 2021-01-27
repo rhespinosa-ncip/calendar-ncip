@@ -32,7 +32,7 @@ class MeetingController extends Controller
         }else{
             $departmentParticipant = DepartmentParticipant::with('meeting.user.department')->join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
                                         ->join('department', 'department.id','=','meeting_department_participant.department_id')
-                                        ->where('department.id', Auth::user()->department_id);
+                                        ->where([['department.id', Auth::user()->department_id],['meeting_schedule.created_by' ,'!=', Auth::id()]]);
 
             $meetingSchedule = MeetingSchedule::where('created_by', Auth::id());
             $participant = Participant::where('user_id', Auth::id());
@@ -40,7 +40,7 @@ class MeetingController extends Controller
             $bureauParticipant = BureauParticipant::with('meetingSchedule.user.bureau')
                                             ->join('meeting_schedule', 'meeting_schedule.id','=','bureau_participant.meeting_schedule_id')
                                             ->join('bureau', 'bureau.id','=','bureau_participant.bureau_id')
-                                            ->where('bureau.id', Auth::user()->bureau_id);
+                                            ->where([['bureau.id', Auth::user()->bureau_id],['meeting_schedule.created_by' ,'!=', Auth::id()]]);
             $data = array(
                 'filedMeeting' => $meetingSchedule->get(),
                 'todayMeeting' => $meetingSchedule->whereDate('date', date('Y-m-d'))->get(),
