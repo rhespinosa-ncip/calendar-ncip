@@ -4,6 +4,18 @@ $(function(){
         loginSubmit(data)
         return false
     })
+
+    $('#forgotPassword-form').submit(function(){
+        let data = $(this).serialize()
+        forgotPassword(data)
+        return false
+    })
+
+    $('#password-reset-form').submit(function(){
+        let data = $(this).serialize()
+        changePassword(data)
+        return false
+    })
 })
 
 const loginSubmit = data => {
@@ -13,8 +25,8 @@ const loginSubmit = data => {
         data: data
     }).done(result => {
         if(result.message == 'success'){
-            setTimeOut('/')
-            
+            setTimeOut('')
+
             toastr.success('Login success', '', {
                 progressBar: true,
                 timeOut: 1000,
@@ -24,6 +36,51 @@ const loginSubmit = data => {
                 progressBar: true,
                 timeOut: 1000,
             })
+        }
+    })
+}
+
+const forgotPassword = data => {
+    $.ajax({
+        url: '/forgot-password/submit',
+        type: 'post',
+        data: data
+    }).done(result => {
+        if(result.message == 'success'){
+            setTimeOut('')
+            toastr.success('Link sent successfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
+
+        if(result.message == 'error'){
+            toastr.error('Credentials not found', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
+    })
+}
+
+
+const changePassword = data => {
+    $.ajax({
+        url: '/forgot-password/reset-password/submit',
+        type: 'post',
+        data: data
+    }).done(result => {
+        if(result.message == 'success'){
+            toastr.success('Password reset successfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            });
+            setTimeOut('/')
+        }else if(result.message == 'error'){
+            toastr.error('Token and email not match', '', {
+                progressBar: true,
+                timeOut: 1000,
+            });
         }
     })
 }

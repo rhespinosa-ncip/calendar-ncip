@@ -78,7 +78,11 @@
                                     </tr>
                                 @endif
                             @empty
-                                <li> NO DTR </li>
+                                <tr>
+                                    <td>{{$user->fullName}}</td>
+                                    <td>{{$user->position}}</td>
+                                    <td colspan="2" class="text-center"> NO ACCOMPLISHMENT </td>
+                                </tr>
                             @endforelse
                         @empty
                             <tr>

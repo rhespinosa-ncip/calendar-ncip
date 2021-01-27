@@ -85,7 +85,7 @@
                     @endif
                 @empty
                     <tr>
-                        <td colspan="3" class="text-center"> NO ACCOMPLISHMENT </td>
+                        <td colspan="4" class="text-center"> NO ACCOMPLISHMENT </td>
                     </tr>
                 @endforelse
             </tbody>

@@ -34,6 +34,16 @@ Route::group(['middleware' => ['guest']], function () {
     Route::group(['prefix' => 'auto-time'], function () {
         Route::get('tito', [PageController::class, 'autoTito']);
     });
+
+    Route::group(['prefix' => 'forgot-password'], function () {
+        Route::get('',  [PageController::class, 'forgotPassword']);
+        Route::post('submit',  [PageController::class, 'forgotPasswordSubmit']);
+
+        Route::group(['prefix' => 'reset-password'], function () {
+            Route::get('/{token}/{email}', [PageController::class, 'resetPassword']);
+            Route::post('submit', [PageController::class, 'resetPasswordSubmit']);
+        });
+    });
 });
 
 Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
