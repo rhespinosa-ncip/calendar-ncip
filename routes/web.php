@@ -20,10 +20,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::fallback(function () {
-    return redirect('/');
-});
-
 Route::group(['prefix' => ''], function () {
     Route::get('', [PageController::class, 'index'])->name('login');
 });

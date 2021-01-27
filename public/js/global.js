@@ -290,7 +290,7 @@ function closeModal(type){
 
 
 function showLoader(options){
-    let loadingImage = getBaseUrl('image/loader.svg');
+    let loadingImage = getBaseUrl('public/image/loader.svg');
     let title = '<span class="loadingText">Just a moment...';
     let text = '';
 
