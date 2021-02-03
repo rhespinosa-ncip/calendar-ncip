@@ -39,6 +39,10 @@ class MeetingSchedule extends Model
         return $this->hasMany(DepartmentParticipant::class, 'meeting_schedule_id', 'id');
     }
 
+    public function bureauParticipants(){
+        return $this->hasMany(BureauParticipant::class, 'meeting_schedule_id', 'id');
+    }
+
     public function documents(){
         return $this->hasMany(Document::class, 'table_id', 'id')->where('table_name','meeting_schedule');
     }
@@ -53,6 +57,10 @@ class MeetingSchedule extends Model
 
     public function remarks(){
         return $this->hasMany(MeetingRemarks::class, 'meeting_schedule_id', 'id')->orderBy('id', 'desc');
+    }
+
+    public function actionableItem(){
+        return $this->hasMany(ActionableItem::class, 'meeting_schedule_id', 'id')->orderBy('id', 'desc');
     }
 
     static function validation($request){

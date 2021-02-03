@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\GlobalClass\Datatables;
+use App\Models\ActionableItem;
 use App\Models\Bureau;
 use App\Models\BureauParticipant;
 use App\Models\Department;
@@ -251,29 +252,10 @@ class MeetingController extends Controller
 
         return Datatables::of($query)
             ->addAction('action', function($result){
-                if(Auth::id() == $result->created_by){
-                    return '<button class="btn btn-success py-0 px-3 rounded-0 btn-add-minutes" meetingId="'.$result->id.'"> ADD </button>';
-                }
-
-                $documents = Document::where([['table_id', $result->id],['table_name', 'minutes']])->get();
-                $links = '';
-
-                foreach($documents as $document){
-                    $links = '<li><a href="/show-document/'.$document->file_path.'" target="_blank" rel="noopener noreferrer">'.$document->file_path.'</a></li>'.$links;
-                }
-
-                if($links == ''){
-                    return 'No file uploaded';
-                }
-
-                return '<ul>'.$links.'</ul>';
+                return '<a href="/meeting/view/'.$result->id.'" class="btn btn-success py-0 px-3 rounded-0"> VIEW </a>';
             })
             ->addAction('meeting_schedule', function($result){
                 return date('F d, Y h:i A', strtotime($result->date));
-            })
-            ->addAction('meeting_remarks', function($result){
-                return '<a href="#" class="mr-2 view-remarks" meetingId="'.$result->id.'">View remarks</a>
-                <button class="btn btn-success py-0 px-3 rounded-0 btn-add-remarks" meetingId="'.$result->id.'"> ADD REMARKS </button>';
             })
             ->searchable(['title'])
             ->request($request)
@@ -317,5 +299,107 @@ class MeetingController extends Controller
 
     public function addRemarksSubmit(Request $request){
         return MeetingRemarks::insert($request);
+    }
+
+    public function viewMeeting(Request $request){
+        $data = array(
+            'meetingSchedule' => MeetingSchedule::where('id', $request->meetingId)->first(),
+        );
+
+        if(isset($data['meetingSchedule'])){
+            $participantDepartment = DepartmentParticipant::where('meeting_schedule_id', $request->meetingId)->get('department_id');
+            $participantBureau = BureauParticipant::where('meeting_schedule_id', $request->meetingId)->get('bureau_id');
+            $participant = Participant::where('meeting_schedule_id', $request->meetingId)->get('user_id');
+
+            $userAuth = User::where(function ($query) use ($participantDepartment, $participantBureau, $participant, $data){
+                                        if($data['meetingSchedule']->created_by != Auth::id()){
+                                            if(Auth::user()->user_type != 'admin'){
+                                                switch($data['meetingSchedule']->participant){
+                                                    case 'department':
+                                                        $query->whereIn('department_id', $participantDepartment);
+                                                    break;
+
+                                                    case 'bureau':
+                                                        $query->whereIn('bureau_id', $participantBureau);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    })->whereId(Auth::id())->first();
+
+            if(isset($userAuth)){
+                return view('auth.meeting.view', compact('data'));
+            }
+        }
+    }
+
+    public function actionableForm(Request $request){
+        $data = array(
+            'minute' => MeetingSchedule::where('id', $request->meetingId)->first(),
+        );
+
+        if($request->status == 'update'){
+            $actionableItem = ActionableItem::whereId($request->meetingId)->first();
+
+            if(isset($actionableItem)){
+                return response()->json([
+                    'view' => view('auth.meeting.actionable-item.update-form', compact('actionableItem'))->render(),
+                    'personnel_id' => $actionableItem->personnel_id
+                ]);
+            }
+        }
+        return view('auth.meeting.actionable-item.form', compact('data'));
+    }
+
+    public function actionableFormOption(Request $request){
+        $meetingId = $request->meetingId;
+        $selectedOption = $request->value;
+
+        $meetingSchedule = MeetingSchedule::with('departmentParticipants.department','bureauParticipants.bureau','participants.user')->where('id', $meetingId)->first();
+
+        if(isset($meetingSchedule)){
+            $participantDepartment = DepartmentParticipant::where('meeting_schedule_id', $meetingId)->get('department_id');
+            $participantBureau = BureauParticipant::where('meeting_schedule_id', $meetingId)->get('bureau_id');
+            $participant = Participant::where('meeting_schedule_id', $meetingId)->get('user_id');
+
+            if($selectedOption == 'individual'){
+                $userOption = array();
+
+                $users = User::orWhereIn('department_id', $participantDepartment)
+                            ->orWhereIn('bureau_id', $participantBureau)
+                            ->orWhereIn('id', $participant)->get();
+
+                foreach($users as $user){
+                    array_push($userOption, array(
+                        'user_id' => $user->id,
+                        'user_name' => $user->fullName,
+                    ));
+                }
+
+                return $userOption;
+            }
+
+            return response()->json([
+                'optionBD' => $meetingSchedule
+            ]);
+        }
+    }
+
+    public function actionableFormSubmit(Request $request){
+        return ActionableItem::insert($request);
+    }
+
+    public function actionableFormResponse(Request $request){
+        $data = array(
+            'actionableItem' => ActionableItem::find($request->actionableItem),
+        );
+
+        if(isset($data['actionableItem'])){
+            return view('auth.meeting.actionable-item.response.form', compact('data'));
+        }
+    }
+
+    public function actionableFormResponseSubmit(Request $request){
+        return ActionableItem::insertResponse($request);
     }
 }

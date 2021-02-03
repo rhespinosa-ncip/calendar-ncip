@@ -129,23 +129,24 @@ class PageController extends Controller
                 if(strtotime($userTito->time_in) > strtotime("-30 minutes")){
 
                 }else{
-                    $userTito->time_out =  date('H:i:s');
-                    $userTito->save();
+                    // $userTito->time_out =  date('H:i:s');
+                    // $userTito->save();
                 }
 
-
-                return response()->json([
-                    'message' => 'success'
+                return view('guest.success-tito', [
+                    'tito' => 'OUT',
+                    'user' => $user
                 ]);
             }
 
-            Tito::create([
-                'time_in' => date('H:i:s'),
-                'user_id' => $user->id
-            ]);
+            // Tito::create([
+            //     'time_in' => date('H:i:s'),
+            //     'user_id' => $user->id
+            // ]);
 
-            return response()->json([
-                'message' => 'success'
+            return view('guest.success-tito', [
+                'tito' => 'IN',
+                'user' => $user
             ]);
         }
 

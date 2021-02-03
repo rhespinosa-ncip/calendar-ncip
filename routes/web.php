@@ -76,6 +76,24 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
                 Route::post('submit', [MeetingController::class, 'minutesFormSubmit']);
             });
         });
+
+        Route::group(['prefix' => 'view'], function () {
+            Route::get('{meetingId}', [MeetingController::class, 'viewMeeting']);
+        });
+
+        Route::group(['prefix' => 'actionable-item'], function () {
+            Route::group(['prefix' => 'form'], function () {
+                Route::get('', [MeetingController::class, 'actionableForm']);
+                Route::post('submit', [MeetingController::class, 'actionableFormSubmit']);
+            });
+
+            Route::group(['prefix' => 'form-response'], function () {
+                Route::get('', [MeetingController::class, 'actionableFormResponse']);
+                Route::post('submit', [MeetingController::class, 'actionableFormResponseSubmit']);
+            });
+
+            Route::get('option', [MeetingController::class, 'actionableFormOption']);
+        });
     });
 
     Route::group(['prefix' => 'user'], function () {

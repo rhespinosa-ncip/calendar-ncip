@@ -195,11 +195,6 @@ const showEndedMeeting = () => {
                 orderable: false
             },
             {
-                data: 'meeting_remarks',
-                name: 'meeting_remarks',
-                orderable: false
-            },
-            {
                 data: 'action',
                 name: 'action',
                 orderable: false
@@ -239,7 +234,7 @@ const saveMinutes = data => {
     }).done(result => {
         if(result.message == 'success'){
             closeModal('lg')
-            setTimeOut('/')
+            setTimeOut('')
 
             toastr.success('Minutes update successfully', '', {
                 progressBar: true,

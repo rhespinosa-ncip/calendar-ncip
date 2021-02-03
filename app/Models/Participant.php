@@ -22,6 +22,10 @@ class Participant extends Model
         'user_id',
     ];
 
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
     public function meeting(){
         return $this->hasOne(MeetingSchedule::class, 'id', 'meeting_schedule_id');
     }

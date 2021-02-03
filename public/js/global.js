@@ -34,6 +34,14 @@ $(function(){
                             timeOut: 1000,
                         })
                     }
+
+                    if(key == 'file'){
+                        toastr.error('File field is required', '', {
+                            progressBar: true,
+                            timeOut: 1000,
+                        })
+                    }
+
                     inputError(key, val)
                 })
             }

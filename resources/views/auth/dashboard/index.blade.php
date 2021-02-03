@@ -251,7 +251,6 @@
                                 <tr>
                                     <th>Meeting title</th>
                                     <th>Meeting date</th>
-                                    <th>Meeting Remarks</th>
                                     <th>File or Action</th>
                                 </tr>
                             </thead>

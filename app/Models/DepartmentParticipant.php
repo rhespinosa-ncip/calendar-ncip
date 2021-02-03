@@ -21,6 +21,10 @@ class DepartmentParticipant extends Model
         'department_id',
     ];
 
+    public function department(){
+        return $this->hasOne(Department::class, 'id', 'department_id');
+    }
+
     public function meeting(){
         return $this->hasOne(MeetingSchedule::class, 'id', 'meeting_schedule_id');
     }

@@ -136,3 +136,7 @@ code {
 body{
     background-color: #ffffff !important;
 }
+
+.indent-30{
+    text-indent: 30px !important;
+}
