@@ -321,16 +321,22 @@ class MeetingController extends Controller
 
                                                     case 'bureau':
                                                         $query->whereIn('bureau_id', $participantBureau);
+
+                                                    case 'individual':
+                                                        $query->whereIn('id', $participant);
                                                     break;
                                                 }
                                             }
                                         }
                                     })->whereId(Auth::id())->first();
 
-            if(isset($userAuth)){
+
+            if(isset($userAuth) && date('y-m-d H:i', strtotime($data['meetingSchedule']->date)) <= date('y-m-d H:i')){
                 return view('auth.meeting.view', compact('data'));
             }
         }
+
+        return view('not-found');
     }
 
     public function actionableForm(Request $request){
