@@ -93,6 +93,24 @@ $(function(){
 
 })
 
+const notify = (e) => {
+    const { message, personnel, personnel_id } = e.message; // destructure the event data
+
+    $.ajax({
+        'isDatabale': true,
+        url: '/notification/validate',
+        type: 'GET',
+        data: {personnel: personnel, personnel_id: personnel_id}
+    }).done(result => {
+        if(result.message == 'success'){
+            toastr.info(message, '', {
+                progressBar: true,
+                timeOut: 5000,
+            })
+        }
+    })
+}
+
 const showNotification = () => {
     $.ajax({
         url: '/notification/show',

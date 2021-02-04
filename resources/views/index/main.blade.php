@@ -62,6 +62,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/report/accomplishment">ACCOMPLISHMENT REPORT</a>
                             <a class="dropdown-item" href="/report/dtr">DTR REPORT</a>
+                            <a class="dropdown-item" href="/report/meeting">MEETING REPORT</a>
                             </div>
                         </li>
                     </ul>

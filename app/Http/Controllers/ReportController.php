@@ -23,6 +23,10 @@ class ReportController extends Controller
         return view('auth.report.tito.index');
     }
 
+    public function indexMeeting(){
+        return view('auth.report.meeting.index');
+    }
+
     public function filterForm(Request $request){
         $data = array(
             'bureauDepartment' => BureauDivision::where('bureau_id', Auth::user()->bureau_id)->get(),

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationProcessed;
 use App\Mail\ForgotPassword;
 use App\Models\Notification;
 use App\Models\PasswordReset;
@@ -255,5 +256,16 @@ class PageController extends Controller
         })->orderBy('created_at', 'asc')->get();
 
         return view('auth.notification.index', compact('notifications'));
+    }
+
+    public function validateNotify(Request $request){
+        if(($request->personnel == 'bureau' && Auth::user()->bureau_id == $request->personnel_id)
+        || ($request->personnel == 'department' && Auth::user()->department_id == $request->personnel_id)
+        || ($request->personnel == 'individual' && Auth::id() == $request->personnel_id)){
+
+            return response()->json([
+                'message' => 'success'
+            ]);
+        }
     }
 }

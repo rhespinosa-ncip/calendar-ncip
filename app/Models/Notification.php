@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\NotificationProcessed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -95,5 +96,36 @@ class Notification extends Model
             'table_name' => $table_name,
             'link' => $link,
         ]);
+
+
+        switch($table_name){
+            case 'meeting_schedule':
+                self::meetingSchedule($notification);
+            break;
+
+            case 'actionable_item':
+                self::actionableItemNotif($notification);
+            break;
+        }
+    }
+
+    static function eventNotif($message){
+        event(new NotificationProcessed($message));
+    }
+
+    static function meetingSchedule($notification){
+        $notification = Notification::where('id', $notification->id)->first();
+        $note = " added a new meeting";
+        $message = $notification->meeting->user->fullName . $note;
+
+        self::eventNotif(array('message'=> $message, 'personnel' => $notification->personnel, 'personnel_id' => $notification->personnel_id));
+    }
+
+    static function actionableItemNotif($notification){
+        $note = " assigned you actionable item";
+        $notification = Notification::where('id', $notification->id)->first();
+        $message = $notification->actionableItem->meetingSchedule->user->fullName . $note;
+
+        self::eventNotif(array('message'=> $message, 'personnel' => $notification->personnel, 'personnel_id' => $notification->personnel_id));
     }
 }

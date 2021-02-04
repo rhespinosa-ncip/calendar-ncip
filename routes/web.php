@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::group(['prefix' => ''], function () {
     Route::get('', [PageController::class, 'index'])->name('login');
 });
@@ -165,6 +166,10 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
             Route::get('', [ReportController::class, 'indexTiTo']);
         });
 
+        Route::group(['prefix' => 'meeting'], function () {
+            Route::get('', [ReportController::class, 'indexMeeting']);
+        });
+
         Route::group(['prefix' => 'filter'], function () {
             Route::get('', [ReportController::class, 'filterForm']);
             Route::post('submit', [ReportController::class, 'filterSubmit']);
@@ -183,6 +188,7 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
     Route::group(['prefix' => 'notification'], function () {
         Route::get('', [PageController::class, 'notificationIndex']);
         Route::get('show', [PageController::class, 'showNotification']);
+        Route::get('validate', [PageController::class, 'validateNotify']);
     });
 
     Route::group(['prefix' => 'my-qr-code'], function () {

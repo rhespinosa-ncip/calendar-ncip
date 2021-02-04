@@ -5,8 +5,8 @@
                 <h5>New</h5>
             </div>
             <hr>
-            @forelse ($notReadNotifications as $notReadNotification)
-                <div class="scrollable scrollable-body-35">
+            <div class="scrollable scrollable-body-35">
+                @forelse ($notReadNotifications as $notReadNotification)
                     @if ($notReadNotification->table_name == 'meeting_schedule')
                         <div class="col-12 mb-2">
                             {!! $notReadNotification->link !!}
@@ -30,12 +30,12 @@
                             </a>
                         </div>
                     @endif
-                </div>
-            @empty
-                <div class="col-12 text-center">
-                    <label>NO NOTIFICATION</label>
-                </div>
-            @endforelse
+                @empty
+                    <div class="col-12 text-center mt-3">
+                        <label>NO NOTIFICATION</label>
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
 </div>
