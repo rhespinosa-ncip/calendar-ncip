@@ -180,6 +180,11 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
         });
     });
 
+    Route::group(['prefix' => 'notification'], function () {
+        Route::get('', [PageController::class, 'notificationIndex']);
+        Route::get('show', [PageController::class, 'showNotification']);
+    });
+
     Route::group(['prefix' => 'my-qr-code'], function () {
         Route::get('', [PageController::class , 'myQrCode']);
         Route::get('download', [PageController::class , 'downloadMyQrCode']);

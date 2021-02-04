@@ -117,6 +117,9 @@
                                             @endforeach
                                         @else
                                             @foreach ($data['meetingSchedule']->actionableItem as $actionableItem)
+                                                @php
+                                                    $showButton = false;
+                                                @endphp
                                                 @if ($actionableItem->personnel == 'individual')
                                                     @if ($actionableItem->personnel_id == 'user_'.Auth::id())
                                                         @php

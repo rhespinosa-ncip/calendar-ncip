@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ForgotPassword;
+use App\Models\Notification;
 use App\Models\PasswordReset;
+use App\Models\ReadNotification;
 use App\Models\Tito;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -224,5 +226,34 @@ class PageController extends Controller
                 'message' => 'error'
             ]);
         }
+    }
+
+    public function showNotification(){
+        $notifications = Notification::where(function($query){
+            $query->orWhere([['personnel','bureau'],['personnel_id', Auth::user()->bureau_id]])
+            ->orWhere([['personnel','department'],['personnel_id', Auth::user()->department_id]])
+            ->orWhere([['personnel','individual'],['personnel_id', Auth::id()]]);
+        })->get('id');
+
+        $readNotifications = ReadNotification::where('user_id', Auth::id())->whereIn('notification_id', $notifications)->get('notification_id');
+
+        $notReadNotifications = Notification::where(function($query){
+            $query->orWhere([['personnel','bureau'],['personnel_id', Auth::user()->bureau_id]])
+            ->orWhere([['personnel','department'],['personnel_id', Auth::user()->department_id]])
+            ->orWhere([['personnel','individual'],['personnel_id', Auth::id()]]);
+        })->whereNotIn('id', $readNotifications)->orderBy('created_at', 'asc')->get();
+
+
+        return view('auth.notification.show', compact('readNotifications', 'notReadNotifications'));
+    }
+
+    public function notificationIndex(){
+        $notifications = Notification::with('meeting')->where(function($query){
+            $query->orWhere([['personnel','bureau'],['personnel_id', Auth::user()->bureau_id]])
+            ->orWhere([['personnel','department'],['personnel_id', Auth::user()->department_id]])
+            ->orWhere([['personnel','individual'],['personnel_id', Auth::id()]]);
+        })->orderBy('created_at', 'asc')->get();
+
+        return view('auth.notification.index', compact('notifications'));
     }
 }

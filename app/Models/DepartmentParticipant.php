@@ -34,6 +34,10 @@ class DepartmentParticipant extends Model
             'meeting_schedule_id' => $meetingId,
             'department_id' => $departmentId,
         ]);
+
+        $link = '<a href="#" class="card rounded-0 notification-card btn-show-meeting" meetingid="'.$meetingId.'">';
+
+        Notification::insert('department', $departmentId, $link, $meetingId, 'meeting_schedule');
     }
 
     static function insertDepartment($request, $meeting){

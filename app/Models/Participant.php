@@ -70,6 +70,10 @@ class Participant extends Model
                     $meeting->save();
 
                     self::insert($check[1], $meeting->id);
+
+                    $link = '<a href="#" class="card rounded-0 notification-card btn-show-meeting" meetingid="'.$meeting->id.'">';
+
+                    Notification::insert('individual', $check[1], $link, $meeting->id, 'meeting_schedule');
                 }
             }
         }

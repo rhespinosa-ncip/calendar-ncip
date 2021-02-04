@@ -60,7 +60,7 @@ class MeetingSchedule extends Model
     }
 
     public function actionableItem(){
-        return $this->hasMany(ActionableItem::class, 'meeting_schedule_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(ActionableItem::class, 'meeting_schedule_id', 'id')->orderBy('deadline', 'desc');
     }
 
     static function validation($request){
@@ -149,7 +149,6 @@ class MeetingSchedule extends Model
             Participant::insertIndividual($request, $meeting);
         }
 
-
         return response()->json([
             'message' => 'success',
         ]);
@@ -178,6 +177,9 @@ class MeetingSchedule extends Model
                 $meeting->is_participant = 'no';
                 $meeting->participant = $request->participantsChoice ?? 'individual';
                 $meeting->save();
+
+                $notification = Notification::where([['table_name', 'meeting_schedule'],['table_id', $request->meetingId]])
+                ->update(['table_name' => 'meeting_schedule_update','personnel_id' => '0']);
 
                 if($request->participantsChoice == 'bureau'){
                     BureauParticipant::updateBureau($request, $meeting);

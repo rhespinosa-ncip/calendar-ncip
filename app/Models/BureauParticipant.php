@@ -34,6 +34,10 @@ class BureauParticipant extends Model
             'meeting_schedule_id' => $meetingId,
             'bureau_id' => $bureauId,
         ]);
+
+        $link = '<a href="#" class="card rounded-0 notification-card btn-show-meeting" meetingid="'.$meetingId.'">';
+
+        Notification::insert('bureau', $bureauId, $link, $meetingId, 'meeting_schedule');
     }
 
     static function insertBureau($request, $meeting){
@@ -50,6 +54,7 @@ class BureauParticipant extends Model
         $partipant = Participant::where('meeting_schedule_id', $meeting->id)->delete();
         $bureauParticipant = BureauParticipant::where('meeting_schedule_id', $meeting->id)->delete();
         $departmentPartipant = DepartmentParticipant::where('meeting_schedule_id', $meeting->id)->delete();
+
 
         self::insertBureau($request, $meeting);
     }

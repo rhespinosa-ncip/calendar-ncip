@@ -86,10 +86,25 @@ $(function(){
         showMyQrCode()
     }).on('click', '.btn-print-report', function(){
         printElement(document.getElementById("printAreaReports"))
+    }).on('click', '.show-notification', function(){
+        showNotification()
+        return false
     })
 
 })
 
+const showNotification = () => {
+    $.ajax({
+        url: '/notification/show',
+        type: 'GET',
+    }).done(result => {
+        showModal({
+            type: '',
+            title: 'Notifications',
+            bodyContent: result
+        })
+    })
+}
 const showMyQrCode = download => {
     $.ajax({
         url: '/my-qr-code',

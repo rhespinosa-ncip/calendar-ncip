@@ -66,6 +66,9 @@ class ActionableItem extends Model
             $actionable->deadline = $request->deadline;
             $actionable->save();
 
+            $notification = Notification::where([['table_name', 'actionable_item'],['table_id', $request->actionableItemId]])
+            ->update(['table_name' => 'actionable_item_update','personnel_id' => '0']);
+
             ActionableItemStatus::insert('update submit', $actionable->id);
         }else{
             $actionableId = ActionableItem::create([
@@ -79,6 +82,10 @@ class ActionableItem extends Model
             ActionableItemStatus::insert('submit', $actionableId->id);
         }
 
+        $actionId = $actionableId->id ?? $request->actionableItemId;
+
+        $link = '<a href="/meeting/view/'.$request->meetingId.'" class="card rounded-0 notification-card">';
+        Notification::insert($request->assignedPersonel, explode("_", $request->assignedPerson)[1], $link, $actionableId->id ?? $request->actionableItemId, 'actionable_item');
 
         return response()->json([
             'message' => 'success',

@@ -299,7 +299,7 @@
                             id: '{{$asParticipant->meeting->id}}',
                             title: '{{$asParticipant->meeting->title}}',
                             start: '{{$asParticipant->meeting->date}}',
-                            color: '{{$asParticipant->meeting->user->department->hexa_color}}'
+                            color: '{{$asParticipant->meeting->user->department->hexa_color ?? ''}}'
                         },
                         @endforeach
                         @foreach($data['departmentMeeting'] as $departmentMeeting)

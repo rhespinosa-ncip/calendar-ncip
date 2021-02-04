@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateActionableItemTable extends Migration
+class CreateNotificationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateActionableItemTable extends Migration
      */
     public function up()
     {
-        Schema::create('actionable_item', function (Blueprint $table) {
+        Schema::create('notification', function (Blueprint $table) {
             $table->id();
             $table->enum('personnel', ['bureau', 'department', 'individual']);
             $table->string('personnel_id'); //connected to user
-            $table->string('actionable_item');
-            $table->dateTime('deadline', 0);
-            $table->unsignedBigInteger('meeting_schedule_id');
-            $table->foreign('meeting_schedule_id')->references('id')->on('meeting_schedule');
+            $table->string('table_id'); //connected to what ever notif from for edit purposes
+            $table->string('table_name');
+            $table->string('link');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateActionableItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('actionable_item');
+        Schema::dropIfExists('notification');
     }
 }

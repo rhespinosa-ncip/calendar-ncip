@@ -12,7 +12,9 @@ use App\Models\Document;
 use App\Models\MeetingRemarks;
 use App\Models\MeetingSchedule;
 use App\Models\Minutes;
+use App\Models\Notification;
 use App\Models\Participant;
+use App\Models\ReadNotification;
 use App\Models\Tito;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -92,6 +94,9 @@ class MeetingController extends Controller
                 'department' => Department::where('id','!=', '1')->get(),
                 'meeting' => $meeting,
             );
+
+            $notification = Notification::where([['table_name', 'meeting_schedule'],['table_id', $meeting->id]])->first();
+            ReadNotification::insert($notification->id);
 
             if ($meetingDate >= $dateToday) {
                 if($meeting->created_by == Auth::id()){
@@ -316,11 +321,20 @@ class MeetingController extends Controller
                                             if(Auth::user()->user_type != 'admin'){
                                                 switch($data['meetingSchedule']->participant){
                                                     case 'department':
-                                                        $query->whereIn('department_id', $participantDepartment);
+                                                        if(isset($participantDepartment[0])){
+                                                            $query->whereIn('department_id', $participantDepartment);
+                                                        }else{
+                                                            $query->whereIn('id', $participant);
+                                                        }
                                                     break;
 
                                                     case 'bureau':
-                                                        $query->whereIn('bureau_id', $participantBureau);
+                                                        if(isset($participantBureau[0])){
+                                                            $query->whereIn('bureau_id', $participantBureau);
+                                                        }else{
+                                                            $query->whereIn('id', $participant);
+                                                        }
+                                                    break;
 
                                                     case 'individual':
                                                         $query->whereIn('id', $participant);
@@ -332,6 +346,13 @@ class MeetingController extends Controller
 
 
             if(isset($userAuth) && date('y-m-d H:i', strtotime($data['meetingSchedule']->date)) <= date('y-m-d H:i')){
+                $notifications = Notification::where('table_name', 'actionable_item')
+                ->whereIn('table_id', $data['meetingSchedule']->actionableItem->pluck('id'))->get();
+
+                foreach($notifications as $notification){
+                    ReadNotification::insert($notification->id);
+                }
+
                 return view('auth.meeting.view', compact('data'));
             }
         }
