@@ -346,7 +346,13 @@ class MeetingController extends Controller
 
 
             if(isset($userAuth) && date('y-m-d H:i', strtotime($data['meetingSchedule']->date)) <= date('y-m-d H:i')){
-                $notifications = Notification::where('table_name', 'actionable_item')
+                $notifications = Notification::where(function($query) use ($data){
+                    if($data['meetingSchedule']->created_by == Auth::id()){
+                        $query->where('table_name', 'actionable_item_response');
+                    }else{
+                        $query->where('table_name', 'actionable_item');
+                    }
+                })
                 ->whereIn('table_id', $data['meetingSchedule']->actionableItem->pluck('id'))->get();
 
                 foreach($notifications as $notification){

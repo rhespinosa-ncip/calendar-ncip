@@ -249,7 +249,7 @@ class PageController extends Controller
     }
 
     public function notificationIndex(){
-        $notifications = Notification::with('meeting')->where(function($query){
+        $notifications = Notification::where(function($query){
             $query->orWhere([['personnel','bureau'],['personnel_id', Auth::user()->bureau_id]])
             ->orWhere([['personnel','department'],['personnel_id', Auth::user()->department_id]])
             ->orWhere([['personnel','individual'],['personnel_id', Auth::id()]]);

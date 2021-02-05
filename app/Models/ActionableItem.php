@@ -117,6 +117,9 @@ class ActionableItem extends Model
         if(isset($actionable)){
             Document::updateData($request, 'actionable_item_response', $actionable, 'actionable-response-'.$actionable->id);
             ActionableItemStatus::insert($request->status, $actionable->id);
+
+            $link = '<a href="/meeting/view/'.$actionable->meetingSchedule->id.'" class="card rounded-0 notification-card">';
+            Notification::insert('individual', $actionable->meetingSchedule->created_by, $link, $actionable->id, 'actionable_item_response');
         }
 
         return response()->json([

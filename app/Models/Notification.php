@@ -38,7 +38,6 @@ class Notification extends Model
         return $this->hasOne(ReadNotification::class, 'notification_id', 'id');
     }
 
-
     static function queryNotification($personnel_id, $personnel){
         return Notification::where([['personnel_id', $personnel_id],['personnel', $personnel]]);
     }
@@ -106,6 +105,10 @@ class Notification extends Model
             case 'actionable_item':
                 self::actionableItemNotif($notification);
             break;
+
+            case 'actionable_item_response':
+                self::actionableItemResponseNotif($notification);
+            break;
         }
     }
 
@@ -128,4 +131,29 @@ class Notification extends Model
 
         self::eventNotif(array('message'=> $message, 'personnel' => $notification->personnel, 'personnel_id' => $notification->personnel_id));
     }
+
+    static function actionableItemResponseNotif($notification){
+        $note = " response to your actionable item";
+        $notification = Notification::where('id', $notification->id)->first();
+        $actionableItem = ActionableItem::whereId($notification->table_id)->first();
+
+        switch($actionableItem->personnel){
+            case 'individual':
+                $message = Auth::user()->fullName . $note;
+            break;
+
+            case 'department':
+                $department = Department::whereId(explode("_",$actionableItem->personnel_id)[1])->first();
+                $message = $department->name . $note;
+            break;
+
+            case 'bureau':
+                $bureau = Bureau::whereId(explode("_",$actionableItem->personnel_id)[1])->first();
+                $message = $bureau->name . $note;
+            break;
+        }
+
+        self::eventNotif(array('message'=> $message, 'personnel' => $notification->personnel, 'personnel_id' => $notification->personnel_id));
+    }
+
 }
