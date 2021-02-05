@@ -264,7 +264,8 @@ class PageController extends Controller
         || ($request->personnel == 'individual' && Auth::id() == $request->personnel_id)){
 
             return response()->json([
-                'message' => 'success'
+                'message' => 'success',
+                'notifCount' => Notification::countNotification()
             ]);
         }
     }

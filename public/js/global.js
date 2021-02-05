@@ -103,8 +103,11 @@ const notify = (e) => {
         data: {personnel: personnel, personnel_id: personnel_id}
     }).done(result => {
         if(result.message == 'success'){
+            $('.notif-count').text(result.notifCount)
             toastr.info(message, '', {
                 progressBar: true,
+                positionClass: "toast-bottom-left",
+                extendedTimeOut: 5000,
                 timeOut: 5000,
             })
         }

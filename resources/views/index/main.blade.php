@@ -68,7 +68,7 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <span class="badge badge-pill badge-danger" style="float:right;margin-bottom:-10px;">{{App\Models\Notification::countNotification()}}</span> <!-- your badge -->
+                            <span class="badge badge-pill badge-danger notif-count" style="float:right;margin-bottom:-10px;">{{App\Models\Notification::countNotification()}}</span> <!-- your badge -->
                             <a class="nav-link show-notification" href="#">Notification</a>
                         </li>
                         <li class="nav-item dropdown">
