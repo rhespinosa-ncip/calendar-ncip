@@ -1,4 +1,40 @@
 $(function(){
+    $('#meetingReportTable').DataTable({
+        searchDelay: 500,
+        pagingType: 'full_numbers',
+        iDisplayLength: 10,
+        processing: true,
+        serverSide: true,
+        initComplete: function( settings, json ) {
+            closeLoader()
+        },
+        drawCallback: function( settings ) {
+            closeLoader()
+        },
+        columns: [
+            {
+                data: 'title',
+                name: 'title'
+            },
+            {
+                data: 'meeting_schedule',
+                name: 'meeting_schedule',
+                orderable: false
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false
+            },
+
+        ],
+        ajax: {
+            url: '/report/meeting/ended-meeting/list',
+            type: 'post',
+            'isDatabale': true
+        }
+    })
+
     $('body').on('click', '.btn-report-filter', function(){
         showFilter()
         return false

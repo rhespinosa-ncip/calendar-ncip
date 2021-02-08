@@ -168,6 +168,14 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
 
         Route::group(['prefix' => 'meeting'], function () {
             Route::get('', [ReportController::class, 'indexMeeting']);
+
+            Route::group(['prefix' => 'view'], function () {
+                Route::get('{meetingId}', [ReportController::class, 'viewMeeting']);
+            });
+
+            Route::group(['prefix' => 'ended-meeting'], function () {
+                Route::post('list', [ReportController::class , 'endedMeetingList']);
+            });
         });
 
         Route::group(['prefix' => 'filter'], function () {

@@ -34,6 +34,10 @@ class ActionableItem extends Model
         return $this->hasOne(ActionableItemStatus::class, 'actionable_item_id', 'id')->orderBy('id', 'desc');
     }
 
+    public function statuses(){
+        return $this->hasMany(ActionableItemStatus::class, 'actionable_item_id', 'id')->orderBy('id', 'desc');
+    }
+
     public function meetingSchedule(){
         return $this->hasOne(MeetingSchedule::class, 'id', 'meeting_schedule_id');
     }
