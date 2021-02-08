@@ -40,6 +40,10 @@ class User extends Authenticatable
         return ucfirst($this->first_name).' '.ucfirst($this->last_name);
     }
 
+    public function getInitialAttribute(){
+        return ucfirst($this->first_name[0]).''.ucfirst($this->last_name[0]);
+    }
+
     public function signatory(){
         return $this->hasOne(Signatory::class, 'id', 'user_id');
     }

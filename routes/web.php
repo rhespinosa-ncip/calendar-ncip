@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccomplishmentController;
 use App\Http\Controllers\BureauController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PageController;
@@ -207,6 +208,15 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
     Route::group(['prefix' => 'my-signatory'], function () {
         Route::get('', [PageController::class , 'mySignatory']);
         Route::post('submit', [PageController::class , 'mySignatorySubmit']);
+    });
+
+    Route::group(['prefix' => 'chat'], function () {
+        Route::get('', [ChatController::class, 'index']);
+        Route::get('{username}', [ChatController::class, 'index']);
+
+        Route::group(['prefix' => 'search'], function () {
+            Route::get('search', [ChatController::class, 'searchUserGroup']);
+        });
     });
 
     Route::get('logout', function () {
