@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SubordinateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -201,6 +202,11 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
         Route::post('submit', [PageController::class , 'mySignatorySubmit']);
     });
 
+    Route::group(['prefix' => 'subordinate'], function () {
+        Route::get('', [SubordinateController::class , 'index']);
+        Route::post('list', [SubordinateController::class , 'indexList']);
+
+    });
     Route::get('logout', function () {
         Auth::logout();
         return redirect('');
