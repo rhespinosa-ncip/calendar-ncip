@@ -7,6 +7,7 @@ use App\Mail\ForgotPassword;
 use App\Models\Notification;
 use App\Models\PasswordReset;
 use App\Models\ReadNotification;
+use App\Models\Signatory;
 use App\Models\Tito;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -268,5 +269,14 @@ class PageController extends Controller
                 'notifCount' => Notification::countNotification()
             ]);
         }
+    }
+
+    public function mySignatory(Request $request){
+        $signatory = Signatory::where('user_id', Auth::id())->first();
+        return view('auth.user.signatory.form', compact('signatory'));
+    }
+
+    public function mySignatorySubmit(Request $request){
+        return Signatory::updateData($request);
     }
 }

@@ -194,7 +194,11 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
     Route::group(['prefix' => 'my-qr-code'], function () {
         Route::get('', [PageController::class , 'myQrCode']);
         Route::get('download', [PageController::class , 'downloadMyQrCode']);
+    });
 
+    Route::group(['prefix' => 'my-signatory'], function () {
+        Route::get('', [PageController::class , 'mySignatory']);
+        Route::post('submit', [PageController::class , 'mySignatorySubmit']);
     });
 
     Route::get('logout', function () {

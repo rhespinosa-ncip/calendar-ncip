@@ -89,6 +89,13 @@ $(function(){
     }).on('click', '.show-notification', function(){
         showNotification()
         return false
+    }).on('click', '.my-signatory', function(){
+        showMySignatory()
+    }).on('submit', '#signatoryForm', function(){
+        let data = $(this).serialize()
+        let status = $(this).find("button[type=submit]:focus").attr('status')
+        submitSignatory(data, status)
+        return false
     })
 
 })
@@ -139,6 +146,37 @@ const showMyQrCode = download => {
     })
 }
 
+const showMySignatory = () => {
+    $.ajax({
+        url: '/my-signatory',
+        type: 'GET',
+    }).done(result => {
+        showModal({
+            type: '',
+            title: 'Signatory',
+            bodyContent: result
+        })
+    })
+}
+
+const submitSignatory = (data, status) => {
+    $.ajax({
+        url: '/my-signatory/submit',
+        type: 'POST',
+        data: data + "&status="+status
+    }).done(result => {
+        if(result.message == 'success'){
+            closeModal('')
+            setTimeOut('')
+
+            toastr.success('Signatory assigned succesfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
+    })
+}
+
 const showPasswordForm = meetingId => {
     $.ajax({
         url: '/change-password/form',
@@ -151,6 +189,7 @@ const showPasswordForm = meetingId => {
         })
     })
 }
+
 
 const submitNewPassword = data => {
     $.ajax({

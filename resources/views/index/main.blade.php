@@ -78,6 +78,7 @@
                                 @if (Auth::user()->user_type != 'admin')
                                     <a class="dropdown-item my-qr-code" href="#">My QR Code</a>
                                 @endif
+                                <a class="dropdown-item my-signatory" href="#">Signatory</a>
                                 <a class="dropdown-item" href="/logout">Logout</a>
                             </div>
                         </li>
