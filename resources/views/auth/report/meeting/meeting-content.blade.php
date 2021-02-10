@@ -81,7 +81,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data['meetingSchedule']->actionableItem as $actionableItem)
+                @forelse ($data['meetingSchedule']->actionableItem as $actionableItem)
                     @php
                         $showButton = false;
                     @endphp
@@ -143,8 +143,16 @@
                                 </ul>
                             </td>
                         </tr>
+                    @else
+                        <tr>
+                            <td class="text-center" colspan="4">NO ACTIONABLE ITEM YET</td>
+                        </tr>
                     @endif
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="4">NO ACTIONABLE ITEM YET</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
