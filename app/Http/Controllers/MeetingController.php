@@ -96,7 +96,10 @@ class MeetingController extends Controller
             );
 
             $notification = Notification::where([['table_name', 'meeting_schedule'],['table_id', $meeting->id]])->first();
-            ReadNotification::insert($notification->id);
+
+            if(isset($notification)){
+                ReadNotification::insert($notification->id);
+            }
 
             if ($meetingDate >= $dateToday) {
                 if($meeting->created_by == Auth::id()){

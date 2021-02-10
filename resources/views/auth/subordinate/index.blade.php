@@ -12,6 +12,7 @@
                                     <th>Name</th>
                                     <th>Position</th>
                                     <th>Task</th>
+                                    <th>Status</th>
                                     <th>Deadline</th>
                                 </tr>
                             </thead>
@@ -26,14 +27,32 @@
                                         <tr>
                                             <td>{{$user->fullName}}</td>
                                             <td>{{$user->position}}</td>
-                                            <td>{{$actionableItem->actionable_item}} ({{$actionableItem->status->status}} - {{date('F d, Y - h:i A', strtotime($actionableItem->status->created_at))}})</td>
+                                            <td>{{$actionableItem->actionable_item}}</td>
+                                            <td>
+                                                <ul>
+                                                    @foreach ($actionableItem->statuses as $status)
+                                                        <li>
+                                                            {{$actionableItem->status->status}} - {{date('F d, Y - h:i A', strtotime($actionableItem->status->created_at))}}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
                                             <td>{{date('F d, Y - h:i A', strtotime($actionableItem->deadline))}}</td>
                                         </tr>
                                     @elseif(Auth::user()->user_type == 'head' && $user->bureau_id == Auth::user()->bureau_id)
                                         <tr>
                                             <td>{{$user->fullName}}</td>
                                             <td>{{$user->position}}</td>
-                                            <td>{{$actionableItem->actionable_item}} ({{$actionableItem->status->status}} - {{date('F d, Y - h:i A', strtotime($actionableItem->status->created_at))}})</td>
+                                            <td>{{$actionableItem->actionable_item}}</td>
+                                            <td>
+                                                <ul>
+                                                    @foreach ($actionableItem->statuses as $status)
+                                                        <li>
+                                                            {{$actionableItem->status->status}} - {{date('F d, Y - h:i A', strtotime($actionableItem->status->created_at))}}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
                                             <td>{{date('F d, Y - h:i A', strtotime($actionableItem->deadline))}}</td>
                                         </tr>
                                     @endif
