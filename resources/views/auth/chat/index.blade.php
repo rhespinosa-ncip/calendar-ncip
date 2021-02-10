@@ -2,6 +2,22 @@
 
 @push('style')
     <link rel="stylesheet" href="{{asset('css/chat/form.css')}}">
+    <style>
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        .removeFile {
+            color: #000000 !important;
+        }
+        .removeFile:hover {
+            text-decoration: underline;
+        }
+    </style>
 @endpush
 
 @section('auth-content')
@@ -38,7 +54,8 @@
                                         <p class="mt-2 bg" data-color="#bf3f3f" data-letters="{{$initial ?? 'NA'}}"></p><!-- or whatever structure you used -->
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <h6 class="mb-0">{{$name ?? 'NA'}}</h6><small class="small font-weight-bold">{{date('d F', strtotime($message->lastConversation->created_at))}}</small>
+                                                <h6 class="mb-0">{{$name ?? 'NA'}}</h6>
+                                                <small class="small font-weight-bold">{{date('d F', strtotime($message->lastConversation->created_at))}}</small>
                                             </div>
                                             <p class="font-italic mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body, 150, $end='...') }}</p>
                                         </div>
@@ -50,8 +67,12 @@
                                         <p class="mt-2 bg" data-color="#bf3f3f" data-letters="{{$initial ?? 'NA'}}"></p><!-- or whatever structure you used -->
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-3">
-                                                <h6 class="mb-0">{{$name ?? 'NA'}}</h6><small class="small font-weight-bold">{{date('d F', strtotime($message->lastConversation->created_at))}}</small>
+                                                <h6 class="mb-0">{{$name ?? 'NA'}} </h6>
+                                                <small class="small font-weight-bold">{{date('d F', strtotime($message->lastConversation->created_at))}}</small>
                                             </div>
+                                            @if ($message->not_seen_conversation_count != 0)
+                                                <span class="badge badge-pill badge-info notif-count" style="float:right;margin-bottom:-10px;">{{$message->not_seen_conversation_count}}</span>
+                                            @endif
                                             <p class="font-italic text-muted mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body, 150, $end='...') }}</p>
                                         </div>
                                     </div>
@@ -70,55 +91,33 @@
         </div>
         <!-- Chat Box-->
         <div class="col-lg-8 px-0">
-            <div class="px-4 py-5 chat-box bg-white">
+            <div id="chat-box" class="px-4 py-5 chat-box bg-white">
                 <!-- Sender Message-->
-                @if (isset($data['conversation']))
-                    @forelse ($data['conversation']->conversation as $conversation)
-                        @if ($conversation->sent_by_user_id == Auth::id())
-                            <div class="media w-50 ml-auto mb-3">
-                                <div class="media-body">
-                                    <div class="bg-primary rounded py-2 px-3 mb-2">
-                                        <p class="text-small mb-0 text-white">{{$conversation->body}}</p>
-                                    </div>
-                                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}}</p>
-                                </div>
-                            </div>
-                        @else
-                            <div class="media w-50 mb-3">
-                                <p class="mt-2 bg" data-color="#bf3f3f" data-letters="{{$conversation->user->initial}}"></p><!-- or whatever structure you used -->
-                                <div class="media-body ml-3">
-                                    <div class="bg-light rounded py-2 px-3 mb-2">
-                                        <p class="text-small mb-0 text-muted">{{$conversation->body}}</p>
-                                    </div>
-                                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}}</p>
-                                </div>
-                            </div>
-                        @endif
-                    @empty
-                        <div class="row">
-                            <div class="col-12 text-center">
-                                Say hi and start messaging
-                            </div>
-                        </div>
-                    @endforelse
-                @else
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            Say hi and start messaging
-                        </div>
-                    </div>
-                @endif
+                @include('auth.chat.chat-box')
         </div>
-        <form action="#" class="bg-light">
-            <div class="input-group">
-                <input type="text" placeholder="Type a message" aria-describedby="button-addon2"
-                    class="form-control rounded-0 border-0 py-4 bg-light">
-                <div class="input-group-append">
-                    <button id="button-addon2" type="submit" class="btn btn-link"> <i
-                            class="fa fa-paper-plane"></i></button>
+        @if ($data['userToMessage'])
+            <form id="chatMessage" class="bg-light">
+                <input type="hidden" name="toMessage" value="{{$data['userToMessage']->id ?? ''}}">
+                <div class="row mt-2">
+                    <div class="col-12 ml-3">
+                        <div class="fileList"></div>
+                    </div>
                 </div>
-            </div>
-        </form>
+                <div class="input-group">
+                    <input type="text" name="message" id="message" placeholder="Type a message" class="form-control rounded-0 border-0 py-4 bg-light">
+                    <div class="input-group-append files">
+                        <label for="file-upload" class="btn btn-link custom-file-upload mt-2">
+                            <i class="fas fa-paperclip"></i>
+                        </label>
+                        <input id="file-upload" name="fileUpload[]" type="file" multiple/>
+                    </div>
+                    <div class="input-group-append">
+                        <button form="chatMessage" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                    </div>
+                </div>
+
+            </form>
+        @endif
     </div>
 </div>
 @endsection

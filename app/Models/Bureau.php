@@ -26,7 +26,7 @@ class Bureau extends Model
     public function users(){
         return $this->hasMany(User::class, 'bureau_id', 'id');
     }
-    
+
     public function bureauDivision(){
         return $this->hasMany(BureauDivision::class, 'bureau_id', 'id');
     }

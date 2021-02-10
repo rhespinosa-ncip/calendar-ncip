@@ -101,13 +101,13 @@ $(function(){
 })
 
 const notify = (e) => {
-    const { message, personnel, personnel_id } = e.message; // destructure the event data
+    const { message, personnel, personnel_id, notify_by } = e.message; // destructure the event data
 
     $.ajax({
         'isDatabale': true,
         url: '/notification/validate',
         type: 'GET',
-        data: {personnel: personnel, personnel_id: personnel_id}
+        data: e.message
     }).done(result => {
         if(result.message == 'success'){
             $('.notif-count').text(result.notifCount)
@@ -117,6 +117,20 @@ const notify = (e) => {
                 extendedTimeOut: 5000,
                 timeOut: 5000,
             })
+        }else if(result.message == 'success-message'){
+            toastr.info(notify_by+' sent you a message.', '', {
+                progressBar: true,
+                positionClass: "toast-bottom-left",
+                extendedTimeOut: 5000,
+                timeOut: 5000,
+            })
+            $('.notif-message-count').text(result.notifCount)
+
+            $('.chat-box').empty('')
+            $('.chat-box').append(result.chatBox)
+            $(".chat-box").animate({
+                scrollTop: $('.chat-box').get(0).scrollHeight
+            }, 500);
         }
     })
 }

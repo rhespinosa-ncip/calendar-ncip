@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NotificationProcessed;
 use App\Mail\ForgotPassword;
+use App\Models\Message;
 use App\Models\Notification;
 use App\Models\PasswordReset;
 use App\Models\ReadNotification;
@@ -260,6 +261,12 @@ class PageController extends Controller
     }
 
     public function validateNotify(Request $request){
+        if($request->type == 'message'){
+            if(Auth::id() == $request->notify_user){
+                return ChatController::notify($request);
+            }
+        }
+
         if(($request->personnel == 'bureau' && Auth::user()->bureau_id == $request->personnel_id)
         || ($request->personnel == 'department' && Auth::user()->department_id == $request->personnel_id)
         || ($request->personnel == 'individual' && Auth::id() == $request->personnel_id)){

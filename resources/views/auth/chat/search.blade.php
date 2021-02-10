@@ -61,9 +61,13 @@
         @forelse ($data['messages'] as $message)
             @php
                 if($message->type == 'individual'){
-                    $initial =  $message->individual->initial;
-                    $name = $message->individual->fullName;
-                    $username = $message->individual->username;
+                    $individual = 'individualFrom';
+                    if($message->individualTo->id != Auth::id()){
+                        $individual = 'individualTo';
+                    }
+                    $initial =  $message->$individual->initial;
+                    $name = $message->$individual->fullName;
+                    $username = $message->$individual->username;
                 }
             @endphp
             <a href="/chat/{{$username}}" class="list-group-item list-group-item-action list-group-item-light rounded-0">

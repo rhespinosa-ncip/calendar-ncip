@@ -217,6 +217,8 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
         Route::group(['prefix' => 'search'], function () {
             Route::get('search', [ChatController::class, 'searchUserGroup']);
         });
+
+        Route::post('send', [ChatController::class , 'sendMessage']);
     });
 
     Route::get('logout', function () {

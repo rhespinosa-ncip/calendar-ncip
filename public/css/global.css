@@ -179,3 +179,11 @@ body{
 .readNotification{
     background-color: #cacaca !important;
 }
+
+.file-attach,.file-attach:hover{
+    color: #ffffff;
+}
+
+.file-attach-sender, .file-attach-sender:hover{
+    color: #6c757d ;
+}
