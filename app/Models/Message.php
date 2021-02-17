@@ -85,6 +85,9 @@ class Message extends Model
             $message = self::insertData($request, 'individual');
         }
 
+        $message->updated_at = now();
+        $message->save();
+
         Conversation::insert($message->id, $request->message ?? 'file-upload', $request);
 
         $data = array(

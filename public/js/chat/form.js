@@ -77,6 +77,7 @@ const sendMessage = data => {
         if(result.message == 'success'){
             $('.chat-box').empty('')
             $('.chat-box').append(result.chatBox)
+
             $('#message').val('')
 
             $(".chat-box").animate({

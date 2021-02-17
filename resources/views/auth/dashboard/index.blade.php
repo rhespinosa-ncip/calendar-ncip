@@ -67,8 +67,8 @@
                         </div>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <span class="ncip-date time" id="time">12:56</span>
-                                <span class="ampm" id="ampm">AM</span>
+                                <span class="ncip-date time" id="time"></span>
+                                <span class="ampm" id="ampm"></span>
                             </div>
                         </div>
                         @if (Auth::user()->user_type != 'admin')
