@@ -22,14 +22,7 @@
 
                                         $user = App\Models\User::where('id', $id)->first();
                                     @endphp
-                                    @if (isset(Auth::user()->department_id) && Auth::user()->user_type == 'head' && $user->department_id == Auth::user()->department_id)
-                                        <tr>
-                                            <td>{{$user->fullName}}</td>
-                                            <td>{{$user->position}}</td>
-                                            <td>{{$actionableItem->actionable_item}} ({{$actionableItem->status->status}} - {{date('F d, Y - h:i A', strtotime($actionableItem->status->created_at))}})</td>
-                                            <td>{{date('F d, Y - h:i A', strtotime($actionableItem->deadline))}}</td>
-                                        </tr>
-                                    @elseif(Auth::user()->user_type == 'head' && $user->bureau_id == Auth::user()->bureau_id)
+                                    @if ((isset(Auth::user()->department_id) && Auth::user()->user_type == 'head' && $user->department_id == Auth::user()->department_id) || (Auth::user()->user_type == 'head' && $user->bureau_id == Auth::user()->bureau_id))
                                         <tr>
                                             <td>{{$user->fullName}}</td>
                                             <td>{{$user->position}}</td>

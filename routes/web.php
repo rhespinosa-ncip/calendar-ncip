@@ -205,8 +205,8 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
     Route::group(['prefix' => 'subordinate'], function () {
         Route::get('', [SubordinateController::class , 'index']);
         Route::post('list', [SubordinateController::class , 'indexList']);
-
     });
+
     Route::get('logout', function () {
         Auth::logout();
         return redirect('');
