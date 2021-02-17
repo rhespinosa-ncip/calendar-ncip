@@ -17,7 +17,7 @@ class CreateConversationTable extends Migration
             $table->id();
             $table->unsignedBigInteger('message_id');
             $table->foreign('message_id')->references('id')->on('message');
-            $table->string('body');
+            $table->longText('body');
             $table->unsignedBigInteger('sent_by_user_id');
             $table->foreign('sent_by_user_id')->references('id')->on('users');
             $table->enum('is_seen', ['yes', 'no']);

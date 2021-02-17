@@ -25,7 +25,7 @@
                     @if ($message->not_seen_conversation_count != 0 && Request::segment(2) != $username)
                         <span class="badge badge-pill badge-info notif-count" style="float:right;margin-bottom:-10px;">{{$message->not_seen_conversation_count}}</span>
                     @endif
-                    <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body, 150, $end='...') }}</p>
+                    <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body, 50, $end='...') }}</p>
                 </div>
             </div>
         </a>
@@ -58,7 +58,7 @@
                         <h6 class="mb-0">{{$name ?? 'NA'}} </h6>
                         <small class="small font-weight-bold">{{date('d F', strtotime($message->lastConversation->created_at))}}</small>
                     </div>
-                    <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body, 150, $end='...') }}</p>
+                    <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body, 50, $end='...') }}</p>
                 </div>
             </div>
         </a>
