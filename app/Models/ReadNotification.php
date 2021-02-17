@@ -23,9 +23,13 @@ class ReadNotification extends Model
     ];
 
     static function insert($notification_id){
-        ReadNotification::create([
-            'notification_id' => $notification_id,
-            'user_id' => Auth::id()
-        ]);
+        $readNotif = ReadNotification::where([['notification_id', $notification_id],['user_id', Auth::id()]])->first();
+
+        if(!isset($readNotif)){
+            ReadNotification::create([
+                'notification_id' => $notification_id,
+                'user_id' => Auth::id()
+            ]);
+        }
     }
 }

@@ -95,8 +95,16 @@ class MeetingController extends Controller
                 'meeting' => $meeting,
             );
 
-            $notification = Notification::where([['table_name', 'meeting_schedule'],['table_id', $meeting->id]])->first();
-            ReadNotification::insert($notification->id);
+            $notification = Notification::where([['table_name', 'meeting_schedule'],['table_id', $meeting->id]])->get();
+
+            foreach($notification as $notif){
+                if($notif->personnel == 'individual' && Auth::id()){
+                    ReadNotification::insert($notif->id);
+                }else{
+                    ReadNotification::insert($notif->id);
+                }
+            }
+
 
             if ($meetingDate >= $dateToday) {
                 if($meeting->created_by == Auth::id()){
@@ -322,7 +330,7 @@ class MeetingController extends Controller
                                                 switch($data['meetingSchedule']->participant){
                                                     case 'department':
                                                         if(isset($participantDepartment[0])){
-                                                            $query->whereIn('department_id', $participantDepartment);
+                                                            $query->orWhereIn('department_id', $participantDepartment)->orWhereIn('id', $participant);
                                                         }else{
                                                             $query->whereIn('id', $participant);
                                                         }
@@ -330,7 +338,7 @@ class MeetingController extends Controller
 
                                                     case 'bureau':
                                                         if(isset($participantBureau[0])){
-                                                            $query->whereIn('bureau_id', $participantBureau);
+                                                            $query->orWhereIn('bureau_id', $participantBureau)->orWhereIn('id', $participant);
                                                         }else{
                                                             $query->whereIn('id', $participant);
                                                         }

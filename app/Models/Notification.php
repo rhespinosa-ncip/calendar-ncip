@@ -84,7 +84,7 @@ class Notification extends Model
         self::countNotificationDepartment();
         self::countNotificationIndividual();
 
-        return self::$notificationCount;
+        return self::$notificationCount > 0 ? self::$notificationCount : 0;
     }
 
     static function insert($personnel, $personnel_id, $link, $table_id, $table_name){
