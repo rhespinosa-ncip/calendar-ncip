@@ -73,7 +73,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 text-right">
-                                @if ($data['meetingSchedule']->created_by == Auth::id())
+                                @if ($data['meetingSchedule']->created_by == Auth::id() || Auth::user()->user_type == 'admin')
                                     <button class="btn btn-success py-0 px-3 rounded-0 btn-add-actionable" meetingid="{{$data['meetingSchedule']->id}}"> ADD  </button>
                                 @endif
                             </div>
@@ -107,7 +107,7 @@
                                                         </ul>
                                                     </td>
                                                     <td>
-                                                        @if ($data['meetingSchedule']->created_by == Auth::id())
+                                                        @if ($data['meetingSchedule']->created_by == Auth::id()  || Auth::user()->user_type == 'admin')
                                                             <button class="btn btn-success py-0 px-3 rounded-0 btn-add-actionable" status="update" meetingid="{{$actionableItem->id}}"> UPDATE  </button>
                                                         @else
                                                             NO ACTION NEEDED
@@ -195,7 +195,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 text-right">
-                                @if ($data['meetingSchedule']->created_by == Auth::id())
+                                @if ($data['meetingSchedule']->created_by == Auth::id()  || Auth::user()->user_type == 'admin')
                                     <button class="btn btn-success py-0 px-3 rounded-0 btn-add-minutes" meetingid="{{$data['meetingSchedule']->id}}"> ADD  </button>
                                 @endif
                             </div>

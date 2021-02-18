@@ -172,6 +172,9 @@ const showMeeting = meetingId => {
 }
 
 const showEndedMeeting = () => {
+    $('#actionableItemTable').DataTable()
+    $('#auditTrailTable').DataTable()
+
     $('#endedMeetingList').DataTable({
         searchDelay: 500,
         pagingType: 'full_numbers',

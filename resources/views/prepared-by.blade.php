@@ -121,7 +121,7 @@
                 </div>
             </div>
         @endif
-    @elseif(Auth::user()->user_type == 'admin')
+    @elseif(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'executive')
         <div class="col-6">
             <div class="row">
                 <div class="col-12">

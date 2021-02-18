@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->foreign('department_id')->references('id')->on('department');
             $table->unsignedBigInteger('bureau_id')->nullable()->unsigned();
             $table->foreign('bureau_id')->references('id')->on('bureau');
-            $table->enum('user_type', ['admin', 'user', 'head']);
+            $table->enum('user_type', ['admin', 'user', 'head','executive']);
             $table->timestamps();
         });
     }

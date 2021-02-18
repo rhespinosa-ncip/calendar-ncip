@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\GlobalClass\Datatables;
 use App\Models\ActionableItem;
+use App\Models\AuditTrail;
 use App\Models\Bureau;
 use App\Models\BureauParticipant;
 use App\Models\Department;
@@ -27,10 +28,12 @@ class MeetingController extends Controller
         $count = 0;
         $todayMeetings = array();
 
-        if(Auth::user()->user_type == 'admin'){
+        if(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'executive'){
             $data = array(
                 'filedMeeting' => MeetingSchedule::all(),
                 'todayMeeting' => MeetingSchedule::whereDate('date', date('Y-m-d'))->get(),
+                'actionableItems' => ActionableItem::orderBy('created_at', 'desc')->get(),
+                'auditTrail' => AuditTrail::orderBy('id', 'desc')->get()
             );
         }else{
             $departmentParticipant = DepartmentParticipant::with('meeting.user.department')->join('meeting_schedule', 'meeting_schedule.id','=','meeting_department_participant.meeting_schedule_id')
@@ -258,7 +261,7 @@ class MeetingController extends Controller
                     OR meeting_participant.user_id = ".Auth::id(). $departmentWhere."
                     OR bureau_participant.bureau_id = ".Auth::user()->bureau_id.") AND DATE <= '".now()."' ";
 
-        if(Auth::user()->user_type == 'admin'){
+        if(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'executive'){
             $query = "SELECT *
             FROM meeting_schedule WHERE DATE <= '".now()."'";
         }
@@ -326,7 +329,7 @@ class MeetingController extends Controller
 
             $userAuth = User::where(function ($query) use ($participantDepartment, $participantBureau, $participant, $data){
                                         if($data['meetingSchedule']->created_by != Auth::id()){
-                                            if(Auth::user()->user_type != 'admin'){
+                                            if(Auth::user()->user_type != 'admin' && Auth::user()->user_type != 'executive'){
                                                 switch($data['meetingSchedule']->participant){
                                                     case 'department':
                                                         if(isset($participantDepartment[0])){

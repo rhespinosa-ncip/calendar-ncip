@@ -50,7 +50,7 @@
                             <li class="nav-item {{$segmentOne == 'meeting' ? 'active' : ''}}">
                                 <a class="nav-link" href="/meeting/admin">ZOOM MEETING LINK</a>
                             </li>
-                        @elseif(Auth::user()->user_type != 'admin')
+                        @elseif(Auth::user()->user_type != 'admin' && Auth::user()->user_type != 'executive')
                             <li class="nav-item {{$segmentOne == 'accomplishment' ? 'active' : ''}}"">
                                 <a class="nav-link" href="/accomplishment">ACCOMPLISHMENT</a>
                             </li>
@@ -78,17 +78,19 @@
                             @endif
                             <a class="nav-link" href="/chat">Message</a>
                         </li>
-                        <li class="nav-item">
-                            @if (App\Models\Notification::countNotification() != '0')
-                                <span class="badge badge-pill badge-danger notif-count" style="float:right;margin-bottom:-10px;">{{App\Models\Notification::countNotification()}}</span> <!-- your badge -->
-                            @endif
-                            <a class="nav-link show-notification" href="#">Notification</a>
-                        </li>
+                        @if (Auth::user()->user_type != 'executive')
+                            <li class="nav-item">
+                                @if (App\Models\Notification::countNotification() != '0')
+                                    <span class="badge badge-pill badge-danger notif-count" style="float:right;margin-bottom:-10px;">{{App\Models\Notification::countNotification()}}</span> <!-- your badge -->
+                                @endif
+                                <a class="nav-link show-notification" href="#">Notification</a>
+                            </li>
+                        @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Settings </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item change-password" href="#">Change password</a>
-                                @if (Auth::user()->user_type != 'admin')
+                                @if (Auth::user()->user_type != 'admin' && Auth::user()->user_type != 'executive')
                                     <a class="dropdown-item my-qr-code" href="#">My QR Code</a>
                                 @endif
                                 <a class="dropdown-item my-signatory" href="#">Signatory</a>

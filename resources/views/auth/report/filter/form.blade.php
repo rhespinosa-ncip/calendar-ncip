@@ -56,7 +56,7 @@
                 </div>
             @endif
         </div>
-    @elseif(Auth::user()->user_type == 'admin')
+    @elseif(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'executive')
         <div class="row mt-1">
             <div class="col-12">
                 <div class="form-group">
