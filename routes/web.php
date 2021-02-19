@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SubordinateController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('clear-cache', function () {
+    Artisan::command('config:cache');
+    Artisan::command('config:clear');
+});
 Route::group(['prefix' => ''], function () {
     Route::get('', [PageController::class, 'index'])->name('login');
 });
