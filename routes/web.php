@@ -27,6 +27,7 @@ Route::get('clear-cache', function () {
     Artisan::command('config:cache');
     Artisan::command('config:clear');
 });
+
 Route::group(['prefix' => ''], function () {
     Route::get('', [PageController::class, 'index'])->name('login');
 });
