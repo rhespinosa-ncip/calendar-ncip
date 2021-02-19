@@ -2,4 +2,4 @@ deployment:
   tasks:
     - composer install
     - export DEPLOYPATH=/home/x7xcfbjp7e6a/public_html/develop-announcement.ncip-hrmd.com
-    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -r web/* $DEPLOYPATH
