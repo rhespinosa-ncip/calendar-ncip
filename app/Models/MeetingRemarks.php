@@ -52,6 +52,8 @@ class MeetingRemarks extends Model
             'created_by' => Auth::id(),
         ]);
 
+        AuditTrail::insert('Add meeting remarks');
+
         return response()->json([
             'message' => 'success',
         ]);

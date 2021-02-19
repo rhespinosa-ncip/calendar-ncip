@@ -27,7 +27,7 @@
         <div class="col-lg-4 px-0">
             <div class="bg-white">
                 <div class="bg-gray px-4 py-2 bg-light">
-                    <p class="h5 mb-0 py-1">Messanger</p>
+                    <p class="h5 mb-0 py-1">Messages</p>
                 </div>
                 <div class="bg-gray px-4 py-2 bg-light">
                     <input type="text" class="form-control" placeholder="Search" name="searchUserGroup" id="searchUserGroup">

@@ -80,6 +80,8 @@ class Signatory extends Model
             return self::insert($request);
         }
 
+        AuditTrail::insert('Update signatory');
+
         return response()->json([
             'message' => 'success',
         ]);

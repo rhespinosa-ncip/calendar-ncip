@@ -149,6 +149,8 @@ class MeetingSchedule extends Model
             Participant::insertIndividual($request, $meeting);
         }
 
+        AuditTrail::insert('Add meeting');
+
         return response()->json([
             'message' => 'success',
         ]);
@@ -194,6 +196,8 @@ class MeetingSchedule extends Model
                 Document::updateData($request, 'meeting_schedule', $meeting, 'meeting_schedule_'.$meeting->id);
             }
         }
+
+        AuditTrail::insert('Update meeting');
 
         return response()->json([
             'message' => 'updateSuccess',

@@ -29,6 +29,8 @@ class Accomplishment extends Model
             }
         }
 
+        AuditTrail::insert('Add accomplishment');
+
         return response()->json([
             'message' => 'success'
         ]);
@@ -40,10 +42,13 @@ class Accomplishment extends Model
             'remarks' => $remarks ?? '',
             'tito_id' =>  $titoId
         ]);
+
+
     }
 
     static function updateData($request){
         $accomplishment = Accomplishment::where('tito_id', $request->titoId)->delete();
+
         return self::insert($request);
     }
 }

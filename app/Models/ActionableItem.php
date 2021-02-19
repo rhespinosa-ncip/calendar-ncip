@@ -91,6 +91,8 @@ class ActionableItem extends Model
         $link = '<a href="/meeting/view/'.$request->meetingId.'" class="card rounded-0 notification-card">';
         Notification::insert($request->assignedPersonel, explode("_", $request->assignedPerson)[1], $link, $actionableId->id ?? $request->actionableItemId, 'actionable_item');
 
+        AuditTrail::insert('Add actionable item');
+
         return response()->json([
             'message' => 'success',
         ]);
@@ -125,6 +127,8 @@ class ActionableItem extends Model
             $link = '<a href="/meeting/view/'.$actionable->meetingSchedule->id.'" class="card rounded-0 notification-card">';
             Notification::insert('individual', $actionable->meetingSchedule->created_by, $link, $actionable->id, 'actionable_item_response');
         }
+
+        AuditTrail::insert('Response to actionable item');
 
         return response()->json([
             'message' => 'success',
