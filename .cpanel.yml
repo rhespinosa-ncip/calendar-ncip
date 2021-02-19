@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/cpanelUser/public_html/develop-announcement.ncip-hrmd.com
+    - export DEPLOYPATH=/home/x7xcfbjp7e6a/public_html/develop-announcement.ncip-hrmd.com
     - composer install
     # - /usr/local/bin/npm install
     - /bin/cp -R * $DEPLOYPATH
