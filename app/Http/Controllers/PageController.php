@@ -265,6 +265,10 @@ class PageController extends Controller
             if(Auth::id() == $request->notify_user){
                 return ChatController::notify($request);
             }
+        }else if($request->type == 'groupMessage'){
+            if(Auth::id() == $request->notify_user){
+                return ChatController::notifyGroup($request);
+            }
         }
 
         if(($request->personnel == 'bureau' && Auth::user()->bureau_id == $request->personnel_id)

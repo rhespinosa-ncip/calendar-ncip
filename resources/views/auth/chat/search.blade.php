@@ -68,6 +68,10 @@
                     $initial =  $message->$individual->initial;
                     $name = $message->$individual->fullName;
                     $username = $message->$individual->username;
+                }else if($message->type == 'group'){
+                    $initial =  $message->groupTo->initial;
+                    $name = $message->groupTo->name;
+                    $username = 'group-'.$message->groupTo->name;
                 }
             @endphp
             <a href="/chat/{{$username}}" class="list-group-item list-group-item-action list-group-item-light rounded-0">
@@ -75,9 +79,9 @@
                     <p class="mt-2 bg" data-color="#bf3f3f" data-letters="{{$initial ?? 'NA'}}"></p>
                     <div class="media-body ml-4">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h6 class="mb-0">{{$name ?? 'NA'}}</h6><small class="small font-weight-bold">{{date('d F', strtotime($message->lastConversation->created_at))}}</small>
+                            <h6 class="mb-0">{{$name ?? 'NA'}}</h6><small class="small font-weight-bold">{{isset($message->lastConversation->created_at) ? date('d F', strtotime($message->lastConversation->created_at)) : ''}}</small>
                         </div>
-                        <p class="font-italic text-muted mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body, 150, $end='...') }}</p>
+                        <p class="font-italic text-muted mb-0 text-small">{{ \Illuminate\Support\Str::limit($message->lastConversation->body ?? 'No conversation yet', 150, $end='...') }}</p>
                     </div>
                 </div>
             </a>

@@ -224,6 +224,17 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
             Route::get('search', [ChatController::class, 'searchUserGroup']);
         });
 
+        Route::prefix('group')->group(function () {
+            Route::prefix('create')->group(function () {
+                Route::get('', [ChatController::class, 'createGroup']);
+                Route::post('submit', [ChatController::class, 'submitGroup']);
+            });
+        });
+
+        Route::prefix('seen')->group(function () {
+            Route::get('view', [ChatController::class, 'viewSeen']);
+        });
+
         Route::post('send', [ChatController::class , 'sendMessage']);
     });
 

@@ -27,7 +27,16 @@
         <div class="col-lg-4 px-0">
             <div class="bg-white">
                 <div class="bg-gray px-4 py-2 bg-light">
-                    <p class="h5 mb-0 py-1">Messages</p>
+                </div>
+                <div class="bg-gray px-4 py-2 bg-light">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="h5 mb-0 py-1">Messages</p>
+                        </div>
+                        <div class="col-6 text-right">
+                            <button class="btn btn-success rounded-0 btn-create-group"> CREATE GROUP </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="bg-gray px-4 py-2 bg-light">
                     <input type="text" class="form-control" placeholder="Search" name="searchUserGroup" id="searchUserGroup">
@@ -45,7 +54,7 @@
                 <!-- Sender Message-->
                 @include('auth.chat.chat-box')
         </div>
-        @if ($data['userToMessage'])
+        @if (isset($data['userToMessage']))
             <form id="chatMessage" class="bg-light">
                 <input type="hidden" name="toMessage" value="{{$data['userToMessage']->id ?? ''}}">
                 <div class="row mt-2">
@@ -65,7 +74,28 @@
                         <button form="chatMessage" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
                     </div>
                 </div>
-
+            </form>
+        @elseif(isset($data['messageType']) && $data['messageType'] == 'group')
+            <form id="chatMessage" class="bg-light">
+                <input type="hidden" name="toMessage" value="{{$data['group']->id ?? ''}}">
+                <input type="hidden" name="toMessageGroup" value="yes">
+                <div class="row mt-2">
+                    <div class="col-12 ml-3">
+                        <div class="fileList"></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="message" id="message" placeholder="Type a message" class="form-control rounded-0 border-0 py-4 bg-light">
+                    <div class="input-group-append files">
+                        <label for="file-upload" class="btn btn-link custom-file-upload mt-2">
+                            <i class="fas fa-paperclip"></i>
+                        </label>
+                        <input id="file-upload" name="fileUpload[]" type="file" multiple/>
+                    </div>
+                    <div class="input-group-append">
+                        <button form="chatMessage" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                    </div>
+                </div>
             </form>
         @endif
     </div>
@@ -73,5 +103,6 @@
 @endsection
 
 @push('script')
+    <script src="{{asset('js/multiple/js/BsMultiSelect.js')}}"></script>
     <script src="{{asset('js/chat/form.js')}}"></script>
 @endpush

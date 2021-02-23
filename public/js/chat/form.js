@@ -49,6 +49,19 @@ $(function(){
 
         $(this).parent().remove();
         return false
+    }).on('click', '.btn-create-group', function(){
+        createGroup()
+        return false
+    }).on('submit', '#addGroup', function(){
+        let data = $(this).serialize()
+        submitGroup(data)
+        return false
+    }).on('click', '.view-seen', function(){
+        showSeen($(this).attr('chatId'))
+        return false
+    }).on('click', '.setting', function(){
+        alert('show setting')
+        return false
     })
 })
 
@@ -91,5 +104,50 @@ const sendMessage = data => {
 
             $(".fileList").empty();
         }
+    })
+}
+
+const createGroup = () => {
+    $.ajax({
+        url: '/chat/group/create',
+        type: 'GET',
+    }).done(result => {
+        showModal({
+            type: '',
+            title: 'Group',
+            bodyContent: result
+        })
+    })
+}
+
+const submitGroup = data => {
+    $.ajax({
+        url: '/chat/group/create/submit',
+        type: 'POST',
+        data: data
+    }).done(result => {
+        if(result.message == 'success'){
+            closeModal('')
+            setTimeOut('/chat')
+
+            toastr.success('Group added successfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
+    })
+}
+
+const showSeen = (chatId) => {
+    $.ajax({
+        url: '/chat/seen/view',
+        type: 'GET',
+        data: {chatId: chatId}
+    }).done(result => {
+        showModal({
+            type: '',
+            title: 'Seen by',
+            bodyContent: result
+        })
     })
 }

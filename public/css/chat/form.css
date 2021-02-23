@@ -46,3 +46,8 @@ input::placeholder {
 .bg[data-letters]:before{
     background: #bf3f3f !important;
 }
+
+.setting:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}

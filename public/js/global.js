@@ -118,12 +118,21 @@ const notify = (e) => {
                 timeOut: 5000,
             })
         }else if(result.message == 'success-message'){
-            toastr.info(notify_by+' sent you a message.', '', {
-                progressBar: true,
-                positionClass: "toast-bottom-left",
-                extendedTimeOut: 5000,
-                timeOut: 5000,
-            })
+            if(result.messageType == 'group'){
+                toastr.info(notify_by+' sent a message to '+result.groupName, '', {
+                    progressBar: true,
+                    positionClass: "toast-bottom-left",
+                    extendedTimeOut: 5000,
+                    timeOut: 5000,
+                })
+            }else{
+                toastr.info(notify_by+' sent you a message.', '', {
+                    progressBar: true,
+                    positionClass: "toast-bottom-left",
+                    extendedTimeOut: 5000,
+                    timeOut: 5000,
+                })
+            }
             $('.notif-message-count').text(result.notifCount)
 
             $('.chat-box').empty('')

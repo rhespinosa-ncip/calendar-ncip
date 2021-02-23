@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Conversation;
+use App\Models\Group;
+use App\Models\GroupParticipant;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,12 +15,30 @@ class ChatController extends Controller
 {
     public function index(Request $request){
         $user = User::where('username', $request->username)->first();
+        $group = Group::where('name', explode('-', $request->username)[1] ?? '')->first();
 
-        if(isset($user) || $request->username == ''){
+        if(isset($group)){
+            $data = array(
+                'group' => $group,
+                'messageType' => 'group',
+                'messages' => Message::withCount('notSeenConversation')->orWhere('to_id', $group->id)->orWhere('from_user_id', Auth::id())->orWhere('to_id', Auth::id())->get(),
+                'conversation' => Message::where('to_id', $group->id)->first(),
+                'groupMessage' => GroupParticipant::with('message')->where([['user_id', Auth::id()],['status', 'active']])->get(),
+            );
+
+            if(isset($group)){
+
+            }
+
+            return view('auth.chat.index', compact('data'));
+
+        }else if(isset($user) || $request->username == ''){
             $data = array(
                 'userToMessage' => $user,
+                'messageType' => 'individual',
                 'messages' => Message::withCount('notSeenConversation')->orWhere('from_user_id', Auth::id())->orWhere('to_id', Auth::id())->get(),
                 'conversation' => Message::where([['from_user_id', Auth::id()], ['to_id', $user->id ?? '']])->orWhere([['from_user_id',$user->id ?? ''], ['to_id',  Auth::id()]])->first(),
+                'groupMessage' => GroupParticipant::with('message')->where([['user_id', Auth::id()],['status', 'active']])->get(),
             );
 
             if(isset($user)){
@@ -39,6 +59,7 @@ class ChatController extends Controller
                         ->orWhere('last_name', 'LIKE', $request->data.'%')
                         ->orWhere('username', 'LIKE', $request->data.'%')
                         ->select('users.id', 'first_name', 'middle_name', 'last_name', 'username')->get(),
+            'groups' => Group::where('name', 'LIKE', $request->data.'%')->get(),
             'search' => $request->data
         );
 
@@ -51,6 +72,7 @@ class ChatController extends Controller
 
     static function notify($request){
         $data = array(
+            'messageType' => '',
             'conversation' => Message::where([['from_user_id', $request->notify_by_id], ['to_id', $request->notify_user]])->orWhere([['from_user_id', $request->notify_user], ['to_id',  $request->notify_by_id]])->first(),
         );
 
@@ -60,5 +82,37 @@ class ChatController extends Controller
             'notifCount' => Message::countMessage(),
             'chatBox' => view('auth.chat.chat-box', compact('data'))->render()
         ]);
+    }
+
+    static function notifyGroup($request){
+        $data = array(
+            'messageType' => 'group',
+            'conversation' => Message::where([['to_id', $request->groupId],['type', 'group']])->first(),
+        );
+
+        return response()->json([
+            'message' => 'success-message',
+            'messageType' => 'group',
+            'body' => $request->message,
+            'notifCount' => 0,
+            'groupName' => $data['conversation']->groupTo->name,
+            'chatBox' => view('auth.chat.chat-box', compact('data'))->render()
+        ]);
+    }
+
+    public function createGroup(){
+        $data = array(
+            'users' => User::where('id', '!=', Auth::id())->get()
+        );
+
+        return view('auth.chat.group.create', compact('data'));
+    }
+
+    public function submitGroup(Request $request){
+        return Group::insert($request);
+    }
+
+    public function viewSeen(Request $request){
+        return view('auth.chat.seen');
     }
 }

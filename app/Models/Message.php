@@ -36,6 +36,10 @@ class Message extends Model
         return $this->hasOne(Conversation::class, 'message_id', 'id')->orderBy('id', 'desc');
     }
 
+    public function groupTo(){
+        return $this->hasOne(Group::class, 'id', 'to_id');
+    }
+
     public function individualTo(){
         return $this->hasOne(User::class, 'id', 'to_id');
     }
@@ -49,7 +53,7 @@ class Message extends Model
         $count = 0;
 
         foreach($messages as $message){
-            if(isset($message->notSeenConversation[0])){
+            if(isset($message->notSeenConversation[0]) && $message->type == 'individual'){
                 $count++;
             }
         }
@@ -81,6 +85,10 @@ class Message extends Model
         $message = Message::orWhere([['from_user_id', Auth::id()],['to_id', $request->toMessage]])
                             ->orWhere([['to_id', Auth::id()],['from_user_id', $request->toMessage]])->first();
 
+        if($request->toMessageGroup == 'yes'){
+            $message = Message::where('to_id', $request->toMessage)->first();
+        }
+
         if(!isset($message)){
             $message = self::insertData($request, 'individual');
         }
@@ -90,17 +98,51 @@ class Message extends Model
 
         Conversation::insert($message->id, $request->message ?? 'file-upload', $request);
 
-        $data = array(
-            'conversation' => Message::where([['from_user_id', Auth::id()], ['to_id', $request->toMessage]])->orWhere([['from_user_id', $request->toMessage], ['to_id',  Auth::id()]])->first(),
-        );
+        if($request->toMessageGroup == 'yes'){
+            $data = array(
+                'messageType' => 'group',
+                'conversation' => Message::where([['to_id', $request->toMessage],['type', 'group']])->first(),
+            );
 
-        event(new NotificationProcessed(array(
-            'type' => 'message',
-            'message' => $request->message,
-            'notify_user' => $request->toMessage,
-            'notify_by_id' => Auth::id(),
-            'notify_by' => Auth::user()->fullName
-        )));
+            $group = Group::whereId($request->toMessage)->first();
+
+            foreach($group->groupParticipant as $groupParticipant){
+                if($groupParticipant->user_id != Auth::id()){
+                    event(new NotificationProcessed(array(
+                        'type' => 'groupMessage',
+                        'groupId' => $request->toMessage,
+                        'message' => $request->message,
+                        'notify_user' => $groupParticipant->user_id,
+                        'notify_by_id' => Auth::id(),
+                        'notify_by' => Auth::user()->fullName
+                    )));
+                }
+            }
+
+            if(Auth::id() != $group->created_by){
+                event(new NotificationProcessed(array(
+                    'type' => 'groupMessage',
+                    'groupId' => $request->toMessage,
+                    'message' => $request->message,
+                    'notify_user' => $group->created_by,
+                    'notify_by_id' => Auth::id(),
+                    'notify_by' => Auth::user()->fullName
+                )));
+            }
+        }else{
+            $data = array(
+                'messageType' => '',
+                'conversation' => Message::where([['from_user_id', Auth::id()], ['to_id', $request->toMessage]])->orWhere([['from_user_id', $request->toMessage], ['to_id',  Auth::id()]])->first(),
+            );
+
+            event(new NotificationProcessed(array(
+                'type' => 'message',
+                'message' => $request->message,
+                'notify_user' => $request->toMessage,
+                'notify_by_id' => Auth::id(),
+                'notify_by' => Auth::user()->fullName
+            )));
+        }
 
         return response()->json([
             'message' => 'success',
