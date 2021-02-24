@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Conversation;
 use App\Models\Group;
 use App\Models\GroupParticipant;
+use App\Models\GroupSeen;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,11 +27,16 @@ class ChatController extends Controller
                 'groupMessage' => GroupParticipant::with('message')->where([['user_id', Auth::id()],['status', 'active']])->get(),
             );
 
-            if(isset($group)){
+            $checker = Group::with(['groupParticipant' => function($query){
+                $query->where([['user_id', Auth::id()],['status', 'active']]);
+            }])->where('id', $group->id)->first();
 
+            if(isset($checker->groupParticipant[0]) || $checker->created_by == Auth::id()){
+                $conversationIds = $data['conversation']->conversation->pluck('id');
+                GroupSeen::checker($conversationIds);
+                return view('auth.chat.index', compact('data'));
             }
 
-            return view('auth.chat.index', compact('data'));
 
         }else if(isset($user) || $request->username == ''){
             $data = array(
@@ -59,8 +65,11 @@ class ChatController extends Controller
                         ->orWhere('last_name', 'LIKE', $request->data.'%')
                         ->orWhere('username', 'LIKE', $request->data.'%')
                         ->select('users.id', 'first_name', 'middle_name', 'last_name', 'username')->get(),
-            'groups' => Group::where('name', 'LIKE', $request->data.'%')->get(),
-            'search' => $request->data
+            'groups' => Group::with(['groupParticipant' => function($query){
+                $query->where([['user_id', Auth::id()],['status', 'active']]);
+            }])->where('name', 'LIKE', $request->data.'%')->get(),
+            'search' => $request->data,
+            'groupMessage' => GroupParticipant::with('message')->where([['user_id', Auth::id()],['status', 'active']])->get(),
         );
 
         return view('auth.chat.search',compact('data'));
@@ -112,7 +121,32 @@ class ChatController extends Controller
         return Group::insert($request);
     }
 
+    public function updateGroup(Request $request){
+        return Group::updateData($request);
+    }
+
     public function viewSeen(Request $request){
-        return view('auth.chat.seen');
+        $groupSeen = GroupSeen::where('conversation_id', $request->chatId)->get();
+        return view('auth.chat.seen', compact('groupSeen'));
+    }
+
+    public function settingGroup(Request $request){
+        $group = Group::whereId($request->groupId)->first();
+
+        if(isset($group)){
+            $data = array(
+                'group' => $group,
+                'users' => User::where(function($query) use ($group){
+                    if($group->created_by == Auth::id()){
+                        $query->where('id', '!=', Auth::id());
+                    }
+                })->get()
+            );
+
+            if($group->created_by == Auth::id()){
+                return view('auth.chat.group.update', compact('data'));
+            }
+            return view('auth.chat.group.show', compact('data'));
+        }
     }
 }

@@ -228,6 +228,11 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
             Route::prefix('create')->group(function () {
                 Route::get('', [ChatController::class, 'createGroup']);
                 Route::post('submit', [ChatController::class, 'submitGroup']);
+                Route::post('update', [ChatController::class, 'updateGroup']);
+            });
+
+            Route::prefix('setting')->group(function () {
+                Route::get('', [ChatController::class, 'settingGroup']);
             });
         });
 

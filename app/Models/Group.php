@@ -24,15 +24,24 @@ class Group extends Model
     ];
 
     public function getInitialAttribute(){
-        return ucfirst($this->name[0]);
+        $initial = '';
+
+        foreach (explode(' ', $this->name) as $word)
+            $initial .= strtoupper($word[0]);
+
+        return $initial;
+    }
+
+    public function message(){
+        return $this->hasOne(Message::class, 'to_id', 'id');
     }
 
     public function groupParticipant(){
-        return $this->hasMany(GroupParticipant::class, 'group_id', 'id');
+        return $this->hasMany(GroupParticipant::class, 'group_id', 'id')->where('status', 'active');
     }
 
-    static function insert($request){
-        $validate = Validator::make($request->all(),[
+    static function rule($request){
+        return $validate = Validator::make($request->all(),[
             'groupName' => 'required',
             'participant' => [
                 'array',
@@ -46,11 +55,13 @@ class Group extends Model
                 'required'
             ]
         ]);
+    }
 
-        if($validate->fails()){
+    static function insert($request){
+        if(self::rule($request)->fails()){
             return response()->json([
                 'message' => 'error-input',
-                'messages' => $validate->messages(),
+                'messages' => self::rule($request)->messages(),
             ]);
         }
 
@@ -69,6 +80,30 @@ class Group extends Model
 
         return response()->json([
             'message' => 'success',
+            'groupName' => $request->groupName
+        ]);
+    }
+
+    static function updateData($request){
+        if(self::rule($request)->fails()){
+            return response()->json([
+                'message' => 'error-input',
+                'messages' => self::rule($request)->messages(),
+            ]);
+        }
+
+        $group = Group::where([['id', $request->groupId],['created_by', Auth::id()]])->first();
+
+        if(isset($group)){
+            $group->name = $request->groupName;
+            $group->save();
+
+            GroupParticipant::updateData($request, $group);
+        }
+
+        return response()->json([
+            'message' => 'success',
+            'groupName' => $group->name,
         ]);
     }
 }

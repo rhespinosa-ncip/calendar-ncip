@@ -61,6 +61,13 @@ class Message extends Model
         return $count;
     }
 
+    static function groupMessageCount($messageId){
+        $conversation = Conversation::where('message_id', $messageId)->get();
+        $groupSeen = GroupSeen::whereIn('conversation_id', $conversation->pluck('id'))->where('user_id', Auth::id())->get();
+
+        return count($conversation) - count($groupSeen);
+    }
+
     static function insertData($request, $type){
         return Message::create([
             'from_user_id' => Auth::id(),

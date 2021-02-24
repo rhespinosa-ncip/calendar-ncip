@@ -60,7 +60,10 @@ $(function(){
         showSeen($(this).attr('chatId'))
         return false
     }).on('click', '.setting', function(){
-        alert('show setting')
+        showSetting($(this).attr('groupId'))
+        return false
+    }).on('submit', '#updateGroup', function(){
+        updateGroup($(this).serialize())
         return false
     })
 })
@@ -128,7 +131,7 @@ const submitGroup = data => {
     }).done(result => {
         if(result.message == 'success'){
             closeModal('')
-            setTimeOut('/chat')
+            setTimeOut('/chat/group-'+result.groupName)
 
             toastr.success('Group added successfully', '', {
                 progressBar: true,
@@ -149,5 +152,37 @@ const showSeen = (chatId) => {
             title: 'Seen by',
             bodyContent: result
         })
+    })
+}
+
+const showSetting = (groupId) => {
+    $.ajax({
+        url: '/chat/group/setting',
+        type: 'GET',
+        data: {groupId: groupId}
+    }).done(result => {
+        showModal({
+            type: '',
+            title: 'Show setting',
+            bodyContent: result
+        })
+    })
+}
+
+const updateGroup = data => {
+    $.ajax({
+        url: '/chat/group/create/update',
+        type: 'POST',
+        data: data
+    }).done(result => {
+        if(result.message == 'success'){
+            closeModal('')
+            setTimeOut('/chat/group-'+result.groupName)
+
+            toastr.success('Group update successfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
     })
 }

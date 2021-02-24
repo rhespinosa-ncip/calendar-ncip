@@ -67,7 +67,7 @@
                             </ul>
                         @endif
                     </div>
-                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}}</p>
+                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}} {!! $conversation->is_seen == 'yes' ? '- <i class="fa fa-check-circle" aria-hidden="true"></i>' : '- <i class="fa fa-check-circle" aria-hidden="true"></i>' !!}</p>
                 </div>
             </div>
         @else
@@ -84,7 +84,7 @@
                             </ul>
                         @endif
                     </div>
-                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}}</p>
+                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}} {!! $conversation->is_seen == 'yes' ? '- <i class="fa fa-check-circle" aria-hidden="true"></i>' : '- <i class="fa fa-check-circle" aria-hidden="true"></i>' !!}</p>
                 </div>
             </div>
         @endif

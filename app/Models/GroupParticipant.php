@@ -29,14 +29,36 @@ class GroupParticipant extends Model
         return $this->hasOne(Group::class, 'id', 'group_id');
     }
 
+    static function insertData($groupId, $valueParticipant){
+        GroupParticipant::create([
+            'group_id' => $groupId,
+            'user_id' => $valueParticipant,
+            'status' => 'active',
+        ]);
+    }
 
     static function insert($request, $group){
         foreach($request->participant as $keyParticipant => $valueParticipant){
-            GroupParticipant::create([
-                'group_id' => $group->id,
-                'user_id' => $valueParticipant,
-                'status' => 'active',
-            ]);
+            self::insertData($group->id, $valueParticipant);
+        }
+    }
+
+    static function updateData($request, $group){
+        $groupParticipants = GroupParticipant::where('group_id', $group->id)->get();
+
+        foreach($groupParticipants as $groupParticipant){
+            $groupParticipant->status = 'not-active';
+            $groupParticipant->save();
+        }
+
+        foreach($request->participant as $keyParticipant => $valueParticipant){
+            $groupParticipant = GroupParticipant::where([['group_id', $group->id],['user_id', $valueParticipant]])->first();
+            if(isset($groupParticipant)){
+                $groupParticipant->status = 'active';
+                $groupParticipant->save();
+            }else{
+                self::insertData($group->id, $valueParticipant);
+            }
         }
     }
 }
