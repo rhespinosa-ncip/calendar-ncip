@@ -73,19 +73,23 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            @if (App\Models\Message::countMessage() != '0')
-                                <span class="badge badge-pill badge-danger notif-message-count" style="float:right;margin-bottom:-10px;">{{App\Models\Message::countMessage()}}</span> <!-- your badge -->
+                            @php
+                                $messageCount = App\Models\Message::countMessage();
+                            @endphp
+                            @if ($messageCount != '0')
+                                <span class="badge badge-pill badge-danger notif-message-count" style="float:right;margin-bottom:-10px;">{{$messageCount}}</span> <!-- your badge -->
                             @endif
                             <a class="nav-link" href="/chat">Message</a>
                         </li>
-                        @if (Auth::user()->user_type != 'executive')
-                            <li class="nav-item">
-                                @if (App\Models\Notification::countNotification() != '0')
-                                    <span class="badge badge-pill badge-danger notif-count" style="float:right;margin-bottom:-10px;">{{App\Models\Notification::countNotification()}}</span> <!-- your badge -->
-                                @endif
-                                <a class="nav-link show-notification" href="#">Notification</a>
-                            </li>
-                        @endif
+                        @php
+                            $notificationCount = App\Models\Notification::countNotification();
+                        @endphp
+                        <li class="nav-item">
+                            @if ($notificationCount != '0')
+                                <span class="badge badge-pill badge-danger notif-count" style="float:right;margin-bottom:-10px;">{{$notificationCount}}</span> <!-- your badge -->
+                            @endif
+                            <a class="nav-link show-notification" href="#">Notification</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Settings </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

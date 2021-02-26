@@ -58,6 +58,22 @@ class Message extends Model
             }
         }
 
+        $groupParticipant = GroupParticipant::where([['user_id', Auth::id()],['status', 'active']])->get();
+
+        foreach($groupParticipant as $gP){
+            $messageGroup = Message::where([['to_id', $gP->group_id],['type', 'group']])->first();
+            $conversations = Conversation::where([['message_id', $messageGroup->id],['sent_by_user_id', '!=', Auth::id()]])->get();
+            $groupSeen = GroupSeen::whereIn('conversation_id', $conversations->pluck('id'))->where('user_id', Auth::id())->get();
+
+            count($conversations) == count($groupSeen) ? '' : $count++;
+        }
+
+        $messageGroupCreated = Message::where([['from_user_id', Auth::id()],['type', 'group']])->get();
+        $createdGroupConversation = Conversation::whereIn('message_id', $messageGroupCreated->pluck('id'))->where('sent_by_user_id', '!=', Auth::id())->get();
+        $createGroupSeen = GroupSeen::whereIn('conversation_id', $createdGroupConversation->pluck('id'))->where('user_id', Auth::id())->get();
+
+        count($createdGroupConversation) == count($createGroupSeen) ? '' : $count++;
+
         return $count;
     }
 
@@ -126,6 +142,9 @@ class Message extends Model
                 }
             }
 
+            $conversationIds = $data['conversation']->conversation->pluck('id');
+            GroupSeen::checker($conversationIds);
+
             if(Auth::id() != $group->created_by){
                 event(new NotificationProcessed(array(
                     'type' => 'groupMessage',
@@ -141,6 +160,8 @@ class Message extends Model
                 'messageType' => '',
                 'conversation' => Message::where([['from_user_id', Auth::id()], ['to_id', $request->toMessage]])->orWhere([['from_user_id', $request->toMessage], ['to_id',  Auth::id()]])->first(),
             );
+
+            $conversation = Conversation::where([['message_id', $data['conversation']->id ?? ''],['sent_by_user_id', '!=', Auth::id()],['is_seen', 'no']])->update(array('is_seen' => 'yes'));
 
             event(new NotificationProcessed(array(
                 'type' => 'message',

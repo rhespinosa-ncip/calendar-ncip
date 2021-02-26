@@ -23,7 +23,7 @@
         @else
             <div class="media w-50 mb-3">
                 <p class="mt-2 bg" data-color="#bf3f3f" data-letters="{{$conversation->user->initial}}"></p><!-- or whatever structure you used -->
-                <div class="media-body ml-3">
+                <div class="media-body">
                     <div class="bg-light rounded py-2 px-3 mb-2">
                         <p class="text-small mb-0 text-muted">{{$conversation->body == 'file-upload' ? '' : $conversation->body}}</p>
                         @if (isset($conversation->file[0]))
@@ -67,13 +67,13 @@
                             </ul>
                         @endif
                     </div>
-                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}} {!! $conversation->is_seen == 'yes' ? '- <i class="fa fa-check-circle" aria-hidden="true"></i>' : '- <i class="fa fa-check-circle" aria-hidden="true"></i>' !!}</p>
+                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}} {!! $conversation->is_seen == 'yes' ? '- <i class="fa fa-check-circle" aria-hidden="true"></i>' : '' !!}</p>
                 </div>
             </div>
         @else
             <div class="media w-50 mb-3">
                 <p class="mt-2 bg" data-color="#bf3f3f" data-letters="{{$conversation->user->initial}}"></p><!-- or whatever structure you used -->
-                <div class="media-body ml-3">
+                <div class="media-body">
                     <div class="bg-light rounded py-2 px-3 mb-2">
                         <p class="text-small mb-0 text-muted">{{$conversation->body == 'file-upload' ? '' : $conversation->body}}</p>
                         @if (isset($conversation->file[0]))
@@ -84,7 +84,7 @@
                             </ul>
                         @endif
                     </div>
-                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}} {!! $conversation->is_seen == 'yes' ? '- <i class="fa fa-check-circle" aria-hidden="true"></i>' : '- <i class="fa fa-check-circle" aria-hidden="true"></i>' !!}</p>
+                    <p class="small text-muted">{{date('h:i A | F d, Y' , strtotime($conversation->created_at))}} {!! $conversation->is_seen == 'yes' ? '- <i class="fa fa-check-circle" aria-hidden="true"></i>' : '' !!}</p>
                 </div>
             </div>
         @endif

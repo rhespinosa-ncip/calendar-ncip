@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NotificationProcessed;
 use App\Mail\ForgotPassword;
+use App\Models\Group;
 use App\Models\Message;
 use App\Models\Notification;
 use App\Models\PasswordReset;

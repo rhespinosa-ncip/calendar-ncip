@@ -23,7 +23,7 @@ class ChatController extends Controller
                 'group' => $group,
                 'messageType' => 'group',
                 'messages' => Message::withCount('notSeenConversation')->orWhere('to_id', $group->id)->orWhere('from_user_id', Auth::id())->orWhere('to_id', Auth::id())->get(),
-                'conversation' => Message::where('to_id', $group->id)->first(),
+                'conversation' => Message::where([['to_id', $group->id],['type', 'group']])->first(),
                 'groupMessage' => GroupParticipant::with('message')->where([['user_id', Auth::id()],['status', 'active']])->get(),
             );
 
@@ -85,8 +85,18 @@ class ChatController extends Controller
             'conversation' => Message::where([['from_user_id', $request->notify_by_id], ['to_id', $request->notify_user]])->orWhere([['from_user_id', $request->notify_user], ['to_id',  $request->notify_by_id]])->first(),
         );
 
+        $append = false;
+
+        $user = User::whereId($request->notify_by_id)->first();
+
+        if(str_replace(url('/'), '', url()->previous()) == '/chat/'.$user->username){
+            $append = true;
+            $conversation = Conversation::where([['message_id', $data['conversation']->id ?? ''],['sent_by_user_id', '!=', Auth::id()],['is_seen', 'no']])->update(array('is_seen' => 'yes'));
+        }
+
         return response()->json([
             'message' => 'success-message',
+            'isAppend' => $append,
             'body' => $request->message,
             'notifCount' => Message::countMessage(),
             'chatBox' => view('auth.chat.chat-box', compact('data'))->render()
@@ -99,8 +109,20 @@ class ChatController extends Controller
             'conversation' => Message::where([['to_id', $request->groupId],['type', 'group']])->first(),
         );
 
+        $group = Group::whereId($request->groupId)->first();
+
+        $append = false;
+
+        if(urldecode(str_replace(url('/'), '', url()->previous())) == '/chat/group-'.$group->name){
+            $append = true;
+
+            $conversationIds = $data['conversation']->conversation->pluck('id');
+            GroupSeen::checker($conversationIds);
+        }
+
         return response()->json([
             'message' => 'success-message',
+            'isAppend' => $append,
             'messageType' => 'group',
             'body' => $request->message,
             'notifCount' => 0,

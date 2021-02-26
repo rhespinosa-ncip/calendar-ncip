@@ -54,7 +54,7 @@
                     @if ($groupMessageCount != 0)
                         <span class="badge badge-pill badge-info notif-count" style="float:right;margin-bottom:-10px;">{{$groupMessageCount}}</span>
                     @endif
-                    <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ucfirst($message->lastConversation->user->first_name)}}: {{isset($message->lastConversation->body) ? \Illuminate\Support\Str::limit($message->lastConversation->body, 50, $end='...') : 'No conversation yet' }}</p>
+                    <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ucfirst($message->lastConversation->user->first_name ?? '')}}: {{isset($message->lastConversation->body) ? \Illuminate\Support\Str::limit($message->lastConversation->body, 50, $end='...') : 'No conversation yet' }}</p>
                 </div>
             </div>
         </a>
@@ -129,7 +129,7 @@
                 @if ($groupMessageCount != 0)
                     <span class="badge badge-pill badge-info notif-count" style="float:right;margin-bottom:-10px;">{{$groupMessageCount}}</span>
                 @endif
-                <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ucfirst($message->lastConversation->user->first_name)}}: {{ \Illuminate\Support\Str::limit($groupMessage->message->lastConversation->body ?? 'No conversation yet', 50, $end='...') }}</p>
+                <p class="font-italic {{Request::segment(2) == $username ? '' : 'text-muted'}} mb-0 text-small">{{ucfirst($groupMessage->message->lastConversation->user->first_name ?? '')}}: {{ \Illuminate\Support\Str::limit($groupMessage->message->lastConversation->body ?? 'No conversation yet', 50, $end='...') }}</p>
             </div>
         </div>
     </a>

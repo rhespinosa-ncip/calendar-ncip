@@ -133,13 +133,15 @@ const notify = (e) => {
                     timeOut: 5000,
                 })
             }
-            $('.notif-message-count').text(result.notifCount)
+            if(result.isAppend == true){
+                $('.notif-message-count').text(result.notifCount)
 
-            $('.chat-box').empty('')
-            $('.chat-box').append(result.chatBox)
-            $(".chat-box").animate({
-                scrollTop: $('.chat-box').get(0).scrollHeight
-            }, 500);
+                $('.chat-box').empty('')
+                $('.chat-box').append(result.chatBox)
+                $(".chat-box").animate({
+                    scrollTop: $('.chat-box').get(0).scrollHeight
+                }, 500);
+            }
         }
     })
 }
