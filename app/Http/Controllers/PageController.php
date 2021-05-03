@@ -149,7 +149,7 @@ class PageController extends Controller
             //     'time_in' => date('H:i:s'),
             //     'user_id' => $user->id
             // ]);
-
+                // return view('guest.default-tito');
             return view('guest.success-tito', [
                 'tito' => 'IN',
                 'user' => $user
