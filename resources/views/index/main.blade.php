@@ -37,6 +37,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/">HOME</a>
                         </li>
+                        <li class="nav-item {{$segmentOne == 'meeting' ? 'active' : ''}}">
+                            <a class="nav-link" href="/pds">PDS</a>
+                        </li>
                         @if (Auth::user()->user_type == 'admin')
                             <li class="nav-item {{$segmentOne == 'department' ? 'active' : ''}}">
                                 <a class="nav-link" href="/department">DIVISION</a>
@@ -180,5 +183,6 @@
     <script src="{{asset('js/datatables.min.js')}}"></script>
     <script src="{{asset('js/global.js')}}"></script>
     <script src="{{asset('js/calendar/full-calendar.js')}}"></script>
+    <script src="{{asset('js/jquery.mask-input.js')}}"></script>
     @stack('script')
 </html>

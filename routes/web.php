@@ -6,6 +6,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PDSController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SubordinateController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,11 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
+
+    Route::prefix('pds')->group(function () {
+        Route::get('', [PDSController::class, 'index']);
+
+    });
 
     Route::group(['prefix' => 'meeting'], function () {
         Route::group(['prefix' => 'add'], function () {

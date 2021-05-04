@@ -98,7 +98,16 @@ $(function(){
         return false
     })
 
+    maskInput()
 })
+
+const maskInput = () => {
+    $('.gsis').mask("00000000000", {placeholder: "___________"});
+    $('.pagibig').mask("0000-0000-0000", {placeholder: "____-____-____"});
+    $('.phil-health').mask("00-000000000-0", {placeholder: "__-_________-_"});
+    $('.sss').mask("00-0000000-0", {placeholder: "__-_______-_"});
+    $('.tin').mask("000-000-000-000", {placeholder: "___-___-___-___"});
+}
 
 const notify = (e) => {
     const { message, personnel, personnel_id, notify_by } = e.message; // destructure the event data
@@ -255,7 +264,6 @@ const removeTbodyTr = thisRow => {
     }).then(result => {
         if (result.value) {
             $(thisRow).closest('tr').remove()
-            storeAttrDocumentId(thisRow)
         }
     })
 }

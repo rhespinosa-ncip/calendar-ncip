@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             Bureau::class,
             BureauDivision::class,
             UserSeeder::class,
+            Country::class,
         ]);
     }
 }

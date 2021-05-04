@@ -68,6 +68,10 @@ class User extends Authenticatable
         return $this->hasMany(Tito::class, 'user_id', 'id');
     }
 
+    public function personalInformation(){
+        return $this->hasOne(PersonalInformation::class, 'user_id', 'id');
+    }
+
     static function validate($request){
         $id = $request->userId ?? 0;
 
