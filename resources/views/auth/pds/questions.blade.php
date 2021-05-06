@@ -8,7 +8,7 @@
                 <tr class="d-flex">
                     <td class="col-6">a. within the third degree?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -18,7 +18,7 @@
                 <tr class="d-flex">
                     <td class="col-6">b. within the fourth degree (for Local Government Unit - Career Employees)?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -37,7 +37,7 @@
                 <tr class="d-flex">
                     <td class="col-6">a. Have you ever been found guilty of any administrative offense?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -47,7 +47,7 @@
                 <tr class="d-flex">
                     <td class="col-6">b. Have you been criminally charged before any court?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -66,7 +66,7 @@
                 <tr class="d-flex">
                     <td class="col-6">Have you ever been convicted of any crime or violation of any law, decree, ordinance or regulation by any court or tribunal?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -85,7 +85,7 @@
                 <tr class="d-flex">
                     <td class="col-6">Have you ever been separated from the service in any of the following modes: resignation, retirement, dropped from the rolls, dismissal, termination, end of term, finished contract or phased out (abolition) in the public or private sector?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -104,7 +104,7 @@
                 <tr class="d-flex">
                     <td class="col-6">a. Have you ever been a candidate in a national or local election held within the last year (except Barangay election)?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -114,7 +114,7 @@
                 <tr class="d-flex">
                     <td class="col-6">b. Have you resigned from the government service during the three (3)-month period before the last election to promote/actively campaign for a national or local candidate?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -133,7 +133,7 @@
                 <tr class="d-flex">
                     <td class="col-6">Have you acquired the status of an immigrant or permanent resident of another country?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -155,7 +155,7 @@
                 <tr class="d-flex">
                     <td class="col-6">Are you a member of any indigenous group?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -165,7 +165,7 @@
                 <tr class="d-flex">
                     <td class="col-6">Are you a person with disability?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
@@ -175,7 +175,7 @@
                 <tr class="d-flex">
                     <td class="col-6">Are you a solo parent?</td>
                     <td class="col-3">
-                        <select class="form-control rounded-0" name="civilStatus" id="civilStatus">
+                        <select class="form-control rounded-0" name="qeustions" id="qeustions">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>

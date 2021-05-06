@@ -1,7 +1,9 @@
 $(function(){
     $('input, select').attr('disabled', true);
 
-    $('body').on('change', '#dualCitizenship', function(){
+    $('body').on('keypress', 'form', function(event){
+        if (event.which == 13) { return false; }
+    }).on('change', '#dualCitizenship', function(){
         if($('input[name="dualCitizenship"]:checked').val()){
             $('.dual-show').removeClass('d-none')
             return false
@@ -9,12 +11,20 @@ $(function(){
         $('.dual-show').addClass('d-none')
     }).on('click', '.btn-update', function(){
         $('input, select').attr('disabled', false);
+        $(this).addClass('d-none')
+        $('.save-button').removeClass('d-none')
         return false
     }).on('click', '.btn-add-children-row, .btn-add-civil-service-row, .btn-add-work-experience-row, .btn-add-voluntary-work-row, .btn-add-learning-and-development-row, .btn-add-special-skills-row, .btn-add-non-academic-distinction-row, .btn-add-special-skills-membership-association-row, .btn-add-references-row', function(){
         $('#'+$(this).attr('table')+' > tbody').append(formats($(this).attr('table')))
         return false
     }).on('click', '.btn-remove-children-row, .btn-remove-civil-service-row, .btn-remove-work-experience-row, .btn-remove-voluntary-work-row, .btn-remove-learning-and-development-row,.btn-remove-special-skills-row, .btn-remove-non-academic-distinction-row, .btn-remove-special-skills-membership-association-row, .btn-remove-references-row', function(){
         removeTbodyTrPDS($(this), 'children')
+        return false
+    }).on('submit', '#updatePDS', function(){
+        savePDS($(this).serialize())
+        return false
+    }).on('click', '.export-button', function(){
+        exportPDS()
         return false
     })
 })
@@ -103,5 +113,33 @@ const removeTbodyTrPDS = thisRow => {
             $(thisRow).closest('tr').remove()
         }
     })
+}
+
+const savePDS = data => {
+    $.ajax({
+        url: '/pds/update',
+        data: data,
+        type: 'POST'
+    }).done(result => {
+        if(result.message == 'success'){
+            setTimeOut('pds')
+
+            toastr.success('PDS Updated successfully', '', {
+                progressBar: true,
+                timeOut: 1000,
+            })
+        }
+    });
+}
+
+const exportPDS = () => {
+    $.ajax({
+        url: '/pds/export',
+        type: 'POST'
+    }).done(result => {
+        if(result.message == 'success'){
+            
+        }
+    });
 }
 

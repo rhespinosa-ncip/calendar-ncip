@@ -55,7 +55,8 @@ Route::group(['middleware' => ['auth', 'linkPrevilage']], function () {
 
     Route::prefix('pds')->group(function () {
         Route::get('', [PDSController::class, 'index']);
-
+        Route::post('update', [PDSController::class, 'update']);
+        Route::post('export', [PDSController::class, 'export']);
     });
 
     Route::group(['prefix' => 'meeting'], function () {

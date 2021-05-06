@@ -1,26 +1,26 @@
 <div class="row">
     <div class="col-lg-3">
         <div class="form-group">
-            <label for="surname">SURNAME: </label>
-            <input type="text"class="form-control rounded-0" name="surname" id="surname" value="{{$data['user']->last_name}}">
+            <label for="lastName">LASTNAME: </label>
+            <input type="text"class="form-control rounded-0" name="lastName" id="lastName" value="{{$data['user']->last_name}}">
         </div>
     </div>
     <div class="col-lg-3">
         <div class="form-group">
-            <label for="firstname">FIRST NAME: </label>
-            <input type="text"class="form-control rounded-0" name="firstname" id="firstname" value="{{$data['user']->first_name}}">
+            <label for="firstName">FIRST NAME: </label>
+            <input type="text"class="form-control rounded-0" name="firstName" id="firstName" value="{{$data['user']->first_name}}">
         </div>
     </div>
     <div class="col-lg-3">
         <div class="form-group">
-            <label for="middlename">MIDDLE NAME: </label>
-            <input type="text"class="form-control rounded-0" name="middlename" id="middlename" value="{{$data['user']->middle_name}}">
+            <label for="middleName">MIDDLE NAME: </label>
+            <input type="text"class="form-control rounded-0" name="middleName" id="middleName" value="{{$data['user']->middle_name}}">
         </div>
     </div>
     <div class="col-lg-3">
         <div class="form-group">
-            <label for="nameextension">NAME EXTENSION (JR., SR): </label>
-            <input type="text"class="form-control rounded-0" name="nameextension" id="nameextension" value="{{$data['user']->personal_information->name_extension ?? ''}}">
+            <label for="nameExtension">NAME EXTENSION (JR., SR): </label>
+            <input type="text"class="form-control rounded-0" name="nameExtension" id="nameExtension" value="{{$data['user']->personal_information->name_extension ?? ''}}">
         </div>
     </div>
 </div>
@@ -142,13 +142,16 @@
                 </div>
                 <div class="col-lg-4 dual-show d-none">
                     <select class="form-control rounded-0" name="dualCitizenship" id="dualCitizenship">
+                        <option value="">-- select dual citizenship--</option>
                         <option value="by_birth">by Birth</option>
                         <option value="by_naturalization">by Naturalization</option>
                     </select>
                 </div>
                 <div class="col-lg-4 dual-show d-none">
                     <select class="form-control rounded-0" name="country" id="country">
-
+                        @foreach ($data['countries'] as $country)
+                            <option value="{{$country->id}}">{{$country->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -162,38 +165,38 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="houseOrBlockOrLotNo">HOUSE/BLOCK/LOT NO.: </label>
-                        <input type="text"class="form-control rounded-0" name="houseOrBlockOrLotNo" id="houseOrBlockOrLotNo" value="{{$data['user']->personal_information->residentialAddress->house_no ?? ''}}">
+                        <label for="residentialHouseOrBlockOrLotNo">HOUSE/BLOCK/LOT NO.: </label>
+                        <input type="text"class="form-control rounded-0" name="residentialHouseOrBlockOrLotNo" id="residentialHouseOrBlockOrLotNo" value="{{$data['user']->personal_information->residentialAddress->house_no ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="street">STREET: </label>
-                        <input type="text"class="form-control rounded-0" name="street" id="street" value="{{$data['user']->personal_information->residentialAddress->street ?? ''}}">
+                        <label for="residentialStreet">STREET: </label>
+                        <input type="text"class="form-control rounded-0" name="residentialStreet" id="residentialStreet" value="{{$data['user']->personal_information->residentialAddress->street ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="subdivisionOrVillage">SUBDIVISION/VILLAGE: </label>
-                        <input type="text"class="form-control rounded-0" name="subdivisionOrVillage" id="subdivisionOrVillage" value="{{$data['user']->personal_information->residentialAddress->subdivision ?? ''}}">
+                        <label for="residentialSubdivisionOrVillage">SUBDIVISION/VILLAGE: </label>
+                        <input type="text"class="form-control rounded-0" name="residentialSubdivisionOrVillage" id="residentialSubdivisionOrVillage" value="{{$data['user']->personal_information->residentialAddress->subdivision ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="barangay">BARANGAY: </label>
-                        <input type="text"class="form-control rounded-0" name="barangay" id="barangay" value="{{$data['user']->personal_information->residentialAddress->barangay ?? ''}}">
+                        <label for="residentialBarangay">BARANGAY: </label>
+                        <input type="text"class="form-control rounded-0" name="residentialBarangay" id="residentialBarangay" value="{{$data['user']->personal_information->residentialAddress->barangay ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="cityOrMunicipal">CITY/MUNICIPAL: </label>
-                        <input type="text"class="form-control rounded-0" name="cityOrMunicipal" id="cityOrMunicipal" value="{{$data['user']->personal_information->residentialAddress->city ?? ''}}">
+                        <label for="residentialCityOrMunicipal">CITY/MUNICIPAL: </label>
+                        <input type="text"class="form-control rounded-0" name="residentialCityOrMunicipal" id="residentialCityOrMunicipal" value="{{$data['user']->personal_information->residentialAddress->city ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="province">PROVINCE: </label>
-                        <input type="text"class="form-control rounded-0" name="province" id="province" value="{{$data['user']->personal_information->residentialAddress->province ?? ''}}">
+                        <label for="residentialProvince">PROVINCE: </label>
+                        <input type="text"class="form-control rounded-0" name="residentialProvince" id="residentialProvince" value="{{$data['user']->personal_information->residentialAddress->province ?? ''}}">
                     </div>
                 </div>
             </div>
@@ -207,38 +210,38 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="houseOrBlockOrLotNo">HOUSE/BLOCK/LOT NO.: </label>
-                        <input type="text"class="form-control rounded-0" name="houseOrBlockOrLotNo" id="houseOrBlockOrLotNo" value="{{$data['user']->personal_information->permanentAddress->house_no ?? ''}}">
+                        <label for="permanentHouseOrBlockOrLotNo">HOUSE/BLOCK/LOT NO.: </label>
+                        <input type="text"class="form-control rounded-0" name="permanentHouseOrBlockOrLotNo" id="permanentHouseOrBlockOrLotNo" value="{{$data['user']->personal_information->permanentAddress->house_no ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="street">STREET: </label>
-                        <input type="text"class="form-control rounded-0" name="street" id="street" value="{{$data['user']->personal_information->permanentAddress->street ?? ''}}">
+                        <label for="permanentStreet">STREET: </label>
+                        <input type="text"class="form-control rounded-0" name="permanentStreet" id="permanentStreet" value="{{$data['user']->personal_information->permanentAddress->street ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="subdivisionOrVillage">SUBDIVISION/VILLAGE: </label>
-                        <input type="text"class="form-control rounded-0" name="subdivisionOrVillage" id="subdivisionOrVillage" value="{{$data['user']->personal_information->permanentAddress->subdivision ?? ''}}">
+                        <label for="permanentSubdivisionOrVillage">SUBDIVISION/VILLAGE: </label>
+                        <input type="text"class="form-control rounded-0" name="permanentSubdivisionOrVillage" id="permanentSubdivisionOrVillage" value="{{$data['user']->personal_information->permanentAddress->subdivision ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="barangay">BARANGAY: </label>
-                        <input type="text"class="form-control rounded-0" name="barangay" id="barangay" value="{{$data['user']->personal_information->permanentAddress->barangay ?? ''}}">
+                        <label for="permanentBarangay">BARANGAY: </label>
+                        <input type="text"class="form-control rounded-0" name="permanentBarangay" id="permanentBarangay" value="{{$data['user']->personal_information->permanentAddress->barangay ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="cityOrMunicipal">CITY/MUNICIPAL: </label>
-                        <input type="text"class="form-control rounded-0" name="cityOrMunicipal" id="cityOrMunicipal" value="{{$data['user']->personal_information->permanentAddress->city ?? ''}}">
+                        <label for="permanentCityOrMunicipal">CITY/MUNICIPAL: </label>
+                        <input type="text"class="form-control rounded-0" name="permanentCityOrMunicipal" id="permanentCityOrMunicipal" value="{{$data['user']->personal_information->permanentAddress->city ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <label for="province">PROVINCE: </label>
-                        <input type="text"class="form-control rounded-0" name="province" id="province" value="{{$data['user']->personal_information->permanentAddress->province ?? ''}}">
+                        <label for="permanentProvince">PROVINCE: </label>
+                        <input type="text"class="form-control rounded-0" name="permanentProvince" id="permanentProvince" value="{{$data['user']->personal_information->permanentAddress->province ?? ''}}">
                     </div>
                 </div>
             </div>

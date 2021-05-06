@@ -70,26 +70,26 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <label for="">SURNAME: </label>
-                        <input type="text"class="form-control rounded-0" name="surname" id="surname">
+                        <label for="fatherSurname">SURNAME: </label>
+                        <input type="text"class="form-control rounded-0" name="fatherSurname" id="fatherSurname">
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <label for="">FIRST NAME: </label>
-                        <input type="text"class="form-control rounded-0" name="surname" id="surname">
+                        <label for="fatherFirstName">FIRST NAME: </label>
+                        <input type="text"class="form-control rounded-0" name="fatherFirstName" id="fatherFirstName">
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <label for="">MIDDLE NAME: </label>
-                        <input type="text"class="form-control rounded-0" name="surname" id="surname">
+                        <label for="fatherMiddleName">MIDDLE NAME: </label>
+                        <input type="text"class="form-control rounded-0" name="fatherMiddleName" id="fatherMiddleName">
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <label for="">NAME EXTENSION (JR., SR): </label>
-                        <input type="text"class="form-control rounded-0" name="surname" id="surname">
+                        <label for="fatherExtension">NAME EXTENSION (JR., SR): </label>
+                        <input type="text"class="form-control rounded-0" name="fatherExtension" id="fatherExtension">
                     </div>
                 </div>
             </div>
@@ -103,20 +103,20 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="">SURNAME: </label>
-                        <input type="text"class="form-control rounded-0" name="surname" id="surname">
+                        <label for="motherSurname">SURNAME: </label>
+                        <input type="text"class="form-control rounded-0" name="motherSurname" id="motherSurname">
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="">FIRST NAME: </label>
-                        <input type="text"class="form-control rounded-0" name="surname" id="surname">
+                        <label for="motherFirstName">FIRST NAME: </label>
+                        <input type="text"class="form-control rounded-0" name="motherFirstName" id="motherFirstName">
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="">MIDDLE NAME: </label>
-                        <input type="text"class="form-control rounded-0" name="surname" id="surname">
+                        <label for="motherMiddleName">MIDDLE NAME: </label>
+                        <input type="text"class="form-control rounded-0" name="motherMiddleName" id="motherMiddleName">
                     </div>
                 </div>
             </div>

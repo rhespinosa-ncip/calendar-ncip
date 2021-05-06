@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalInformation extends Model
 {
@@ -27,9 +28,10 @@ class PersonalInformation extends Model
         'weight',
         'blood_type',
         'gsis_no',
-        'pag-ibig_no',
+        'pag_ibig_no',
         'philhealth_no',
         'sss_no',
+        'tin_no',
         'agency_employee_no',
         'filipino',
         'dual_citizenship',
@@ -53,12 +55,54 @@ class PersonalInformation extends Model
         'mother_first_name',
         'mother_middle_name',
     ];
-
+    
     public function residentialAddress(){
         return $this->hasOne(Address::class, 'personal_information_id', 'id')->where('type', 'residential');
     }
 
     public function permanentAddress(){
         return $this->hasOne(Address::class, 'personal_information_id', 'id')->where('type', 'permanent');
+    }
+
+    static function insertUpdate($request){
+        $personalInformation = PersonalInformation::firstOrNew(array('user_id' => Auth::id()));
+        $personalInformation->name_extension = $request->nameExtension;
+        $personalInformation->date_of_birth = $request->dateOfBirth;
+        $personalInformation->place_of_birth = $request->placeOfBirth;
+        $personalInformation->sex = $request->sex;
+        $personalInformation->civil_status = $request->civilStatus;
+        $personalInformation->height = $request->height;
+        $personalInformation->weight = $request->weight;
+        $personalInformation->blood_type = $request->bloodType;
+        $personalInformation->gsis_no = $request->gsisNo;
+        $personalInformation->pag_ibig_no = $request->pagibigNo;
+        $personalInformation->philhealth_no = $request->philhealthNo;
+        $personalInformation->sss_no = $request->sssNo;
+        $personalInformation->tin_no = $request->tinNo;
+        $personalInformation->agency_employee_no = $request->agencyEmployeeNo;
+        $personalInformation->filipino = $request->filipino == 'on' ? 'yes' : 'no';
+        $personalInformation->dual_citizenship = $request->dualCitizenship == 'on' ? 'yes' : 'no';
+        $personalInformation->dual_citizenship_status = $request->dualCitizenship;
+        $personalInformation->country_id = $request->country;
+        $personalInformation->telephone_no = $request->telephoneNo;
+        $personalInformation->mobile_no = $request->mobileNo;
+        $personalInformation->spouce_surname = $request->spouseSurname;
+        $personalInformation->spouce_first_name = $request->spouseFirstName;
+        $personalInformation->spouce_middle_name = $request->spouseMiddleName;
+        $personalInformation->spouce_name_extension = $request->spouseNameExtension;
+        $personalInformation->spouce_occupation = $request->spouseOccupation;
+        $personalInformation->spouce_employer = $request->spouseEmployerOrBusinessName;
+        $personalInformation->spouce_address = $request->spouseBusinessAddress;
+        $personalInformation->spouce_telephone = $request->spouseTelephoneNo;
+        $personalInformation->father_surname = $request->fatherSurname;
+        $personalInformation->father_first_name = $request->fatherFirstName;
+        $personalInformation->father_middle_name = $request->fatherMiddleName;
+        $personalInformation->father_name_extension = $request->fatherExtension;
+        $personalInformation->mother_surname = $request->motherSurname;
+        $personalInformation->mother_first_name = $request->motherFirstName;
+        $personalInformation->mother_middle_name = $request->motherMiddleName;
+        $personalInformation->save();
+
+        Address::insertUpdate($request, $personalInformation);
     }
 }
