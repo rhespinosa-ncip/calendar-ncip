@@ -8,6 +8,8 @@ use App\Models\PersonalInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class PDSController extends Controller
 {
@@ -66,6 +68,14 @@ class PDSController extends Controller
     }
 
     public function export(){
-        
-    }
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load(storage_path('framework/laravel-excel/pds-template/pds.xlsx'));
+            
+        $sheetC1 = $spreadsheet->getActiveSheet('0');
+        $sheetC1->setCellValue('D10', 'PUTA!');
+        $spreadsheet->save();
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('yourFileHere.xlsx');
+    }    
 }

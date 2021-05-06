@@ -104,5 +104,8 @@ class PersonalInformation extends Model
         $personalInformation->save();
 
         Address::insertUpdate($request, $personalInformation);
+        EducationLevel::insertUpdate($request);
+        CivilEligibility::insertUpdate($request);
+        WorkExperience::insertUpdate($request);
     }
 }
