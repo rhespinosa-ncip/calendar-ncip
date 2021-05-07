@@ -72,6 +72,47 @@ class User extends Authenticatable
         return $this->hasOne(PersonalInformation::class, 'user_id', 'id');
     }
 
+    public function educationLevel(){
+        return $this->hasMany(EducationLevel::class, 'user_id', 'id');
+    }
+
+    public function civilService(){
+        return $this->hasMany(CivilEligibility::class, 'user_id', 'id');
+    }
+
+    public function workExperience(){
+        return $this->hasMany(WorkExperience::class, 'user_id', 'id');
+    }
+
+    public function voluntaryWork(){
+        return $this->hasMany(VoluntaryWork::class, 'user_id', 'id');
+    }
+
+    public function learingDevelopment(){
+        return $this->hasMany(LearningDevelopment::class, 'user_id', 'id');
+    }
+
+    public function skillHobbies(){
+        return $this->hasMany(OtherInformation::class, 'user_id', 'id')->where('type', 'skills_hobbies');
+    }
+
+    public function memberAssociation(){
+        return $this->hasMany(OtherInformation::class, 'user_id', 'id')->where('type', 'membership_association');
+    }
+
+    public function nonAcademicAssociation(){
+        return $this->hasMany(OtherInformation::class, 'user_id', 'id')->where('type', 'non_academic_recognition');
+    }
+
+    public function references(){
+        return $this->hasMany(References::class, 'user_id', 'id');
+    }
+
+    public function questions(){
+        return $this->hasMany(Questions::class, 'user_id', 'id');
+    }
+
+
     static function validate($request){
         $id = $request->userId ?? 0;
 

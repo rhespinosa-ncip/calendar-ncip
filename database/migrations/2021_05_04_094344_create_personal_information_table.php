@@ -53,7 +53,7 @@ class CreatePersonalInformationTable extends Migration
             $table->string('father_surname');
             $table->string('father_first_name');
             $table->string('father_middle_name');
-            $table->string('father_name_extension');
+            $table->string('father_name_extension')->nullable();
 
             $table->string('mother_surname');
             $table->string('mother_first_name');

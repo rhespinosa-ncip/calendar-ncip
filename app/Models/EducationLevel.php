@@ -36,9 +36,9 @@ class EducationLevel extends Model
 
         foreach($levels as $level){
             $levelTrimmed = str_replace('/', 'Or', str_replace(' ', '', $level));
-            
+
             $educationLevel = EducationLevel::firstOrNew(array('user_id' => Auth::id(), 'level' => $levelTrimmed));
-            
+
             $nameOfSchool = $levelTrimmed.'NameOfSchool';
             $basicEducation = $levelTrimmed.'BasicEducationOrDegreeOrCourse';
             $attendanceTo = $levelTrimmed.'To';

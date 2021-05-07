@@ -21,4 +21,18 @@ class Children extends Model
         'name',
         'date_of_birth',
     ];
+
+    static function insertUpdate($request, $personalInformation){
+        Children::where('personal_information_id', $personalInformation->id)->delete();
+
+        foreach($request->nameOfChildren as $key => $value){
+            if($request->nameOfChildren[$key] != ''){
+                Children::create([
+                    'personal_information_id' =>  $personalInformation->id,
+                    'name' => $request->nameOfChildren[$key],
+                    'date_of_birth' => $request->childrenDateOfBirth[$key],
+                ]);
+            }
+        }
+    }
 }

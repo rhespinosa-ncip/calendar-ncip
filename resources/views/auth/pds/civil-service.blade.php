@@ -16,13 +16,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text"class="form-control rounded-0" name="careerService[]" id="careerService[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="careerServiceRating[]" id="careerServiceRating[]"></td>
-                    <td><input type="date"class="form-control rounded-0" name="careerServiceDate[]" id="careerServiceDate[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="careerServicePlace[]" id="careerServicePlace[]"></td>
-                    <td><button class="btn btn-danger rounded-0 btn-remove-civil-service-row">REMOVE</button></td>
-                </tr>
+                @forelse ($data['user']->civilService as $civilService)
+                    <tr>
+                        <td><input type="text"class="form-control rounded-0" name="careerService[]" id="careerService[]" value="{{$civilService->career_service}}"></td>
+                        <td><input type="text"class="form-control rounded-0" name="careerServiceRating[]" id="careerServiceRating[]" value="{{$civilService->rating}}"></td>
+                        <td><input type="date"class="form-control rounded-0" name="careerServiceDate[]" id="careerServiceDate[]" value="{{$civilService->date_of_examination}}"></td>
+                        <td><input type="text"class="form-control rounded-0" name="careerServicePlace[]" id="careerServicePlace[]" value="{{$civilService->place_of_examination}}"></td>
+                        <td><button class="btn btn-danger rounded-0 btn-remove-civil-service-row">REMOVE</button></td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td><input type="text"class="form-control rounded-0" name="careerService[]" id="careerService[]"></td>
+                        <td><input type="text"class="form-control rounded-0" name="careerServiceRating[]" id="careerServiceRating[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="careerServiceDate[]" id="careerServiceDate[]"></td>
+                        <td><input type="text"class="form-control rounded-0" name="careerServicePlace[]" id="careerServicePlace[]"></td>
+                        <td><button class="btn btn-danger rounded-0 btn-remove-civil-service-row">REMOVE</button></td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

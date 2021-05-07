@@ -15,7 +15,7 @@
                 <form id="updatePDS">
                     <div class="row">
                         <div class="col-12 text-right">
-                            <button class="btn btn-success rounded-0 export-button">EXPORT</button>
+                            <a class="btn btn-success rounded-0"  target="_blank" href="/pds/export">EXPORT</a>
                             <button class="btn btn-success rounded-0 update-button btn-update">UPDATE</button>
                             <button class="btn btn-success rounded-0 save-button d-none" form="updatePDS">SAVE</button>
                         </div>

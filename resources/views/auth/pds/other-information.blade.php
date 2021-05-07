@@ -15,10 +15,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="text"class="form-control rounded-0" name="specialSkillsAndHobbies[]" id="specialSkillsAndHobbies[]"></td>
-                            <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-special-skills-row">REMOVE</button></td>
-                        </tr>
+                        @forelse ($data['user']->skillHobbies as $skillHobbies)
+                            <tr>
+                                <td><input type="text"class="form-control rounded-0" name="specialSkillsAndHobbies[]" id="specialSkillsAndHobbies[]" value="{{$skillHobbies->name}}"></td>
+                                <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-special-skills-row">REMOVE</button></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td><input type="text"class="form-control rounded-0" name="specialSkillsAndHobbies[]" id="specialSkillsAndHobbies[]"></td>
+                                <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-special-skills-row">REMOVE</button></td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -40,10 +47,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="text"class="form-control rounded-0" name="nonAcademicDistinction[]" id="nonAcademicDistinction[]"></td>
-                            <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-non-academic-distinction-row">REMOVE</button></td>
-                        </tr>
+                        @forelse ($data['user']->nonAcademicAssociation as $nonAcademicAssociation)
+                            <tr>
+                                <td><input type="text"class="form-control rounded-0" name="nonAcademicDistinction[]" id="nonAcademicDistinction[]" value="{{$nonAcademicAssociation->name}}"></td>
+                                <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-non-academic-distinction-row">REMOVE</button></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td><input type="text"class="form-control rounded-0" name="nonAcademicDistinction[]" id="nonAcademicDistinction[]"></td>
+                                <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-non-academic-distinction-row">REMOVE</button></td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -65,10 +79,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="text"class="form-control rounded-0" name="membershipAssociation[]" id="membershipAssociation[]"></td>
-                            <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-special-skills-membership-association-row">REMOVE</button></td>
-                        </tr>
+                        @forelse ($data['user']->memberAssociation as $memberAssociation)
+                            <tr>
+                                <td><input type="text"class="form-control rounded-0" name="membershipAssociation[]" id="membershipAssociation[]" value="{{$memberAssociation->name}}"></td>
+                                <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-special-skills-membership-association-row">REMOVE</button></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td><input type="text"class="form-control rounded-0" name="membershipAssociation[]" id="membershipAssociation[]"></td>
+                                <td class="text-center"><button class="btn btn-danger rounded-0 btn-remove-special-skills-membership-association-row">REMOVE</button></td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

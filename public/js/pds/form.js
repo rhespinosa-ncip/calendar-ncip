@@ -23,9 +23,6 @@ $(function(){
     }).on('submit', '#updatePDS', function(){
         savePDS($(this).serialize())
         return false
-    }).on('click', '.export-button', function(){
-        exportPDS()
-        return false
     })
 })
 
@@ -47,8 +44,8 @@ const formats = (tableName) => {
                     </tr>`
         case 'workExperienceTable':
             return `<tr>
-                        <td><input type="text"class="form-control rounded-0" name="workExperienceTo[]" id="workExperienceTo[]"></td>
-                        <td><input type="text"class="form-control rounded-0" name="workExperienceFrom[]" id="workExperienceFrom[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="workExperienceTo[]" id="workExperienceTo[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="workExperienceFrom[]" id="workExperienceFrom[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="workExperienceCompany[]" id="workExperienceCompany[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="workExperienceSalary[]" id="workExperienceSalary[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="workExperienceSalaryGrade[]" id="workExperienceSalaryGrade[]"></td>
@@ -57,8 +54,8 @@ const formats = (tableName) => {
         case 'voluntaryWorkTable':
             return `<tr>
                         <td><input type="text"class="form-control rounded-0" name="voluntaryWorknameAndAddress[]" id="voluntaryWorknameAndAddress[]"></td>
-                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesFrom[]" id="voluntaryWorkInclusiveDatesFrom[]"></td>
-                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesTo[]" id="voluntaryWorkInclusiveDatesTo[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesFrom[]" id="voluntaryWorkInclusiveDatesFrom[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesTo[]" id="voluntaryWorkInclusiveDatesTo[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="voluntaryWorkNumberOfHours[]" id="voluntaryWorkNumberOfHours[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="voluntaryWorkPositionNatureOfWork[]" id="voluntaryWorkPositionNatureOfWork[]"></td>
                         <td><button class="btn btn-danger rounded-0 btn-remove-voluntary-work-row">REMOVE</button></td>
@@ -66,8 +63,8 @@ const formats = (tableName) => {
         case 'learningAndDevelopmentTable':
             return `<tr>
                         <td><input type="text"class="form-control rounded-0" name="learningAndDevelopmentTitleOfLearning[]" id="learningAndDevelopmentTitleOfLearning[]"></td>
-                        <td><input type="text"class="form-control rounded-0" name="learningAndDevelopmentInclusiveDatesFrom[]" id="learningAndDevelopmentInclusiveDatesFrom[]"></td>
-                        <td><input type="text"class="form-control rounded-0" name="learningAndDevelopmentInclusiveDatesTo[]" id="learningAndDevelopmentInclusiveDatesTo[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="learningAndDevelopmentInclusiveDatesFrom[]" id="learningAndDevelopmentInclusiveDatesFrom[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="learningAndDevelopmentInclusiveDatesTo[]" id="learningAndDevelopmentInclusiveDatesTo[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="learningAndDevelopmentNumberOfHours[]" id="learningAndDevelopmentNumberOfHours[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="learningAndDevelopmentTypeOfLD[]" id="learningAndDevelopmentTypeOfLD[]"></td>
                         <td><input type="text"class="form-control rounded-0" name="learningAndDevelopmentconductedOrSponsoredBy[]" id="learningAndDevelopmentconductedOrSponsoredBy[]"></td>
@@ -131,15 +128,3 @@ const savePDS = data => {
         }
     });
 }
-
-const exportPDS = () => {
-    $.ajax({
-        url: '/pds/export',
-        type: 'POST'
-    }).done(result => {
-        if(result.message == 'success'){
-            
-        }
-    });
-}
-

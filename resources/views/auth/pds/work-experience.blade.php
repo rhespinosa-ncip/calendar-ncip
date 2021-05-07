@@ -20,14 +20,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text"class="form-control rounded-0" name="workExperienceTo[]" id="workExperienceTo[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="workExperienceFrom[]" id="workExperienceFrom[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="workExperienceCompany[]" id="workExperienceCompany[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="workExperienceSalary[]" id="workExperienceSalary[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="workExperienceSalaryGrade[]" id="workExperienceSalaryGrade[]"></td>
-                    <td><button class="btn btn-danger rounded-0 btn-remove-work-experience-row">REMOVE</button></td>
-                </tr>
+                @forelse ($data['user']->workExperience as $workExperience)
+                    <tr>
+                        <td><input type="date"class="form-control rounded-0" name="workExperienceTo[]" id="workExperienceTo[]" value="{{$workExperience->from}}"></td>
+                        <td><input type="date"class="form-control rounded-0" name="workExperienceFrom[]" id="workExperienceFrom[]" value="{{$workExperience->to}}"></td>
+                        <td><input type="text"class="form-control rounded-0" name="workExperienceCompany[]" id="workExperienceCompany[]" value="{{$workExperience->name}}"></td>
+                        <td><input type="text"class="form-control rounded-0" name="workExperienceSalary[]" id="workExperienceSalary[]" value="{{$workExperience->monthly_salary}}"></td>
+                        <td><input type="text"class="form-control rounded-0" name="workExperienceSalaryGrade[]" id="workExperienceSalaryGrade[]" value="{{$workExperience->salary_grade}}"></td>
+                        <td><button class="btn btn-danger rounded-0 btn-remove-work-experience-row">REMOVE</button></td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td><input type="date"class="form-control rounded-0" name="workExperienceTo[]" id="workExperienceTo[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="workExperienceFrom[]" id="workExperienceFrom[]"></td>
+                        <td><input type="text"class="form-control rounded-0" name="workExperienceCompany[]" id="workExperienceCompany[]"></td>
+                        <td><input type="text"class="form-control rounded-0" name="workExperienceSalary[]" id="workExperienceSalary[]"></td>
+                        <td><input type="text"class="form-control rounded-0" name="workExperienceSalaryGrade[]" id="workExperienceSalaryGrade[]"></td>
+                        <td><button class="btn btn-danger rounded-0 btn-remove-work-experience-row">REMOVE</button></td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

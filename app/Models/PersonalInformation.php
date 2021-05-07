@@ -55,13 +55,17 @@ class PersonalInformation extends Model
         'mother_first_name',
         'mother_middle_name',
     ];
-    
+
     public function residentialAddress(){
         return $this->hasOne(Address::class, 'personal_information_id', 'id')->where('type', 'residential');
     }
 
     public function permanentAddress(){
         return $this->hasOne(Address::class, 'personal_information_id', 'id')->where('type', 'permanent');
+    }
+
+    public function children(){
+        return  $this->hasMany(Children::class, 'personal_information_id', 'id');
     }
 
     static function insertUpdate($request){
@@ -103,9 +107,15 @@ class PersonalInformation extends Model
         $personalInformation->mother_middle_name = $request->motherMiddleName;
         $personalInformation->save();
 
+        Children::insertUpdate($request, $personalInformation);
         Address::insertUpdate($request, $personalInformation);
         EducationLevel::insertUpdate($request);
         CivilEligibility::insertUpdate($request);
         WorkExperience::insertUpdate($request);
+        VoluntaryWork::insertUpdate($request);
+        LearningDevelopment::insertUpdate($request);
+        OtherInformation::insertUpdate($request);
+        References::insertUpdate($request);
+        Questions::insertUpdate($request);
     }
 }

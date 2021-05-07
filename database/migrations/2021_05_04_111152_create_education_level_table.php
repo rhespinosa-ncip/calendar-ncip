@@ -19,15 +19,15 @@ class CreateEducationLevelTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('level');
-            $table->string('name_of_school');
-            $table->string('basic_education');
+            $table->string('name_of_school')->nullable();
+            $table->string('basic_education')->nullable();
 
-            $table->date('attendance_to');
-            $table->date('attendance_from');
+            $table->date('attendance_to')->nullable();
+            $table->date('attendance_from')->nullable();
 
-            $table->string('highest_level');
-            $table->string('year_graduated');
-            $table->string('scholarship');
+            $table->string('highest_level')->nullable();
+            $table->string('year_graduated')->nullable();
+            $table->string('scholarship')->nullable();
 
             $table->timestamps();
         });

@@ -20,14 +20,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text"class="form-control rounded-0" name="voluntaryWorknameAndAddress[]" id="voluntaryWorknameAndAddress[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesFrom[]" id="voluntaryWorkInclusiveDatesFrom[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesTo[]" id="voluntaryWorkInclusiveDatesTo[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="voluntaryWorkNumberOfHours[]" id="voluntaryWorkNumberOfHours[]"></td>
-                    <td><input type="text"class="form-control rounded-0" name="voluntaryWorkPositionNatureOfWork[]" id="voluntaryWorkPositionNatureOfWork[]"></td>
-                    <td><button class="btn btn-danger rounded-0 btn-remove-voluntary-work-row">REMOVE</button></td>
-                </tr>
+                @forelse ($data['user']->voluntaryWork as $voluntaryWork)
+                    <tr>
+                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorknameAndAddress[]" id="voluntaryWorknameAndAddress[]" value="{{$voluntaryWork->name}}"></td>
+                        <td><input type="date"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesFrom[]" id="voluntaryWorkInclusiveDatesFrom[]" value="{{$voluntaryWork->from}}"></td>
+                        <td><input type="date"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesTo[]" id="voluntaryWorkInclusiveDatesTo[]" value="{{$voluntaryWork->to}}"></td>
+                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorkNumberOfHours[]" id="voluntaryWorkNumberOfHours[]" value="{{$voluntaryWork->number_of_hours}}"></td>
+                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorkPositionNatureOfWork[]" id="voluntaryWorkPositionNatureOfWork[]" value="{{$voluntaryWork->position}}"></td>
+                        <td><button class="btn btn-danger rounded-0 btn-remove-voluntary-work-row">REMOVE</button></td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorknameAndAddress[]" id="voluntaryWorknameAndAddress[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesFrom[]" id="voluntaryWorkInclusiveDatesFrom[]"></td>
+                        <td><input type="date"class="form-control rounded-0" name="voluntaryWorkInclusiveDatesTo[]" id="voluntaryWorkInclusiveDatesTo[]"></td>
+                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorkNumberOfHours[]" id="voluntaryWorkNumberOfHours[]"></td>
+                        <td><input type="text"class="form-control rounded-0" name="voluntaryWorkPositionNatureOfWork[]" id="voluntaryWorkPositionNatureOfWork[]"></td>
+                        <td><button class="btn btn-danger rounded-0 btn-remove-voluntary-work-row">REMOVE</button></td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

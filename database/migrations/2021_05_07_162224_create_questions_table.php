@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLearningDevelopmentTable extends Migration
+class CreateQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreateLearningDevelopmentTable extends Migration
      */
     public function up()
     {
-        Schema::create('learning_development', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('title_of_learning');
-            $table->date('from');
-            $table->date('to');
-            $table->string('number_of_hours');
-            $table->string('type_of_ld');
-            $table->string('conducted_by');
+            $table->string('question');
+            $table->string('answer');
+            $table->string('if_yes')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ class CreateLearningDevelopmentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learning_development');
+        Schema::dropIfExists('questions');
     }
 }

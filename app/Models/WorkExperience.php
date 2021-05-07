@@ -28,9 +28,9 @@ class WorkExperience extends Model
 
     static function insertUpdate($request){
         WorkExperience::where('user_id', Auth::id())->delete();
-        
-        foreach($request->careerService as $key => $value){
-            if($request->careerService[$key] != ''){
+
+        foreach($request->workExperienceCompany as $key => $value){
+            if($request->workExperienceCompany[$key] != ''){
                 WorkExperience::create([
                     'user_id' => Auth::id(),
                     'from' => $request->workExperienceFrom[$key],
